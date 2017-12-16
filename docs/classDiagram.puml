@@ -1,0 +1,154 @@
+IFish <|-- Fish
+Fish <|-- Shark
+Fish <|-- SmallFish
+Location -right-o Fish
+Flow -right-o Ocean
+IFish -down-* Ocean
+Ocean -right-* OceanManager
+Visualizer -up-* OceanManager
+OceanCreator --> FishCreator
+OceanManager --> OceanCreator
+JaxBParser -right-|> IXMLParser
+SaxParser -down-|> IXMLParser
+StaxParser -down-|> IXMLParser
+DomParser -down-|> IXMLParser
+OceanConfigReader -up-> IXMLParser
+OceanConfigReader ..> Property
+OceanManager -left-> OceanConfigReader
+CountOfFishMetric -up-|> IMetric
+MetricsWriter --> IMetric
+OceanManager -left-> MetricsWriter
+MetricsWriter .right.> Property
+MetricsWriter -up->IXMLParser
+
+
+Enum Flow {
+RIGHT
+LEFT
+NONE
+}
+
+Interface IFish {
++ void action()
++ void move()
++ void giveBirth()
++ void searchTarget()
++ void die()
+}
+
+Abstract Fish {
+- Location location
+- int lifetime
+- int progenyPeriod
+- int age
+- searchRadius
+- Location target
++ void giveBirth()
++ void die()
+}
+
+Class Shark {
+- int hungerTime
++ void action()
++ void move()
++ void searchTarget()
++ void eat()
+}
+
+Class SmallFish {
++ void action()
++ void move()
++ void searchTarget()
+}
+
+Class Location {
+- int x
+- int y
++ boolean equals(Location l)
+}
+
+class Ocean << (S,#FF7700) Singleton >>{
+- int height
+- int weight
+- boolean isTor
+- listOfFlow<Flow>
+- int changeFlow
+- listOfSharks<IFish>
+- listOfSmallFishes<IFish>
++ void oneStep()
++ void changeFlow()
++ Ocean getOceanInstance()
+}
+
+Class OceanManager{
+- Ocean ocean
+- Visualizer visualizer
++ void run()
++ void createOcean()
++ void writeMetric()
+}
+
+Class Visualizer{
++ void visualize(Ocean o)
++ void drawInfo(listOfFlow f)
+}
+
+Class OceanCreator{
+{static} createOcean()
+}
+
+Class FishCreator{
+{static} createShark()
+{static} createSmallFish()
+}
+
+Class OceanConfigReader{
+- {static} long lastModified
++ {static} void readConfig(OceanConfig)
++ {static} void isChanged(OceanConfig)
+}
+
+interface IXMLParser {
++ void read(OceanConfig)
++ void write(Metric m)
+}
+class JaxBParser {
++ void read(OceanConfig)
++ void write(Metric m)
+}
+
+class SaxParser {
++ void read(OceanConfig)
++ void write(Metric m)
+}
+
+class StaxParser {
++ void read(OceanConfig)
++ void write(Metric m)
+}
+
+class DomParser {
++ void read(OceanConfig)
++ void write(Metric m)
+}
+
+class Property{
++ {static} IXMLParser XMLReader
++ {static} IXMLParser XMLWriter
+}
+
+interface IMetric{
++ void calculateValue(Ocean o)
++ String getName()
+}
+
+class CountOfFishMetric{
+- String name
+- double value
++ void calculateValue(Ocean o)
++ String getName()
+}
+
+class MetricsWriter {
++ {static} void writeMetric(Metric m)
+}

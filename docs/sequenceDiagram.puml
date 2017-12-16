@@ -1,0 +1,35 @@
+participant OceanManager
+participant Reader
+participant Creator
+control Ocean
+participant Fish
+participant Visualizer
+participant Writer
+
+alt file is correct
+OceanManager -> Reader : read configuration file
+activate Reader
+Reader --> OceanManager : ocean configuration
+deactivate Reader
+else file is invalid (or does not exist)
+OceanManager -> Creator : create ocean configuration
+activate Creator
+Creator --> OceanManager : ocean configuration
+deactivate Creator
+end
+group run simulation [n times] 
+loop m times
+OceanManager -> Ocean : perform step
+activate Ocean
+loop popul. size times
+Ocean -> Fish : fish action
+activate Fish
+Fish --> Ocean : updated fish
+deactivate Fish
+end
+Ocean --> OceanManager : updated ocean system
+deactivate Ocean
+OceanManager -> Visualizer : visualize ocean
+end
+OceanManager -> Writer : save metric
+end
