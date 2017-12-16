@@ -1,25 +1,28 @@
-IFish <|-- Fish
+IFish <|-right- Fish
 Fish <|-- Shark
 Fish <|-- SmallFish
-Location -right-o Fish
-Flow -right-o Ocean
+Location -up-o Fish
+Flow -up-o Ocean
 IFish -down-* Ocean
 Ocean -right-* OceanManager
 Visualizer -up-* OceanManager
 OceanCreator --> FishCreator
 OceanManager --> OceanCreator
 JaxBParser -right-|> IXMLParser
-SaxParser -down-|> IXMLParser
-StaxParser -down-|> IXMLParser
-DomParser -down-|> IXMLParser
-OceanConfigReader -up-> IXMLParser
-OceanConfigReader ..> Property
+SaxParser -up-|> IXMLParser
+StaxParser -up-|> IXMLParser
+DomParser -up-|> IXMLParser
+OceanConfigReader -left-> IXMLParser
+OceanConfigReader .up.> Property
 OceanManager -left-> OceanConfigReader
-CountOfFishMetric -up-|> IMetric
-MetricsWriter --> IMetric
+CountOfFishMetric -right-|> IMetric
+MetricsWriter -left-> IMetric
 OceanManager -left-> MetricsWriter
 MetricsWriter .right.> Property
-MetricsWriter -up->IXMLParser
+MetricsWriter -down->IXMLParser
+OceanConfigReader -down-> OceanConfig
+IXMLParser -down-> OceanConfig
+IXMLParser -up-> IMetric
 
 
 Enum Flow {
@@ -106,6 +109,16 @@ Class OceanConfigReader{
 - {static} long lastModified
 + {static} void readConfig(OceanConfig)
 + {static} void isChanged(OceanConfig)
+}
+
+class OceanConfig{
+- int height
+- int weight
+- boolean isTor
+- listOfFlow<Flow>
+- int changeFlow
+- listOfSharks<IFish>
+- listOfSmallFishes<IFish>
 }
 
 interface IXMLParser {
