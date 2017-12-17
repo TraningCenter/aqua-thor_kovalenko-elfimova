@@ -1,0 +1,65 @@
+@startuml
+
+JaxBParser -up-|> IXMLParser
+SaxParser -up-|> IXMLParser
+StaxParser -up-|> IXMLParser
+DomParser -up-|> IXMLParser
+
+IXMLParser .up.> OceanConfig:  read
+IXMLParser .up.> IMetric:  write
+
+class OceanConfig{
+- int height
+- int weight
+- boolean isTor
+- listOfFlow<Flow>
+- int changeFlow
+- listOfSharks<IFish>
+- listOfSmallFishes<IFish>
+}
+
+interface IMetric{
++ void calculateValue(Ocean o)
++ String getName()
+}
+
+interface IXMLParser {
++ void read(OceanConfig)
++ void write(Metric m)
+}
+
+class JaxBParser {
++ void read(OceanConfig)
++ void write(Metric m)
+}
+
+class DomParser {
++ void read(OceanConfig)
++ void write(Metric m)
+- DocumentBuilder createDocumentBuilder()
+- void parse(Document document)
+- Element createElement()
+}
+
+
+class SaxParser {
++ void read(OceanConfig)
++ void write(Metric m)
+- SAXParserFactory createSAXParserFactory()
+- void parse(fileName, DefaultHandler)
+- void startElement()
+- void characters()
+- void endElement()
+- void writeElement()
+}
+
+class StaxParser {
++ void read(OceanConfig)
++ void write(Metric m)
+- XMLStreamReader createXMLStreamReader()
+- void readElement()
+- XMLStreamWriter createXMLStreamWriter()
+- void writeElement()
+}
+
+@enduml
