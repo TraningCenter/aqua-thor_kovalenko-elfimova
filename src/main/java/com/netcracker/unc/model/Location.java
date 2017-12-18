@@ -1,10 +1,20 @@
 package com.netcracker.unc.model;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
 
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Location {
 
+    @XmlElement
     private int x;
+    @XmlElement
     private int y;
+
+    public Location() {
+
+    }
 
     public Location(int x, int y) {
         this.x = x;
@@ -13,8 +23,12 @@ public class Location {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
 
         Location location = (Location) o;
         return x == location.x && y == location.y;

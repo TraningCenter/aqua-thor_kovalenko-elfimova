@@ -1,6 +1,5 @@
 package com.netcracker.unc.model;
 
-
 import com.netcracker.unc.model.interfaces.IFish;
 
 import java.util.List;
@@ -16,6 +15,7 @@ public class Ocean {
     private List<IFish> sharks;
     private List<IFish> smallFishes;
 
+    
     public Ocean(int height, int weight, boolean isTor, List<Flow> flowList, int changeFlow, List<IFish> sharks, List<IFish> smallFishes) {
         this.height = height;
         this.weight = weight;

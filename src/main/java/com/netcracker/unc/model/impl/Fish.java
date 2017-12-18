@@ -2,15 +2,29 @@ package com.netcracker.unc.model.impl;
 
 import com.netcracker.unc.model.Location;
 import com.netcracker.unc.model.interfaces.IFish;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlTransient;
 
+@XmlTransient
+@XmlAccessorType(XmlAccessType.FIELD)
 public abstract class Fish implements IFish {
 
+    @XmlElement
     private Location location;
+    @XmlElement
     private int lifetime;
+    @XmlElement
     private int progenyPeriod;
     private int age;
+    @XmlElement
     private int searchRadius;
     private Location target;
+
+    public Fish() {
+
+    }
 
     public Fish(Location location, int lifetime, int progenyPeriod, int searchRadius) {
         this.location = location;
