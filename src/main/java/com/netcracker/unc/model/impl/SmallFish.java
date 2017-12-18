@@ -14,6 +14,10 @@ public class SmallFish extends Fish {
         super(location, lifetime, progenyPeriod, searchRadius);
     }
 
+    public SmallFish(Location location, int lifetime, int progenyPeriod, int age, int searchRadius) {
+        super(location, lifetime, progenyPeriod, age, searchRadius);
+    }
+
     @Override
     public void action() {
 

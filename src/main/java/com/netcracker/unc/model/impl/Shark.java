@@ -21,6 +21,11 @@ public class Shark extends Fish {
         this.hungerTime = hungerTime;
     }
 
+    public Shark(Location location, int lifetime, int progenyPeriod, int age, int searchRadius, int hungerTime) {
+        super(location, lifetime, progenyPeriod, age, searchRadius);
+        this.hungerTime = hungerTime;
+    }
+
     @Override
     public void action() {
 
@@ -47,4 +52,25 @@ public class Shark extends Fish {
     public void setHungerTime(int hungerTime) {
         this.hungerTime = hungerTime;
     }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 11 * hash + this.hungerTime;
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!super.equals(obj)) {
+            return false;
+        }
+        final Shark other = (Shark) obj;
+
+        if (this.hungerTime != other.hungerTime) {
+            return false;
+        }
+        return true;
+    }
+
 }
