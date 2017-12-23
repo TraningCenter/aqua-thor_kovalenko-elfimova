@@ -7,11 +7,10 @@ import com.netcracker.unc.model.impl.Fish;
 import com.netcracker.unc.model.impl.Shark;
 import com.netcracker.unc.model.impl.SmallFish;
 import com.netcracker.unc.model.interfaces.IFish;
+import com.netcracker.unc.utils.CommonUtils;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
@@ -85,7 +84,10 @@ public class StAXParser implements IXMLParser {
                 event = reader.next();
             }
         } catch (XMLStreamException ex) {
-            Logger.getLogger(StAXParser.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+        if (CommonUtils.checkEmpty(oceanConfig.getSharks()) && CommonUtils.checkEmpty(oceanConfig.getSmallFishes())) {
+            return null;
         }
         return oceanConfig;
     }

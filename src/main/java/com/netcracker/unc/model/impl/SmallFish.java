@@ -1,9 +1,7 @@
 package com.netcracker.unc.model.impl;
 
 import com.netcracker.unc.model.Location;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlRootElement;
+import com.netcracker.unc.model.Ocean;
 
 public class SmallFish extends Fish {
 
@@ -14,10 +12,6 @@ public class SmallFish extends Fish {
         super(location, lifetime, progenyPeriod, searchRadius);
     }
 
-    public SmallFish(Location location, int lifetime, int progenyPeriod, int age, int searchRadius) {
-        super(location, lifetime, progenyPeriod, age, searchRadius);
-    }
-
     @Override
     public void action() {
 
@@ -25,7 +19,18 @@ public class SmallFish extends Fish {
 
     @Override
     public void move() {
+        Ocean ocean = Ocean.getInstanse();
+        int x = this.getLocation().getX();
+        int y = this.getLocation().getY();
+        switch (ocean.getFlowList().get(x)) {
+            case LEFT:
 
+                break;
+            case RIGHT:
+                break;
+            default:
+                break;
+        }
     }
 
     @Override

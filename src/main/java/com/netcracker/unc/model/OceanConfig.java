@@ -53,7 +53,7 @@ public class OceanConfig {
         this.smallFishes = smallFishes;
     }
 
-    public boolean isIsTor() {
+    public boolean isTor() {
         return isTor;
     }
 

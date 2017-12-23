@@ -20,13 +20,8 @@ public class Shark extends Fish {
         this.hungerTime = hungerTime;
     }
 
-    public Shark(Location location, int lifetime, int progenyPeriod, int age, int searchRadius, int hungerTime) {
-        super(location, lifetime, progenyPeriod, age, searchRadius);
-        this.hungerTime = hungerTime;
-    }
-
     public Shark(Fish fish, int hungerTime) {
-        super(fish.getLocation(), fish.getLifetime(), fish.getProgenyPeriod(), fish.getAge(), fish.getSearchRadius());
+        super(fish.getLocation(), fish.getLifetime(), fish.getProgenyPeriod(), fish.getSearchRadius());
         this.hungerTime = hungerTime;
     }
 

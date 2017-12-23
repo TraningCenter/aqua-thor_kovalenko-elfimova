@@ -32,15 +32,6 @@ public abstract class Fish implements IFish {
         this.lifetime = lifetime;
         this.progenyPeriod = progenyPeriod;
         this.searchRadius = searchRadius;
-        age = lifetime;
-    }
-
-    public Fish(Location location, int lifetime, int progenyPeriod, int age, int searchRadius) {
-        this.location = location;
-        this.lifetime = lifetime;
-        this.progenyPeriod = progenyPeriod;
-        this.age = age;
-        this.searchRadius = searchRadius;
     }
 
     @Override
