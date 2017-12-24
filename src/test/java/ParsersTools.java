@@ -10,20 +10,20 @@ import java.util.List;
 
 public class ParsersTools {
 
-    public static String XMLString = "<ocean><tor>true</tor><height>2</height><weight>20</weight><flows><flow>LEFT</flow><flow>RIGHT</flow></flows><changeFlow>10</changeFlow>"
+    public static String XMLString = "<ocean><tor>true</tor><height>2</height><width>20</width><flows><flow>LEFT</flow><flow>RIGHT</flow></flows><changeFlow>10</changeFlow>"
             + "<sharks><shark><lifetime>40</lifetime><progenyPeriod>21</progenyPeriod><searchRadius>4</searchRadius><hungerTime>20</hungerTime><location><x>0</x><y>1</y></location></shark></sharks>"
             + "<smallFishes><fish><lifetime>30</lifetime><progenyPeriod>9</progenyPeriod><searchRadius>2</searchRadius><location><x>0</x><y>7</y></location></fish>"
             + "<fish><lifetime>30</lifetime><progenyPeriod>9</progenyPeriod><searchRadius>2</searchRadius><location><x>1</x><y>9</y></location></fish></smallFishes></ocean>";
 
-    public static String XMLStringWithoutOceanTag = "<tor>true</tor><height>2</height><weight>20</weight><flows><flow>LEFT</flow></flows><changeFlow>10</changeFlow>"
+    public static String XMLStringWithoutOceanTag = "<tor>true</tor><height>2</height><width>20</width><flows><flow>LEFT</flow></flows><changeFlow>10</changeFlow>"
             + "<sharks><shark><lifetime>40</lifetime><progenyPeriod>21</progenyPeriod><searchRadius>4</searchRadius><hungerTime>20</hungerTime><location><x>0</x><y>1</y></location></shark></sharks>"
             + "<smallFishes><fish><lifetime>30</lifetime><progenyPeriod>9</progenyPeriod><searchRadius>2</searchRadius><location><x>0</x><y>7</y></location></fish></smallFishes>";
 
-    public static String XMLStringWrongTags = "<ocean><wrongtag>wrong</wrongtag><tor>true</tor><height>2</height><weight>20</weight><flows><flow>LEFT</flow><flow>RIGHT</flow></flows><changeFlow>10</changeFlow>"
+    public static String XMLStringWrongTags = "<ocean><wrongtag>wrong</wrongtag><tor>true</tor><height>2</height><width>20</width><flows><flow>LEFT</flow><flow>RIGHT</flow></flows><changeFlow>10</changeFlow>"
             + "<sharks><shark><lifetime>40</lifetime><progenyPeriod>21</progenyPeriod><searchRadius>4</searchRadius><hungerTime>20</hungerTime><location><x>0</x><y>1</y></location></shark></sharks>"
             + "<smallFishes><fish><lifetime>30</lifetime><progenyPeriod>9</progenyPeriod><searchRadius>2</searchRadius><location><x>0</x><y>7</y></location></fish></smallFishes></ocean>";
 
-    public static String XMLStringWithoutFishes = "<ocean><tor>true</tor><height>2</height><weight>20</weight><flows><flow>LEFT</flow><flow>RIGHT</flow></flows><changeFlow>10</changeFlow></ocean>";
+    public static String XMLStringWithoutFishes = "<ocean><tor>true</tor><height>2</height><width>20</width><flows><flow>LEFT</flow><flow>RIGHT</flow></flows><changeFlow>10</changeFlow></ocean>";
 
     public static OceanConfig getOceanConfig() {
         List<Flow> flows = new ArrayList();

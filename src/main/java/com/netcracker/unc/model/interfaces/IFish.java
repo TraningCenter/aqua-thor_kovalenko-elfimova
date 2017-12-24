@@ -15,4 +15,6 @@ public interface IFish {
     void die();
     
     Location getLocation();
+    
+    void setLocation(Location location);
 }

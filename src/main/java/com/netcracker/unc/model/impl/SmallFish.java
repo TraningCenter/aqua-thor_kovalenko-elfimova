@@ -1,7 +1,16 @@
 package com.netcracker.unc.model.impl;
 
+import com.netcracker.unc.model.Direction;
+import com.netcracker.unc.model.Flow;
 import com.netcracker.unc.model.Location;
 import com.netcracker.unc.model.Ocean;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Random;
+import java.util.Set;
 
 public class SmallFish extends Fish {
 
@@ -20,16 +29,40 @@ public class SmallFish extends Fish {
     @Override
     public void move() {
         Ocean ocean = Ocean.getInstanse();
-        int x = this.getLocation().getX();
-        int y = this.getLocation().getY();
-        switch (ocean.getFlowList().get(x)) {
+        Location location = this.getLocation();
+        Location newLocation;
+        List<Direction> directions = new ArrayList(Arrays.asList(Direction.values()));
+        if (this.getTarget() != null) {
+            return;
+        }
+        switch (ocean.getFlowList().get(location.getX())) {
             case LEFT:
-
+                newLocation = ocean.getEmptyLocation(Direction.LEFT, location);
+                if (newLocation != null) {
+                    ocean.moveFish(this, newLocation);
+                    return;
+                }
+                directions.remove(Direction.LEFT);
                 break;
             case RIGHT:
+                newLocation = ocean.getEmptyLocation(Direction.RIGHT, location);
+                if (newLocation != null) {
+                    ocean.moveFish(this, newLocation);
+                    return;
+                }
+                directions.remove(Direction.RIGHT);
                 break;
-            default:
-                break;
+        }
+        Random rnd = new Random();
+        int i;
+        while (!directions.isEmpty()) {
+            i = rnd.nextInt(directions.size() + 1);
+            newLocation = ocean.getEmptyLocation(directions.get(i), location);
+            if (newLocation != null) {
+                ocean.moveFish(this, newLocation);
+                return;
+            }
+            directions.remove(i);
         }
     }
 
