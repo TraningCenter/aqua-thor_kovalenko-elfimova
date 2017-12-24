@@ -1,6 +1,7 @@
 package com.netcracker.unc.model.impl;
 
 import com.netcracker.unc.model.Location;
+import com.netcracker.unc.model.Ocean;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -36,8 +37,9 @@ public class Shark extends Fish {
     }
 
     @Override
-    public void searchTarget() {
-
+    protected boolean isEnemyPresent(Location currentLocation) {
+        Ocean ocean = Ocean.getInstanse();
+        return ocean.getFishByLocation(currentLocation) instanceof SmallFish;
     }
 
     public void eat() {

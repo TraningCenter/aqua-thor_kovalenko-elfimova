@@ -1,7 +1,9 @@
 package com.netcracker.unc.model.impl;
 
 import com.netcracker.unc.model.Location;
+import com.netcracker.unc.model.Ocean;
 import com.netcracker.unc.model.interfaces.IFish;
+import com.netcracker.unc.utils.CommonUtils;
 import java.util.Objects;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -35,8 +37,49 @@ public abstract class Fish implements IFish {
     }
 
     @Override
+    public void searchTarget() {
+        Ocean ocean = Ocean.getInstanse();
+        int x = location.getX();
+        int y = location.getY();
+        Location nearestLocation = this.getTarget();
+        double nearestDistance = 0;
+        if (nearestLocation != null) {
+            nearestDistance = CommonUtils.getDistanceBetweenLocations(this.getLocation(), nearestLocation);
+        }
+        Location currentLocation = null;
+        double currentDistance = 0;
+        for (int i = x - searchRadius, currx = i; i <= x + searchRadius; currx = ++i) {
+            for (int j = y - searchRadius, curry = j; j <= y + searchRadius; curry = ++j) {
+                if (i < 0 || i >= ocean.getHeight()) {
+                    currx = CommonUtils.getCorrectX(i, ocean.getHeight(), ocean.isTor());
+                    if (currx < 0) {
+                        continue;
+                    }
+                }
+                if (j < 0 || j >= ocean.getWidth()) {
+                    curry = CommonUtils.getCorrectY(j, ocean.getWidth(), ocean.isTor());
+                    if (curry < 0) {
+                        continue;
+                    }
+                }
+                currentLocation = new Location(currx, curry);
+                currentDistance = CommonUtils.getDistanceBetweenLocations(this.getLocation(), new Location(i, j));
+                if (currentDistance <= searchRadius && !ocean.isEmptyLocation(currentLocation) && isEnemyPresent(currentLocation)) {
+                    if (nearestLocation == null || currentDistance < nearestDistance) {
+                        nearestLocation = currentLocation;
+                        nearestDistance = currentDistance;
+                    }
+                }
+            }
+        }
+        this.setTarget(nearestLocation);
+    }
+
+    protected abstract boolean isEnemyPresent(Location currentLocation);
+
+    @Override
     public void giveBirth() {
-        
+
     }
 
     @Override

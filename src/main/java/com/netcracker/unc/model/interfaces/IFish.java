@@ -13,8 +13,12 @@ public interface IFish {
     void searchTarget();
 
     void die();
-    
+
     Location getLocation();
-    
+
     void setLocation(Location location);
+
+    Location getTarget();
+
+    void setTarget(Location location);
 }

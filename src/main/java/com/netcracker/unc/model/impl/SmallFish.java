@@ -4,6 +4,7 @@ import com.netcracker.unc.model.Direction;
 import com.netcracker.unc.model.Flow;
 import com.netcracker.unc.model.Location;
 import com.netcracker.unc.model.Ocean;
+import com.netcracker.unc.utils.CommonUtils;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -56,7 +57,7 @@ public class SmallFish extends Fish {
         Random rnd = new Random();
         int i;
         while (!directions.isEmpty()) {
-            i = rnd.nextInt(directions.size() + 1);
+            i = rnd.nextInt(directions.size());
             newLocation = ocean.getEmptyLocation(directions.get(i), location);
             if (newLocation != null) {
                 ocean.moveFish(this, newLocation);
@@ -67,7 +68,8 @@ public class SmallFish extends Fish {
     }
 
     @Override
-    public void searchTarget() {
-
+    protected boolean isEnemyPresent(Location currentLocation) {
+        Ocean ocean = Ocean.getInstanse();
+        return ocean.getFishByLocation(currentLocation) instanceof Shark;
     }
 }
