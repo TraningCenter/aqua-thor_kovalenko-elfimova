@@ -2,6 +2,7 @@ import com.netcracker.unc.model.OceanConfig;
 import com.netcracker.unc.parsers.DOMParser;
 import com.netcracker.unc.parsers.IXMLParser;
 import com.netcracker.unc.parsers.JAXBParser;
+import com.netcracker.unc.parsers.StAXParser;
 import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -17,7 +18,7 @@ public class DOMTests {
 
     @Before
     public void init() {
-        XMLString = ParsersTools.XMLStringEx1;
+        XMLString = ParsersTools.XMLString;
     }
 
     @Test
@@ -25,6 +26,6 @@ public class DOMTests {
         InputStream inputStream = new ByteArrayInputStream(XMLString.getBytes());
         IXMLParser domParser = new DOMParser();
         OceanConfig oceanConfig = domParser.read(inputStream);
-        Assert.assertTrue(oceanConfig.equals(ParsersTools.getOceanConfigEx1()));
+        Assert.assertTrue(oceanConfig.equals(ParsersTools.getOceanConfig()));
     }
 }

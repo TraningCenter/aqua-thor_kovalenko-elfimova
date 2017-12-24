@@ -4,7 +4,6 @@ import com.netcracker.unc.model.Location;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Shark extends Fish {
@@ -25,11 +24,6 @@ public class Shark extends Fish {
 
     public Shark(Location location, int lifetime, int progenyPeriod, int searchRadius, int hungerTime) {
         super(location, lifetime, progenyPeriod, searchRadius);
-        this.hungerTime = hungerTime;
-    }
-
-    public Shark(Location location, int lifetime, int progenyPeriod, int age, int searchRadius, int hungerTime) {
-        super(location, lifetime, progenyPeriod, age, searchRadius);
         this.hungerTime = hungerTime;
     }
 

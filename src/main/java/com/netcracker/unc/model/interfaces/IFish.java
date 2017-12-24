@@ -1,5 +1,7 @@
 package com.netcracker.unc.model.interfaces;
 
+import com.netcracker.unc.model.Location;
+
 public interface IFish {
 
     void action();
@@ -11,4 +13,6 @@ public interface IFish {
     void searchTarget();
 
     void die();
+    
+    Location getLocation();
 }

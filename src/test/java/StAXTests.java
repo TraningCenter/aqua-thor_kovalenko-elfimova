@@ -1,13 +1,13 @@
 
 import com.netcracker.unc.model.OceanConfig;
 import com.netcracker.unc.parsers.IXMLParser;
-import com.netcracker.unc.parsers.JAXBParser;
+import com.netcracker.unc.parsers.StAXParser;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import junit.framework.Assert;
 import org.junit.Test;
 
-public class JAXBTests {
+public class StAXTests {
 
     String XMLString;
 
@@ -15,8 +15,8 @@ public class JAXBTests {
     public void readXMLTest() {
         XMLString = ParsersTools.XMLString;
         InputStream inputStream = new ByteArrayInputStream(XMLString.getBytes());
-        IXMLParser jaxbParser = new JAXBParser();
-        OceanConfig oceanConfig = jaxbParser.read(inputStream);
+        IXMLParser staxReader = new StAXParser();
+        OceanConfig oceanConfig = staxReader.read(inputStream);
         Assert.assertTrue(oceanConfig.equals(ParsersTools.getOceanConfig()));
     }
 
@@ -24,8 +24,8 @@ public class JAXBTests {
     public void readXMLWithoutOceanTag() {
         XMLString = ParsersTools.XMLStringWithoutOceanTag;
         InputStream inputStream = new ByteArrayInputStream(XMLString.getBytes());
-        IXMLParser jaxbParser = new JAXBParser();
-        OceanConfig oceanConfig = jaxbParser.read(inputStream);
+        IXMLParser staxReader = new StAXParser();
+        OceanConfig oceanConfig = staxReader.read(inputStream);
         Assert.assertNull(oceanConfig);
     }
 
@@ -33,8 +33,8 @@ public class JAXBTests {
     public void readXMLWithWrongTags() {
         XMLString = ParsersTools.XMLStringWrongTags;
         InputStream inputStream = new ByteArrayInputStream(XMLString.getBytes());
-        IXMLParser jaxbParser = new JAXBParser();
-        OceanConfig oceanConfig = jaxbParser.read(inputStream);
+        IXMLParser staxReader = new StAXParser();
+        OceanConfig oceanConfig = staxReader.read(inputStream);
         Assert.assertNull(oceanConfig);
     }
 
@@ -42,8 +42,8 @@ public class JAXBTests {
     public void readXMLWithoutFishes() {
         XMLString = ParsersTools.XMLStringWithoutFishes;
         InputStream inputStream = new ByteArrayInputStream(XMLString.getBytes());
-        IXMLParser jaxbParser = new JAXBParser();
-        OceanConfig oceanConfig = jaxbParser.read(inputStream);
+        IXMLParser staxReader = new StAXParser();
+        OceanConfig oceanConfig = staxReader.read(inputStream);
         Assert.assertNull(oceanConfig);
     }
 }

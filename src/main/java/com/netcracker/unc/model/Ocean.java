@@ -25,6 +25,16 @@ public class Ocean {
         this.sharks = sharks;
         this.smallFishes = smallFishes;
     }
+    
+    public Ocean(OceanConfig oceanConfig) {
+        this.height = oceanConfig.getHeight();
+        this.weight = oceanConfig.getWeight();
+        this.isTor = oceanConfig.isTor();
+        this.flowList = oceanConfig.getFlowList();
+        this.changeFlow = oceanConfig.getChangeFlow();
+        this.sharks = oceanConfig.getSharks();
+        this.smallFishes = oceanConfig.getSmallFishes();
+    }
 
     public void oneStep() {
 

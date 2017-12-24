@@ -1,12 +1,12 @@
 package com.netcracker.unc.parsers;
 
 import com.netcracker.unc.model.OceanConfig;
+import com.netcracker.unc.utils.CommonUtils;
 import java.io.InputStream;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
+import javax.xml.bind.ValidationEvent;
 
 public class JAXBParser implements IXMLParser {
 
@@ -15,10 +15,13 @@ public class JAXBParser implements IXMLParser {
         try {
             JAXBContext jc = JAXBContext.newInstance(OceanConfig.class);
             Unmarshaller unmarshaller = jc.createUnmarshaller();
-            return (OceanConfig) unmarshaller.unmarshal(config);
-
+            unmarshaller.setEventHandler((ValidationEvent event) -> false);
+            OceanConfig oceanConfig = (OceanConfig) unmarshaller.unmarshal(config);
+            if (CommonUtils.checkEmpty(oceanConfig.getSharks()) && CommonUtils.checkEmpty(oceanConfig.getSmallFishes())) {
+                return null;
+            }
+            return oceanConfig;
         } catch (JAXBException ex) {
-            System.err.println(ex);
             return null;
         }
     }
