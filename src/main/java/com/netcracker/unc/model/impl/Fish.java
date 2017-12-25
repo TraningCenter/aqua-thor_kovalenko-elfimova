@@ -87,10 +87,12 @@ public abstract class Fish implements IFish {
 
     }
 
+    @Override
     public Location getLocation() {
         return location;
     }
 
+    @Override
     public void setLocation(Location location) {
         this.location = location;
     }
@@ -127,10 +129,12 @@ public abstract class Fish implements IFish {
         this.searchRadius = searchRadius;
     }
 
+    @Override
     public Location getTarget() {
         return target;
     }
 
+    @Override
     public void setTarget(Location target) {
         this.target = target;
     }
@@ -174,10 +178,7 @@ public abstract class Fish implements IFish {
         if (!Objects.equals(this.location, other.location)) {
             return false;
         }
-        if (!Objects.equals(this.target, other.target)) {
-            return false;
-        }
-        return true;
+        return Objects.equals(this.target, other.target);
     }
 
 }

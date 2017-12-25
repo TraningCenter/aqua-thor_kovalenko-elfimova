@@ -26,7 +26,7 @@ public class OceanTests {
         Assert.assertNull(ocean.getEmptyLocation(Direction.LEFT, location));
         location = new Location(1, 5);
         Assert.assertEquals(ocean.getEmptyLocation(Direction.LEFT, location), new Location(1, 4));
-        
+
         //RIGHT
         Assert.assertEquals(ocean.getEmptyLocation(Direction.RIGHT, location), new Location(1, 6));
         //Tor - false
@@ -53,7 +53,7 @@ public class OceanTests {
         //Tor - true
         ocean.setIsTor(true);
         Assert.assertEquals(ocean.getEmptyLocation(Direction.DOWN, location), new Location(0, 5));
-        
+
         //not free (1;9)
         location = new Location(0, 9);
         Assert.assertNull(ocean.getEmptyLocation(Direction.DOWN, location));
@@ -63,5 +63,28 @@ public class OceanTests {
         Assert.assertNull(ocean.getEmptyLocation(Direction.LEFT, location));
         location = new Location(0, 9);
         Assert.assertNull(ocean.getEmptyLocation(Direction.UP, location));
+    }
+
+    @Test
+    public void getDirectionByLocationsTest() {
+        Location location1 = new Location(1, 2);
+        Location location2 = new Location(1, 3);
+        Assert.assertEquals(Direction.RIGHT, Direction.getDirectionByLocations(location1, location2).get(0));
+        Assert.assertEquals(1, Direction.getDirectionByLocations(location1, location2).size());
+        location2 = new Location(2, 2);
+        Assert.assertEquals(Direction.DOWN, Direction.getDirectionByLocations(location1, location2).get(0));
+        Assert.assertEquals(1, Direction.getDirectionByLocations(location1, location2).size());
+        location2 = new Location(0, 2);
+        Assert.assertEquals(Direction.UP, Direction.getDirectionByLocations(location1, location2).get(0));
+        Assert.assertEquals(1, Direction.getDirectionByLocations(location1, location2).size());
+        location2 = new Location(1, 1);
+        Assert.assertEquals(Direction.LEFT, Direction.getDirectionByLocations(location1, location2).get(0));
+        Assert.assertEquals(1, Direction.getDirectionByLocations(location1, location2).size());
+        location2 = new Location(3, 3);
+        Assert.assertEquals(2, Direction.getDirectionByLocations(location1, location2).size());
+        Assert.assertTrue(Direction.getDirectionByLocations(location1, location2).contains(Direction.DOWN));
+        Assert.assertTrue(Direction.getDirectionByLocations(location1, location2).contains(Direction.RIGHT));
+        location2 = new Location(1, 2);
+        Assert.assertNull(Direction.getDirectionByLocations(location1, location2));
     }
 }

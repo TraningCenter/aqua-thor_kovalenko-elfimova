@@ -29,7 +29,6 @@ public class Location {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-
         Location location = (Location) o;
         return x == location.x && y == location.y;
     }

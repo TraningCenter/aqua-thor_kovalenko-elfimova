@@ -1,7 +1,12 @@
 package com.netcracker.unc.model.impl;
 
+import com.netcracker.unc.model.Direction;
 import com.netcracker.unc.model.Location;
 import com.netcracker.unc.model.Ocean;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Random;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -33,7 +38,32 @@ public class Shark extends Fish {
 
     @Override
     public void move() {
-
+        Ocean ocean = Ocean.getInstanse();
+        Location location = this.getLocation();
+        Location newLocation;
+        List<Direction> directions = new ArrayList(Arrays.asList(Direction.values()));
+        if (this.getTarget() != null) {
+            List<Direction> ds = Direction.getDirectionByLocations(location, this.getTarget());
+            for (Direction d : ds) {
+                newLocation = ocean.getEmptyLocation(d, location);
+                if (newLocation != null) {
+                    ocean.moveFish(this, newLocation);
+                    return;
+                }
+            }
+            directions.removeAll(ds);
+        }
+        Random rnd = new Random();
+        int i;
+        while (!directions.isEmpty()) {
+            i = rnd.nextInt(directions.size());
+            newLocation = ocean.getEmptyLocation(directions.get(i), location);
+            if (newLocation != null) {
+                ocean.moveFish(this, newLocation);
+                return;
+            }
+            directions.remove(i);
+        }
     }
 
     @Override
@@ -67,11 +97,7 @@ public class Shark extends Fish {
             return false;
         }
         final Shark other = (Shark) obj;
-
-        if (this.hungerTime != other.hungerTime) {
-            return false;
-        }
-        return true;
+        return this.hungerTime == other.hungerTime;
     }
 
 }

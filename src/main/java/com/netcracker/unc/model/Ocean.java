@@ -198,4 +198,8 @@ public class Ocean {
         this.smallFishes = smallFishes;
     }
 
+    public IFish[][] getMatrix() {
+        return matrix;
+    }
+
 }
