@@ -36,6 +36,14 @@ public abstract class Fish implements IFish {
         this.searchRadius = searchRadius;
     }
 
+    public Fish(Location location, int lifetime, int progenyPeriod, int age, int searchRadius) {
+        this.location = location;
+        this.lifetime = lifetime;
+        this.progenyPeriod = progenyPeriod;
+        this.age = age;
+        this.searchRadius = searchRadius;
+    }
+
     @Override
     public void searchTarget() {
         Ocean ocean = Ocean.getInstanse();

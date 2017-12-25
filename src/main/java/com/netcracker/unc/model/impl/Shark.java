@@ -16,18 +16,20 @@ public class Shark extends Fish {
 
     @XmlElement
     private int hungerTime;
+    private int lifeTime;
 
     public Shark() {
 
     }
 
-    public Shark(Location location, int lifetime, int progenyPeriod, int searchRadius, int hungerTime) {
-        super(location, lifetime, progenyPeriod, searchRadius);
+    public Shark(Fish fish, int hungerTime) {
+        super(fish.getLocation(), fish.getLifetime(), fish.getProgenyPeriod(), fish.getSearchRadius());
         this.hungerTime = hungerTime;
     }
 
-    public Shark(Fish fish, int hungerTime) {
-        super(fish.getLocation(), fish.getLifetime(), fish.getProgenyPeriod(), fish.getSearchRadius());
+
+    public Shark(Location location, int lifetime, int progenyPeriod, int searchRadius, int hungerTime) {
+        super(location, lifetime, progenyPeriod, searchRadius);
         this.hungerTime = hungerTime;
     }
 
@@ -100,4 +102,7 @@ public class Shark extends Fish {
         return this.hungerTime == other.hungerTime;
     }
 
+    public void setLifeTime(Integer lifeTime) {
+        this.lifeTime = lifeTime;
+    }
 }
