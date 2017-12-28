@@ -100,8 +100,8 @@ public class SAXParserXML extends DefaultHandler implements IXMLParser  {
             case "height":
                 oceanConfig.setHeight(Integer.valueOf(text));
                 break;
-            case "weight":
-                oceanConfig.setWeight(Integer.valueOf(text));
+            case "width":
+                oceanConfig.setWidth(Integer.valueOf(text));
                 break;
             case "flow":
                 flows.add(Flow.fromValue(text));

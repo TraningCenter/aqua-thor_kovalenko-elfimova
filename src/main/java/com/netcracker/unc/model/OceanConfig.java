@@ -22,7 +22,7 @@ public class OceanConfig {
     private int height;
 
     @XmlElement
-    private int weight;
+    private int width;
 
     @XmlElementWrapper(name = "flows")
     @XmlElement(name = "flow")
@@ -43,10 +43,10 @@ public class OceanConfig {
 
     }
 
-    public OceanConfig(boolean isTor, int height, int weight, List<Flow> flowList, int changeFlow, List<IFish> sharks, List<IFish> smallFishes) {
+    public OceanConfig(boolean isTor, int height, int width, List<Flow> flowList, int changeFlow, List<IFish> sharks, List<IFish> smallFishes) {
         this.isTor = isTor;
         this.height = height;
-        this.weight = weight;
+        this.width = width;
         this.flowList = flowList;
         this.changeFlow = changeFlow;
         this.sharks = sharks;
@@ -69,12 +69,12 @@ public class OceanConfig {
         this.height = height;
     }
 
-    public int getWeight() {
-        return weight;
+    public int getWidth() {
+        return width;
     }
 
-    public void setWeight(int weight) {
-        this.weight = weight;
+    public void setWidth(int width) {
+        this.width = width;
     }
 
     public List<Flow> getFlowList() {
@@ -114,7 +114,7 @@ public class OceanConfig {
         int hash = 7;
         hash = 41 * hash + (this.isTor ? 1 : 0);
         hash = 41 * hash + this.height;
-        hash = 41 * hash + this.weight;
+        hash = 41 * hash + this.width;
         hash = 41 * hash + Objects.hashCode(this.flowList);
         hash = 41 * hash + this.changeFlow;
         hash = 41 * hash + Objects.hashCode(this.sharks);
@@ -140,7 +140,7 @@ public class OceanConfig {
         if (this.height != other.height) {
             return false;
         }
-        if (this.weight != other.weight) {
+        if (this.width != other.width) {
             return false;
         }
         if (this.changeFlow != other.changeFlow) {

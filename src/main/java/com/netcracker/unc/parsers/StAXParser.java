@@ -22,7 +22,7 @@ public class StAXParser implements IXMLParser {
     public OceanConfig read(InputStream config) {
         OceanConfig oceanConfig = new OceanConfig();
         XMLInputFactory factory = XMLInputFactory.newInstance();
-        boolean torFlag = false, heightFlag = false, weightFlag = false, changeFlowFlag = false;
+        boolean torFlag = false, heightFlag = false, widthFlag = false, changeFlowFlag = false;
         String name;
         try {
             XMLStreamReader reader = factory.createXMLStreamReader(config);
@@ -36,8 +36,8 @@ public class StAXParser implements IXMLParser {
                             torFlag = true;
                         } else if (name.equals("height")) {
                             heightFlag = true;
-                        } else if (name.equals("weight")) {
-                            weightFlag = true;
+                        } else if (name.equals("width")) {
+                            widthFlag = true;
                         } else if (name.equals("changeFlow")) {
                             changeFlowFlag = true;
                         } else if (reader.getLocalName().equals("flows")) {
@@ -66,9 +66,9 @@ public class StAXParser implements IXMLParser {
                         } else if (heightFlag) {
                             oceanConfig.setHeight(Integer.parseInt(reader.getText()));
                             heightFlag = false;
-                        } else if (weightFlag) {
-                            oceanConfig.setWeight(Integer.parseInt(reader.getText()));
-                            weightFlag = false;
+                        } else if (widthFlag) {
+                            oceanConfig.setWidth(Integer.parseInt(reader.getText()));
+                            widthFlag = false;
                         } else if (changeFlowFlag) {
                             oceanConfig.setChangeFlow(Integer.parseInt(reader.getText()));
                             changeFlowFlag = false;

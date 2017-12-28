@@ -43,7 +43,7 @@ public class DOMParser implements IXMLParser{
 
         parseOceanType(getFirstElementByTagName(documentElement,"tor"));
         parseOceanHeight(getFirstElementByTagName(documentElement,"height"));
-        parseOceanWeight(getFirstElementByTagName(documentElement,"weight"));
+        parseOceanWeight(getFirstElementByTagName(documentElement,"width"));
         parseOceanFlowList(getFirstElementByTagName(documentElement,"flows"));
         parseOceanChangeFlow(getFirstElementByTagName(documentElement,"changeFlow"));
         parseFish(getFirstElementByTagName(documentElement,"sharks"));
@@ -112,7 +112,7 @@ public class DOMParser implements IXMLParser{
     }
 
     private void parseOceanWeight(Element oceanWeightElement) {
-        oceanConfig.setWeight(parseInteger(oceanWeightElement));
+        oceanConfig.setWidth(parseInteger(oceanWeightElement));
     }
 
     private void parseOceanType(Node oceanTypeNode) {
