@@ -5,6 +5,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import com.netcracker.unc.model.*;
@@ -162,7 +163,7 @@ public class DOMParser implements IXMLParser{
     }
 
 
-    public void write() {
+    public void write(OceanConfig oceanConfig, OutputStream outputStream) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 }

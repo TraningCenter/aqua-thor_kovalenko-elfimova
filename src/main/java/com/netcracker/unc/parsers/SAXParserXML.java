@@ -13,8 +13,14 @@ import org.xml.sax.helpers.DefaultHandler;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.sax.SAXTransformerFactory;
+import javax.xml.transform.sax.TransformerHandler;
+import javax.xml.transform.stream.StreamResult;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,6 +38,10 @@ public class SAXParserXML extends DefaultHandler implements IXMLParser  {
     private List<IFish> sharkfishes;
     private Location location;
     private String currentElement;
+
+    private TransformerFactory factory;
+    private SAXTransformerFactory saxTransFactory;
+    private TransformerHandler transHandler;
 
     public OceanConfig read(InputStream config) {
         try {
@@ -158,9 +168,38 @@ public class SAXParserXML extends DefaultHandler implements IXMLParser  {
         currentElement=null;
     }
 
-    public void write() {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public void write(OceanConfig oceanConfig, OutputStream outputStream) {
+        try {
+            this.oceanConfig=oceanConfig;
+            factory = TransformerFactory.newInstance().newInstance();
+            saxTransFactory=(SAXTransformerFactory) factory;
+            transHandler= saxTransFactory.newTransformerHandler();
+            transHandler.setResult(new StreamResult(outputStream));
+            writeData();
+        } catch (TransformerConfigurationException| SAXException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void writeData() throws SAXException {
+        transHandler.startDocument();
+        transHandler.startElement("", "", "oceanMonitoring", null);
+        writeSharKsCount();
+        writeSmallFishesCount();
+        transHandler.endElement("", "", "oceanMonitoring");
+        transHandler.endDocument();
+    }
+
+    private void writeSharKsCount() throws SAXException {
+        transHandler.startElement("", "", "sharksCount", null);
+        char[] tempSharcs = String.valueOf(oceanConfig.getSharks().size()).toCharArray();
+        transHandler.characters(tempSharcs, 0, tempSharcs.length);
+        transHandler.endElement("", "", "sharksCount");
+    }
+    private void writeSmallFishesCount() throws SAXException {
+        transHandler.startElement("", "", "smallFishesCount", null);
+        char[] tempSmallFishes = String.valueOf(oceanConfig.getSmallFishes().size()).toCharArray();
+        transHandler.characters(tempSmallFishes, 0, tempSmallFishes.length);
+        transHandler.endElement("", "", "smallFishesCount");
     }
 }
-
-

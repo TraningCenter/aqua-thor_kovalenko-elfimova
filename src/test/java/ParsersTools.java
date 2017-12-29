@@ -25,6 +25,8 @@ public class ParsersTools {
 
     public static String XMLStringWithoutFishes = "<ocean><tor>true</tor><height>2</height><width>20</width><flows><flow>LEFT</flow><flow>RIGHT</flow></flows><changeFlow>10</changeFlow></ocean>";
 
+    public static String XMLStringMonitoring = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><oceanMonitoring><sharksCount>1</sharksCount><smallFishesCount>2</smallFishesCount></oceanMonitoring>";
+
     public static OceanConfig getOceanConfig() {
         List<Flow> flows = new ArrayList();
         flows.add(Flow.LEFT);

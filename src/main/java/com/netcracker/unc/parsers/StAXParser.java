@@ -9,6 +9,7 @@ import com.netcracker.unc.model.impl.SmallFish;
 import com.netcracker.unc.model.interfaces.IFish;
 import com.netcracker.unc.utils.CommonUtils;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import javax.xml.stream.XMLInputFactory;
@@ -222,7 +223,7 @@ public class StAXParser implements IXMLParser {
     }
 
     @Override
-    public void write() {
+    public void write(OceanConfig oceanConfig, OutputStream outputStream) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
