@@ -1,5 +1,9 @@
 package com.netcracker.unc.model;
 
+import static com.netcracker.unc.model.FishType.SHARK;
+import static com.netcracker.unc.model.FishType.SMALL;
+import com.netcracker.unc.model.impl.Shark;
+import com.netcracker.unc.model.impl.SmallFish;
 import com.netcracker.unc.model.interfaces.IFish;
 
 import java.util.List;
@@ -49,6 +53,15 @@ public class Ocean {
         matrix[location.getX()][location.getY()] = fish;
     }
 
+    public void addFish(IFish fish) {
+        addFishInMatrix(fish);
+        if (fish.getType() == FishType.SHARK) {
+            sharks.add(fish);
+        } else if (fish.getType() == FishType.SMALL) {
+            smallFishes.add(fish);
+        }
+    }
+
     private void fillMatrix(List<IFish> fishes) {
         fishes.forEach(this::addFishInMatrix);
     }
@@ -68,8 +81,8 @@ public class Ocean {
         return matrix[location.getX()][location.getY()] == null;
     }
 
-    public Location getEmptyLocation(Direction direction, Location location) {
-        Location newLocation = null;
+    public Location getNextLocation(Direction direction, Location location) {
+        Location newLocation;
         int x = location.getX();
         int y = location.getY();
         switch (direction) {
@@ -119,7 +132,15 @@ public class Ocean {
                 break;
         }
         newLocation = new Location(x, y);
-        return (isEmptyLocation(newLocation)) ? newLocation : null;
+        if (!isEmptyLocation(newLocation)) {
+            if (ocean.getFishByLocation(location).getType() == SHARK && ocean.getFishByLocation(newLocation).getType() == SMALL) {
+                return newLocation;
+            } else {
+                return null;
+            }
+        } else {
+            return newLocation;
+        }
     }
 
     public void oneStep() {

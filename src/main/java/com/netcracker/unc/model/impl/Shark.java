@@ -1,8 +1,10 @@
 package com.netcracker.unc.model.impl;
 
 import com.netcracker.unc.model.Direction;
+import com.netcracker.unc.model.FishType;
 import com.netcracker.unc.model.Location;
 import com.netcracker.unc.model.Ocean;
+import com.netcracker.unc.model.interfaces.IFish;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -16,6 +18,8 @@ public class Shark extends Fish {
 
     @XmlElement
     private int hungerTime;
+    private int hungerCounter;
+    private boolean isAte;
 
     public Shark() {
 
@@ -24,6 +28,7 @@ public class Shark extends Fish {
     public Shark(Location location, int lifetime, int progenyPeriod, int searchRadius, int hungerTime) {
         super(location, lifetime, progenyPeriod, searchRadius);
         this.hungerTime = hungerTime;
+        hungerCounter = 0;
     }
 
     public Shark(Fish fish, int hungerTime) {
@@ -33,31 +38,48 @@ public class Shark extends Fish {
 
     @Override
     public void action() {
-
+        isAte = false;
+        if (age >= lifetime || (hungerCounter >= hungerTime)) {
+            die();
+            return;
+        }
+        searchTarget();
+        if (age % (lifetime / progenyPeriod - 1) == 0 && age != 0) {
+            giveBirth();
+        } else {
+            move();
+        }
+        age++;
+        if (!isAte) {
+            hungerCounter++;
+        }
     }
 
     @Override
     public void move() {
         Ocean ocean = Ocean.getInstanse();
-        Location location = this.getLocation();
         Location newLocation;
         List<Direction> directions = new ArrayList(Arrays.asList(Direction.values()));
-        if (this.getTarget() != null) {
-            List<Direction> ds = Direction.getDirectionByLocations(location, this.getTarget());
+        if (target != null) {
+            List<Direction> ds = Direction.getDirectionByLocations(location, target);
             for (Direction d : ds) {
-                newLocation = ocean.getEmptyLocation(d, location);
+                newLocation = ocean.getNextLocation(d, location);
                 if (newLocation != null) {
+                    if (newLocation.equals(target)) {
+                        eat(newLocation);
+                        return;
+                    }
                     ocean.moveFish(this, newLocation);
                     return;
                 }
+                directions.removeAll(ds);
             }
-            directions.removeAll(ds);
         }
         Random rnd = new Random();
         int i;
         while (!directions.isEmpty()) {
             i = rnd.nextInt(directions.size());
-            newLocation = ocean.getEmptyLocation(directions.get(i), location);
+            newLocation = ocean.getNextLocation(directions.get(i), location);
             if (newLocation != null) {
                 ocean.moveFish(this, newLocation);
                 return;
@@ -72,8 +94,18 @@ public class Shark extends Fish {
         return ocean.getFishByLocation(currentLocation) instanceof SmallFish;
     }
 
-    public void eat() {
+    @Override
+    public FishType getType() {
+        return FishType.SHARK;
+    }
 
+    public void eat(Location newLocation) {
+        Ocean ocean = Ocean.getInstanse();
+        IFish fish = ocean.getFishByLocation(newLocation);
+        fish.die();
+        ocean.moveFish(this, newLocation);
+        hungerCounter = 0;
+        isAte = true;
     }
 
     public int getHungerTime() {
@@ -84,10 +116,19 @@ public class Shark extends Fish {
         this.hungerTime = hungerTime;
     }
 
+    public int getHungerCounter() {
+        return hungerCounter;
+    }
+
+    public void setHungerCounter(int hungerCounter) {
+        this.hungerCounter = hungerCounter;
+    }
+
     @Override
     public int hashCode() {
         int hash = 7;
         hash = 11 * hash + this.hungerTime;
+        hash = 11 * hash + this.hungerCounter;
         return hash;
     }
 
@@ -96,8 +137,13 @@ public class Shark extends Fish {
         if (!super.equals(obj)) {
             return false;
         }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
         final Shark other = (Shark) obj;
-        return this.hungerTime == other.hungerTime;
+        if (this.hungerTime != other.hungerTime) {
+            return false;
+        }
+        return this.hungerCounter == other.hungerCounter;
     }
-
 }

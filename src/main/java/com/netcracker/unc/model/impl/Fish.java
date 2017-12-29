@@ -1,5 +1,7 @@
 package com.netcracker.unc.model.impl;
 
+import com.netcracker.unc.creator.FishCreator;
+import com.netcracker.unc.model.FishType;
 import com.netcracker.unc.model.Location;
 import com.netcracker.unc.model.Ocean;
 import com.netcracker.unc.model.interfaces.IFish;
@@ -15,15 +17,15 @@ import javax.xml.bind.annotation.XmlTransient;
 public abstract class Fish implements IFish {
 
     @XmlElement
-    private Location location;
+    protected Location location;
     @XmlElement
-    private int lifetime;
+    protected int lifetime;
     @XmlElement
-    private int progenyPeriod;
-    private int age;
+    protected int progenyPeriod;
+    protected int age;
     @XmlElement
-    private int searchRadius;
-    private Location target;
+    protected int searchRadius;
+    protected Location target;
 
     public Fish() {
 
@@ -36,18 +38,23 @@ public abstract class Fish implements IFish {
         this.searchRadius = searchRadius;
     }
 
+    protected abstract boolean isEnemyPresent(Location currentLocation);
+
+    @Override
+    public abstract void move();
+
+    @Override
+    public abstract FishType getType();
+
     @Override
     public void searchTarget() {
         Ocean ocean = Ocean.getInstanse();
         int x = location.getX();
         int y = location.getY();
-        Location nearestLocation = this.getTarget();
+        Location nearestLocation = null;
         double nearestDistance = 0;
-        if (nearestLocation != null) {
-            nearestDistance = CommonUtils.getDistanceBetweenLocations(this.getLocation(), nearestLocation);
-        }
-        Location currentLocation = null;
-        double currentDistance = 0;
+        Location currentLocation;
+        double currentDistance;
         for (int i = x - searchRadius, currx = i; i <= x + searchRadius; currx = ++i) {
             for (int j = y - searchRadius, curry = j; j <= y + searchRadius; curry = ++j) {
                 if (i < 0 || i >= ocean.getHeight()) {
@@ -63,7 +70,7 @@ public abstract class Fish implements IFish {
                     }
                 }
                 currentLocation = new Location(currx, curry);
-                currentDistance = CommonUtils.getDistanceBetweenLocations(this.getLocation(), new Location(i, j));
+                currentDistance = CommonUtils.getDistanceBetweenLocations(location, new Location(i, j));
                 if (currentDistance <= searchRadius && !ocean.isEmptyLocation(currentLocation) && isEnemyPresent(currentLocation)) {
                     if (nearestLocation == null || currentDistance < nearestDistance) {
                         nearestLocation = currentLocation;
@@ -75,16 +82,27 @@ public abstract class Fish implements IFish {
         this.setTarget(nearestLocation);
     }
 
-    protected abstract boolean isEnemyPresent(Location currentLocation);
-
     @Override
     public void giveBirth() {
-
+        Ocean ocean = Ocean.getInstanse();
+        Location oldLocation = location;
+        move();
+        if (location.equals(oldLocation)) {
+            this.die();
+        }
+        IFish fish = FishCreator.createFish(getType(), oldLocation);
+        ocean.addFish(fish);
     }
 
     @Override
     public void die() {
-
+        Ocean ocean = Ocean.getInstanse();
+        ocean.getMatrix()[location.getX()][location.getY()] = null;
+        if (getType() == FishType.SHARK) {
+            ocean.getSharks().remove(this);
+        } else if (getType() == FishType.SMALL) {
+            ocean.getSmallFishes().remove(this);
+        }
     }
 
     @Override

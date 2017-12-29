@@ -1,6 +1,7 @@
 package com.netcracker.unc.model.impl;
 
 import com.netcracker.unc.model.Direction;
+import com.netcracker.unc.model.FishType;
 import com.netcracker.unc.model.Location;
 import com.netcracker.unc.model.Ocean;
 import java.util.ArrayList;
@@ -19,24 +20,33 @@ public class SmallFish extends Fish {
 
     @Override
     public void action() {
-
+        if (age >= lifetime) {
+            die();
+            return;
+        }
+        searchTarget();
+        if (age % (lifetime / progenyPeriod - 1) == 0 && age != 0) {
+            giveBirth();
+        } else {
+            move();
+        }
+        age++;
     }
 
     @Override
     public void move() {
         Ocean ocean = Ocean.getInstanse();
-        Location location = this.getLocation();
         Location newLocation;
         List<Direction> directions = new ArrayList(Arrays.asList(Direction.values()));
-        if (this.getTarget() != null) {
-            List<Direction> ds = Direction.getDirectionByLocations(location, this.getTarget());
+        if (target != null) {
+            List<Direction> ds = Direction.getDirectionByLocations(location, target);
             if (ds != null) {
                 directions.removeAll(ds);
             }
         } else {
             switch (ocean.getFlowList().get(location.getX())) {
                 case LEFT:
-                    newLocation = ocean.getEmptyLocation(Direction.LEFT, location);
+                    newLocation = ocean.getNextLocation(Direction.LEFT, location);
                     if (newLocation != null) {
                         ocean.moveFish(this, newLocation);
                         return;
@@ -44,7 +54,7 @@ public class SmallFish extends Fish {
                     directions.remove(Direction.LEFT);
                     break;
                 case RIGHT:
-                    newLocation = ocean.getEmptyLocation(Direction.RIGHT, location);
+                    newLocation = ocean.getNextLocation(Direction.RIGHT, location);
                     if (newLocation != null) {
                         ocean.moveFish(this, newLocation);
                         return;
@@ -57,7 +67,7 @@ public class SmallFish extends Fish {
         int i;
         while (!directions.isEmpty()) {
             i = rnd.nextInt(directions.size());
-            newLocation = ocean.getEmptyLocation(directions.get(i), location);
+            newLocation = ocean.getNextLocation(directions.get(i), location);
             if (newLocation != null) {
                 ocean.moveFish(this, newLocation);
                 return;
@@ -70,5 +80,10 @@ public class SmallFish extends Fish {
     protected boolean isEnemyPresent(Location currentLocation) {
         Ocean ocean = Ocean.getInstanse();
         return ocean.getFishByLocation(currentLocation) instanceof Shark;
+    }
+
+    @Override
+    public FishType getType() {
+        return FishType.SMALL;
     }
 }

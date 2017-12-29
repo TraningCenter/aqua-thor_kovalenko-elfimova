@@ -1,5 +1,6 @@
 package com.netcracker.unc.model.interfaces;
 
+import com.netcracker.unc.model.FishType;
 import com.netcracker.unc.model.Location;
 
 public interface IFish {
@@ -21,4 +22,8 @@ public interface IFish {
     Location getTarget();
 
     void setTarget(Location location);
+
+    FishType getType();
+
+    int getAge();
 }

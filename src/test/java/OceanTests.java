@@ -20,49 +20,49 @@ public class OceanTests {
         Location location = new Location(1, 0);
         //LEFT
         //Tor - true
-        Assert.assertEquals(ocean.getEmptyLocation(Direction.LEFT, location), new Location(1, 19));
+        Assert.assertEquals(ocean.getNextLocation(Direction.LEFT, location), new Location(1, 19));
         //Tor - false
         ocean.setIsTor(false);
-        Assert.assertNull(ocean.getEmptyLocation(Direction.LEFT, location));
+        Assert.assertNull(ocean.getNextLocation(Direction.LEFT, location));
         location = new Location(1, 5);
-        Assert.assertEquals(ocean.getEmptyLocation(Direction.LEFT, location), new Location(1, 4));
+        Assert.assertEquals(ocean.getNextLocation(Direction.LEFT, location), new Location(1, 4));
 
         //RIGHT
-        Assert.assertEquals(ocean.getEmptyLocation(Direction.RIGHT, location), new Location(1, 6));
+        Assert.assertEquals(ocean.getNextLocation(Direction.RIGHT, location), new Location(1, 6));
         //Tor - false
         location = new Location(1, 19);
-        Assert.assertNull(ocean.getEmptyLocation(Direction.RIGHT, location));
+        Assert.assertNull(ocean.getNextLocation(Direction.RIGHT, location));
         //Tor - true
         ocean.setIsTor(true);
-        Assert.assertEquals(ocean.getEmptyLocation(Direction.RIGHT, location), new Location(1, 0));
+        Assert.assertEquals(ocean.getNextLocation(Direction.RIGHT, location), new Location(1, 0));
 
         //UP
-        Assert.assertEquals(ocean.getEmptyLocation(Direction.UP, location), new Location(0, 19));
+        Assert.assertEquals(ocean.getNextLocation(Direction.UP, location), new Location(0, 19));
         //Tor - true
         location = new Location(0, 1);
-        Assert.assertEquals(ocean.getEmptyLocation(Direction.UP, location), new Location(1, 1));
+        Assert.assertEquals(ocean.getNextLocation(Direction.UP, location), new Location(1, 1));
         //Tor - false
         ocean.setIsTor(false);
-        Assert.assertNull(ocean.getEmptyLocation(Direction.UP, location));
+        Assert.assertNull(ocean.getNextLocation(Direction.UP, location));
 
         //DOWN
-        Assert.assertEquals(ocean.getEmptyLocation(Direction.DOWN, location), new Location(1, 1));
+        Assert.assertEquals(ocean.getNextLocation(Direction.DOWN, location), new Location(1, 1));
         //Tor - false
         location = new Location(1, 5);
-        Assert.assertNull(ocean.getEmptyLocation(Direction.DOWN, location));
+        Assert.assertNull(ocean.getNextLocation(Direction.DOWN, location));
         //Tor - true
         ocean.setIsTor(true);
-        Assert.assertEquals(ocean.getEmptyLocation(Direction.DOWN, location), new Location(0, 5));
+        Assert.assertEquals(ocean.getNextLocation(Direction.DOWN, location), new Location(0, 5));
 
         //not free (1;9)
         location = new Location(0, 9);
-        Assert.assertNull(ocean.getEmptyLocation(Direction.DOWN, location));
+        Assert.assertNull(ocean.getNextLocation(Direction.DOWN, location));
         location = new Location(1, 8);
-        Assert.assertNull(ocean.getEmptyLocation(Direction.RIGHT, location));
+        Assert.assertNull(ocean.getNextLocation(Direction.RIGHT, location));
         location = new Location(1, 10);
-        Assert.assertNull(ocean.getEmptyLocation(Direction.LEFT, location));
+        Assert.assertNull(ocean.getNextLocation(Direction.LEFT, location));
         location = new Location(0, 9);
-        Assert.assertNull(ocean.getEmptyLocation(Direction.UP, location));
+        Assert.assertNull(ocean.getNextLocation(Direction.UP, location));
     }
 
     @Test
