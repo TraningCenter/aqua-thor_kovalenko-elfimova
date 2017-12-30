@@ -90,7 +90,7 @@ public abstract class Fish implements IFish {
         if (location.equals(oldLocation)) {
             this.die();
         }
-        IFish fish = FishCreator.createFish(getType(), oldLocation);
+        IFish fish = FishCreator.createSuccessorFish(getType(), oldLocation);
         ocean.addFish(fish);
     }
 

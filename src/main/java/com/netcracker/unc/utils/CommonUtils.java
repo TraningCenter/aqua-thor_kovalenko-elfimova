@@ -2,6 +2,7 @@ package com.netcracker.unc.utils;
 
 import com.netcracker.unc.model.Location;
 import java.util.Collection;
+import java.util.Random;
 
 public class CommonUtils {
 
@@ -36,5 +37,11 @@ public class CommonUtils {
             }
         }
         return (curry >= width) ? -1 : curry;
+    }
+
+    public static int randInt(int min, int max) {
+        Random rand = new Random();
+        int randomNum = rand.nextInt((max - min) + 1) + min;
+        return randomNum;
     }
 }
