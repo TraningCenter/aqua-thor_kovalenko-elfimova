@@ -16,5 +16,4 @@ public class FishCreator {
             return new SmallFish(location, 2, 1, 2);
         }
     }
-
 }

@@ -53,16 +53,6 @@ public class OceanTests {
         //Tor - true
         ocean.setIsTor(true);
         Assert.assertEquals(ocean.getNextLocation(Direction.DOWN, location), new Location(0, 5));
-
-        //not free (1;9)
-        location = new Location(0, 9);
-        Assert.assertNull(ocean.getNextLocation(Direction.DOWN, location));
-        location = new Location(1, 8);
-        Assert.assertNull(ocean.getNextLocation(Direction.RIGHT, location));
-        location = new Location(1, 10);
-        Assert.assertNull(ocean.getNextLocation(Direction.LEFT, location));
-        location = new Location(0, 9);
-        Assert.assertNull(ocean.getNextLocation(Direction.UP, location));
     }
 
     @Test
@@ -86,5 +76,11 @@ public class OceanTests {
         Assert.assertTrue(Direction.getDirectionByLocations(location1, location2).contains(Direction.RIGHT));
         location2 = new Location(1, 2);
         Assert.assertNull(Direction.getDirectionByLocations(location1, location2));
+    }
+
+    @Test
+    public void changeFlowTest() {
+        ocean.changeFlow();
+        Assert.assertEquals(2, ocean.getFlowList().size());
     }
 }

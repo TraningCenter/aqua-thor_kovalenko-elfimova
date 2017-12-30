@@ -2,11 +2,10 @@ package com.netcracker.unc.model;
 
 import static com.netcracker.unc.model.FishType.SHARK;
 import static com.netcracker.unc.model.FishType.SMALL;
-import com.netcracker.unc.model.impl.Shark;
-import com.netcracker.unc.model.impl.SmallFish;
 import com.netcracker.unc.model.interfaces.IFish;
 
 import java.util.List;
+import java.util.Random;
 
 public class Ocean {
 
@@ -19,6 +18,7 @@ public class Ocean {
     private int changeFlow;
     private List<IFish> sharks;
     private List<IFish> smallFishes;
+    private int step;
 
     public Ocean(int height, int width, boolean isTor, List<Flow> flowList, int changeFlow, List<IFish> sharks, List<IFish> smallFishes) {
         matrix = new IFish[height][width];
@@ -48,26 +48,22 @@ public class Ocean {
         ocean = this;
     }
 
-    private void addFishInMatrix(IFish fish) {
-        Location location = fish.getLocation();
-        matrix[location.getX()][location.getY()] = fish;
-    }
-
-    public void addFish(IFish fish) {
-        addFishInMatrix(fish);
-        if (fish.getType() == FishType.SHARK) {
-            sharks.add(fish);
-        } else if (fish.getType() == FishType.SMALL) {
-            smallFishes.add(fish);
+    public void oneStep() {
+        if (step % changeFlow == 0 && step != 0) {
+            changeFlow();
         }
+        sharks.forEach(IFish::action);
+        smallFishes.forEach(IFish::action);
+        step++;
     }
 
-    private void fillMatrix(List<IFish> fishes) {
-        fishes.forEach(this::addFishInMatrix);
-    }
-
-    public IFish getFishByLocation(Location location) {
-        return matrix[location.getX()][location.getY()];
+    public void changeFlow() {
+        Random rnd = new Random();
+        int i;
+        for (Flow flow : flowList) {
+            i = rnd.nextInt(Flow.size());
+            flow = Flow.fromIndex(i);
+        }
     }
 
     public void moveFish(IFish fish, Location newLocation) {
@@ -75,10 +71,6 @@ public class Ocean {
         matrix[newLocation.getX()][newLocation.getY()] = fish;
         matrix[oldLocation.getX()][oldLocation.getY()] = null;
         fish.setLocation(newLocation);
-    }
-
-    public boolean isEmptyLocation(Location location) {
-        return matrix[location.getX()][location.getY()] == null;
     }
 
     public Location getNextLocation(Direction direction, Location location) {
@@ -143,12 +135,30 @@ public class Ocean {
         }
     }
 
-    public void oneStep() {
-
+    private void addFishInMatrix(IFish fish) {
+        Location location = fish.getLocation();
+        matrix[location.getX()][location.getY()] = fish;
     }
 
-    public void changeFlow() {
+    public void addFish(IFish fish) {
+        addFishInMatrix(fish);
+        if (fish.getType() == FishType.SHARK) {
+            sharks.add(fish);
+        } else if (fish.getType() == FishType.SMALL) {
+            smallFishes.add(fish);
+        }
+    }
 
+    private void fillMatrix(List<IFish> fishes) {
+        fishes.forEach(this::addFishInMatrix);
+    }
+
+    public IFish getFishByLocation(Location location) {
+        return matrix[location.getX()][location.getY()];
+    }
+
+    public boolean isEmptyLocation(Location location) {
+        return matrix[location.getX()][location.getY()] == null;
     }
 
     public static Ocean getInstanse() {
