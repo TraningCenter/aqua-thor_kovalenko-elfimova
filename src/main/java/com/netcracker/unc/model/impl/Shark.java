@@ -38,13 +38,17 @@ public class Shark extends Fish {
 
     @Override
     public void action() {
+        Ocean ocean = Ocean.getInstanse();
+        if (ocean.getFishByLocation(location) == null) {
+            return;
+        }
         isAte = false;
         if (age >= lifetime || (hungerCounter >= hungerTime)) {
             die();
             return;
         }
         searchTarget();
-        if (age % (lifetime / progenyPeriod - 1) == 0 && age != 0) {
+        if (progenyPeriod == 1 && age % (lifetime / 2 + 1) == 0 && age != 0 || age != 1 && age % (lifetime / progenyPeriod - 1) == 0 && age != 0) {
             giveBirth();
         } else {
             move();
@@ -62,17 +66,19 @@ public class Shark extends Fish {
         List<Direction> directions = new ArrayList(Arrays.asList(Direction.values()));
         if (target != null) {
             List<Direction> ds = Direction.getDirectionByLocations(location, target);
-            for (Direction d : ds) {
-                newLocation = ocean.getNextLocation(d, location);
-                if (newLocation != null) {
-                    if (newLocation.equals(target)) {
-                        eat(newLocation);
+            if (ds != null) {
+                for (Direction d : ds) {
+                    newLocation = ocean.getNextLocation(d, location);
+                    if (newLocation != null) {
+                        if (newLocation.equals(target)) {
+                            eat(newLocation);
+                            return;
+                        }
+                        ocean.moveFish(this, newLocation);
                         return;
                     }
-                    ocean.moveFish(this, newLocation);
-                    return;
+                    directions.remove(d);
                 }
-                directions.removeAll(ds);
             }
         }
         Random rnd = new Random();
@@ -89,7 +95,8 @@ public class Shark extends Fish {
     }
 
     @Override
-    protected boolean isEnemyPresent(Location currentLocation) {
+    protected boolean isEnemyPresent(Location currentLocation
+    ) {
         Ocean ocean = Ocean.getInstanse();
         return ocean.getFishByLocation(currentLocation) instanceof SmallFish;
     }

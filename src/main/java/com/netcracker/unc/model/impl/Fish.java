@@ -85,12 +85,16 @@ public abstract class Fish implements IFish {
     @Override
     public void giveBirth() {
         Ocean ocean = Ocean.getInstanse();
+        if (ocean.getAllPopulation() > ocean.getMaxPopulation()) {
+            move();
+            return;
+        }
         Location oldLocation = location;
         move();
         if (location.equals(oldLocation)) {
-            this.die();
+            die();
         }
-        IFish fish = FishCreator.createSuccessorFish(getType(), oldLocation);
+        IFish fish = FishCreator.createSuccessorFish(this, oldLocation);
         ocean.addFish(fish);
     }
 

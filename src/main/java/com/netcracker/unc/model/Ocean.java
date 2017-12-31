@@ -3,6 +3,9 @@ package com.netcracker.unc.model;
 import static com.netcracker.unc.model.FishType.SHARK;
 import static com.netcracker.unc.model.FishType.SMALL;
 import com.netcracker.unc.model.interfaces.IFish;
+import com.sun.istack.NotNull;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 import java.util.List;
 import java.util.Random;
@@ -52,17 +55,19 @@ public class Ocean {
         if (step % changeFlow == 0 && step != 0) {
             changeFlow();
         }
-        sharks.forEach(IFish::action);
-        smallFishes.forEach(IFish::action);
+        List<IFish> sharkList = new ArrayList(ocean.getSharks());
+        sharkList.forEach(IFish::action);
+        List<IFish> smallFishList = new ArrayList(ocean.getSmallFishes());
+        smallFishList.forEach(IFish::action);
         step++;
     }
 
     public void changeFlow() {
         Random rnd = new Random();
-        int i;
-        for (Flow flow : flowList) {
-            i = rnd.nextInt(Flow.size());
-            flow = Flow.fromIndex(i);
+        int num;
+        for (int i = 0; i < flowList.size(); i++) {
+            num = rnd.nextInt(Flow.size());
+            flowList.set(i, Flow.fromIndex(num));
         }
     }
 
@@ -73,7 +78,7 @@ public class Ocean {
         fish.setLocation(newLocation);
     }
 
-    public Location getNextLocation(Direction direction, Location location) {
+    public Location getNextLocation(Direction direction, @NotNull Location location) {
         Location newLocation;
         int x = location.getX();
         int y = location.getY();
@@ -125,9 +130,14 @@ public class Ocean {
         }
         newLocation = new Location(x, y);
         if (!isEmptyLocation(newLocation)) {
-            if (ocean.getFishByLocation(location).getType() == SHARK && ocean.getFishByLocation(newLocation).getType() == SMALL) {
-                return newLocation;
-            } else {
+            try {
+                if (ocean.getFishByLocation(location).getType() == SHARK && ocean.getFishByLocation(newLocation).getType() == SMALL) {
+                    return newLocation;
+                } else {
+                    return null;
+                }
+            } catch (Exception e) {
+                System.out.println("jhkl");
                 return null;
             }
         } else {
@@ -159,6 +169,14 @@ public class Ocean {
 
     public boolean isEmptyLocation(Location location) {
         return matrix[location.getX()][location.getY()] == null;
+    }
+
+    public int getMaxPopulation() {
+        return height * width / 3;
+    }
+
+    public int getAllPopulation() {
+        return getSharks().size() + getSmallFishes().size();
     }
 
     public static Ocean getInstanse() {
