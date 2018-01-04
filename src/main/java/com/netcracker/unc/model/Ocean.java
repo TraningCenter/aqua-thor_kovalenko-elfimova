@@ -1,8 +1,13 @@
 package com.netcracker.unc.model;
 
+import static com.netcracker.unc.model.FishType.SHARK;
+import static com.netcracker.unc.model.FishType.SMALL;
 import com.netcracker.unc.model.interfaces.IFish;
+import com.sun.istack.NotNull;
+import java.util.ArrayList;
 
 import java.util.List;
+import java.util.Random;
 
 public class Ocean {
 
@@ -15,6 +20,7 @@ public class Ocean {
     private int changeFlow;
     private List<IFish> sharks;
     private List<IFish> smallFishes;
+    private int step;
 
     public Ocean(int height, int width, boolean isTor, List<Flow> flowList, int changeFlow, List<IFish> sharks, List<IFish> smallFishes) {
         matrix = new IFish[height][width];
@@ -44,17 +50,24 @@ public class Ocean {
         ocean = this;
     }
 
-    private void addFishInMatrix(IFish fish) {
-        Location location = fish.getLocation();
-        matrix[location.getX()][location.getY()] = fish;
+    public void oneStep() {
+        if (step % changeFlow == 0 && step != 0) {
+            changeFlow();
+        }
+        List<IFish> sharkList = new ArrayList(ocean.getSharks());
+        sharkList.forEach(IFish::action);
+        List<IFish> smallFishList = new ArrayList(ocean.getSmallFishes());
+        smallFishList.forEach(IFish::action);
+        step++;
     }
 
-    private void fillMatrix(List<IFish> fishes) {
-        fishes.forEach(this::addFishInMatrix);
-    }
-
-    public IFish getFishByLocation(Location location) {
-        return matrix[location.getX()][location.getY()];
+    public void changeFlow() {
+        Random rnd = new Random();
+        int num;
+        for (int i = 0; i < flowList.size(); i++) {
+            num = rnd.nextInt(Flow.size());
+            flowList.set(i, Flow.fromIndex(num));
+        }
     }
 
     public void moveFish(IFish fish, Location newLocation) {
@@ -64,12 +77,8 @@ public class Ocean {
         fish.setLocation(newLocation);
     }
 
-    public boolean isEmptyLocation(Location location) {
-        return matrix[location.getX()][location.getY()] == null;
-    }
-
-    public Location getEmptyLocation(Direction direction, Location location) {
-        Location newLocation = null;
+    public Location getNextLocation(Direction direction, @NotNull Location location) {
+        Location newLocation;
         int x = location.getX();
         int y = location.getY();
         switch (direction) {
@@ -119,15 +128,53 @@ public class Ocean {
                 break;
         }
         newLocation = new Location(x, y);
-        return (isEmptyLocation(newLocation)) ? newLocation : null;
+        if (!isEmptyLocation(newLocation)) {
+            try {
+                if (ocean.getFishByLocation(location).getType() == SHARK && ocean.getFishByLocation(newLocation).getType() == SMALL) {
+                    return newLocation;
+                } else {
+                    return null;
+                }
+            } catch (Exception e) {
+                return null;
+            }
+        } else {
+            return newLocation;
+        }
     }
 
-    public void oneStep() {
-
+    private void addFishInMatrix(IFish fish) {
+        Location location = fish.getLocation();
+        matrix[location.getX()][location.getY()] = fish;
     }
 
-    public void changeFlow() {
+    public void addFish(IFish fish) {
+        addFishInMatrix(fish);
+        if (fish.getType() == FishType.SHARK) {
+            sharks.add(fish);
+        } else if (fish.getType() == FishType.SMALL) {
+            smallFishes.add(fish);
+        }
+    }
 
+    private void fillMatrix(List<IFish> fishes) {
+        fishes.forEach(this::addFishInMatrix);
+    }
+
+    public IFish getFishByLocation(Location location) {
+        return matrix[location.getX()][location.getY()];
+    }
+
+    public boolean isEmptyLocation(Location location) {
+        return matrix[location.getX()][location.getY()] == null;
+    }
+
+    public int getMaxPopulation() {
+        return height * width / 3;
+    }
+
+    public int getAllPopulation() {
+        return getSharks().size() + getSmallFishes().size();
     }
 
     public static Ocean getInstanse() {
@@ -200,6 +247,10 @@ public class Ocean {
 
     public IFish[][] getMatrix() {
         return matrix;
+    }
+
+    public int getStep() {
+        return step;
     }
 
 }

@@ -1,6 +1,8 @@
 
 import com.netcracker.unc.model.Location;
 import com.netcracker.unc.model.Ocean;
+import com.netcracker.unc.model.impl.Shark;
+import com.netcracker.unc.model.impl.SmallFish;
 import com.netcracker.unc.model.interfaces.IFish;
 import junit.framework.Assert;
 import org.junit.Before;
@@ -16,7 +18,7 @@ public class FishesTests {
     }
 
     @Test
-    public void FishMoveTest() {
+    public void moveTest() {
         // Tor - true
         // 0 - LEFT flow
         // 1 - RIGHT flow
@@ -69,7 +71,7 @@ public class FishesTests {
     }
 
     @Test
-    public void SearchTargetTest() {
+    public void searchTargetTest() {
         //tor - false
         ocean.setIsTor(false);
         ocean.moveFish(ocean.getSmallFishes().get(0), new Location(1, 3));
@@ -106,5 +108,78 @@ public class FishesTests {
         ocean.moveFish(ocean.getSmallFishes().get(1), new Location(0, 2));
         shark.searchTarget();
         Assert.assertEquals(shark.getTarget(), ocean.getSmallFishes().get(1).getLocation());
+    }
+
+    @Test
+    public void dieTest() {
+        IFish fish = ocean.getSmallFishes().get(0);
+        fish.die();
+        Assert.assertEquals(1, ocean.getSmallFishes().size());
+        Assert.assertNull(ocean.getMatrix()[fish.getLocation().getX()][fish.getLocation().getY()]);
+
+        IFish shark = ocean.getSharks().get(0);
+        shark.die();
+        Assert.assertEquals(0, ocean.getSharks().size());
+        Assert.assertNull(ocean.getMatrix()[shark.getLocation().getX()][shark.getLocation().getY()]);
+    }
+
+    @Test
+    public void actionTest() {
+        //smallfishes
+        // shark - (0;1)
+        // smallfish - (0;7), (0;9), (0,8), (1,8)
+        ocean.moveFish(ocean.getSmallFishes().get(1), new Location(0, 9));
+        ocean.addFish(new SmallFish(new Location(0, 8), 2, 1, 2));
+        ocean.addFish(new SmallFish(new Location(1, 8), 2, 1, 2));
+        IFish fish3 = ocean.getSmallFishes().get(2);
+        IFish fish4 = ocean.getSmallFishes().get(3);
+        fish3.action();
+        Assert.assertEquals(1, fish3.getAge());
+        Assert.assertEquals(new Location(0, 8), fish3.getLocation());
+        Assert.assertNull(fish3.getTarget());
+        fish3.action();
+        Assert.assertNotSame(fish3, ocean.getFishByLocation(new Location(0, 8)));
+        Assert.assertEquals(4, ocean.getSmallFishes().size());
+        fish4.action();
+        Assert.assertEquals(1, fish4.getAge());
+        Assert.assertEquals(4, ocean.getSmallFishes().size());
+        fish4.action();
+        Assert.assertEquals(5, ocean.getSmallFishes().size());
+        fish4.action();
+        Assert.assertEquals(4, ocean.getSmallFishes().size());
+
+        //sharks
+        // shark - (0;1), (0,11)
+        // smallfish - (0;7), (0;9), (0,8), (1,8)
+        ocean.addFish(new Shark(new Location(0, 11), 3, 1, 5, 2));
+        Shark shark = (Shark) ocean.getSharks().get(1);
+        shark.action();
+        Assert.assertEquals(new Location(0, 10), shark.getLocation());
+        Assert.assertEquals(new Location(0, 9), shark.getTarget());
+        Assert.assertEquals(1, shark.getAge());
+        Assert.assertEquals(1, shark.getHungerCounter());
+        Assert.assertEquals(2, ocean.getSharks().size());
+        shark.action();
+        Assert.assertEquals(new Location(0, 9), shark.getLocation());
+        Assert.assertEquals(new Location(0, 9), shark.getTarget());
+        Assert.assertEquals(2, shark.getAge());
+        Assert.assertEquals(0, shark.getHungerCounter());
+        Assert.assertEquals(3, ocean.getSmallFishes().size());
+        shark.action();
+        Assert.assertEquals(3, shark.getAge());
+        Assert.assertEquals(0, shark.getHungerCounter());
+        Assert.assertEquals(2, ocean.getSmallFishes().size());
+        Assert.assertEquals(3, ocean.getSharks().size());
+        shark.action();
+        Assert.assertEquals(2, ocean.getSharks().size());
+
+        ocean.addFish(new Shark(new Location(1, 15), 3, 1, 2, 2));
+        shark = (Shark) ocean.getSharks().get(2);
+        shark.action();
+        shark.action();
+        Assert.assertEquals(2, shark.getAge());
+        Assert.assertEquals(2, shark.getHungerCounter());
+        shark.action();
+        Assert.assertEquals(2, ocean.getSharks().size());
     }
 }

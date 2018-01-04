@@ -15,4 +15,15 @@ public enum Flow {
     public static Flow fromValue(String v) {
         return valueOf(v);
     }
+
+    public static Flow fromIndex(int i) {
+        if (values().length <= i) {
+            return null;
+        }
+        return values()[i];
+    }
+
+    public static int size() {
+        return values().length;
+    }
 }

@@ -6,6 +6,7 @@ package com.netcracker.unc;
 public class Main {
 
     public static void main(String[] args) {
-        System.out.println("TestMain");
+        OceanManager manager = new OceanManager();
+        manager.run();
     }
 }
