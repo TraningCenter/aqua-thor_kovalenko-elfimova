@@ -3,6 +3,7 @@ package com.netcracker.unc.parsers;
 import com.netcracker.unc.model.OceanConfig;
 import com.netcracker.unc.utils.CommonUtils;
 import java.io.InputStream;
+import java.io.OutputStream;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
@@ -27,7 +28,7 @@ public class JAXBParser implements IXMLParser {
     }
 
     @Override
-    public void write() {
+    public void write(OceanConfig oceanConfig, OutputStream outputStream) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 

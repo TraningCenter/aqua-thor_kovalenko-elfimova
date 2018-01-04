@@ -4,7 +4,13 @@ package com.netcracker.unc.parsers;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import com.netcracker.unc.model.*;
@@ -43,7 +49,7 @@ public class DOMParser implements IXMLParser{
 
         parseOceanType(getFirstElementByTagName(documentElement,"tor"));
         parseOceanHeight(getFirstElementByTagName(documentElement,"height"));
-        parseOceanWeight(getFirstElementByTagName(documentElement,"weight"));
+        parseOceanWeight(getFirstElementByTagName(documentElement,"width"));
         parseOceanFlowList(getFirstElementByTagName(documentElement,"flows"));
         parseOceanChangeFlow(getFirstElementByTagName(documentElement,"changeFlow"));
         parseFish(getFirstElementByTagName(documentElement,"sharks"));
@@ -112,7 +118,7 @@ public class DOMParser implements IXMLParser{
     }
 
     private void parseOceanWeight(Element oceanWeightElement) {
-        oceanConfig.setWeight(parseInteger(oceanWeightElement));
+        oceanConfig.setWidth(parseInteger(oceanWeightElement));
     }
 
     private void parseOceanType(Node oceanTypeNode) {
@@ -162,7 +168,30 @@ public class DOMParser implements IXMLParser{
     }
 
 
-    public void write() {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public void write(OceanConfig oceanConfig, OutputStream outputStream){
+        try {
+            this.oceanConfig=oceanConfig;
+            DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder documentBuilder = docFactory.newDocumentBuilder();
+            Document document = documentBuilder.newDocument();
+            document.setXmlStandalone(true);
+            writeElements(document);
+            TransformerFactory transformerFactory = TransformerFactory.newInstance();
+            Transformer transformer = transformerFactory.newTransformer();
+            transformer.transform(new DOMSource(document), new StreamResult(outputStream));
+        } catch (ParserConfigurationException| TransformerException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void writeElements(Document document){
+        Element oceanMonitoring =document.createElement("oceanMonitoring");
+        document.appendChild(oceanMonitoring);
+        Element sharksCount =document.createElement("sharksCount");
+        sharksCount.appendChild(document.createTextNode(String.valueOf(oceanConfig.getSharks().size())));
+        Element smallFishesCount =document.createElement("smallFishesCount");
+        smallFishesCount.appendChild(document.createTextNode(String.valueOf(oceanConfig.getSmallFishes().size())));
+        oceanMonitoring.appendChild (sharksCount);
+        oceanMonitoring.appendChild (smallFishesCount);
     }
 }
