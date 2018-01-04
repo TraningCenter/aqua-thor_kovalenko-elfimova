@@ -21,9 +21,6 @@ public class SmallFish extends Fish {
     @Override
     public void action() {
         Ocean ocean = Ocean.getInstanse();
-        if (ocean.getFishByLocation(location) == null) {
-            return;
-        }
         if (age >= lifetime) {
             die();
             return;

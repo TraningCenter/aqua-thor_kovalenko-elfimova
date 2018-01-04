@@ -1,8 +1,18 @@
 <ocean>
 	<tor>true</tor>
-	<height>10</height>
-	<width>50</width>
+	<height>20</height>
+	<width>80</width>
 	<flows>
+		<flow>LEFT</flow>
+		<flow>RIGHT</flow>
+		<flow>NONE</flow>
+		<flow>NONE</flow>
+		<flow>LEFT</flow>
+		<flow>LEFT</flow>
+		<flow>RIGHT</flow>
+		<flow>NONE</flow>
+		<flow>NONE</flow>
+		<flow>RIGHT</flow>
 		<flow>LEFT</flow>
 		<flow>RIGHT</flow>
 		<flow>NONE</flow>
@@ -18,7 +28,7 @@
 	<sharks>
 		<shark>
 			<lifetime>80</lifetime>
-			<progenyPeriod>2</progenyPeriod>
+			<progenyPeriod>1</progenyPeriod>
 			<searchRadius>4</searchRadius>
 			<hungerTime>40</hungerTime>
 			<location>
@@ -37,17 +47,17 @@
 			</location>
 		</shark>
 		<shark>
-			<lifetime>80</lifetime>
+			<lifetime>70</lifetime>
 			<progenyPeriod>1</progenyPeriod>
 			<searchRadius>4</searchRadius>
-			<hungerTime>40</hungerTime>
+			<hungerTime>35</hungerTime>
 			<location>
 				<x>7</x>
 				<y>19</y>
 			</location>
 		</shark>
 		<shark>
-			<lifetime>80</lifetime>
+			<lifetime>75</lifetime>
 			<progenyPeriod>1</progenyPeriod>
 			<searchRadius>4</searchRadius>
 			<hungerTime>40</hungerTime>
@@ -56,10 +66,30 @@
 				<y>40</y>
 			</location>
 		</shark>
+		<shark>
+			<lifetime>70</lifetime>
+			<progenyPeriod>1</progenyPeriod>
+			<searchRadius>4</searchRadius>
+			<hungerTime>35</hungerTime>
+			<location>
+				<x>15</x>
+				<y>70</y>
+			</location>
+		</shark>
+		<shark>
+			<lifetime>70</lifetime>
+			<progenyPeriod>1</progenyPeriod>
+			<searchRadius>4</searchRadius>
+			<hungerTime>35</hungerTime>
+			<location>
+				<x>2</x>
+				<y>70</y>
+			</location>
+		</shark>
 	</sharks>
 	<smallFishes>
 		<fish>
-			<lifetime>20</lifetime>
+			<lifetime>40</lifetime>
 			<progenyPeriod>2</progenyPeriod>
 			<searchRadius>1</searchRadius>
 			<location>
@@ -68,7 +98,7 @@
 			</location>
 		</fish>
 		<fish>
-			<lifetime>20</lifetime>
+			<lifetime>40</lifetime>
 			<progenyPeriod>2</progenyPeriod>
 			<searchRadius>1</searchRadius>
 			<location>
@@ -77,7 +107,7 @@
 			</location>
 		</fish>
 		<fish>
-			<lifetime>20</lifetime>
+			<lifetime>40</lifetime>
 			<progenyPeriod>2</progenyPeriod>
 			<searchRadius>1</searchRadius>
 			<location>
@@ -86,7 +116,7 @@
 			</location>
 		</fish>
 		<fish>
-			<lifetime>20</lifetime>
+			<lifetime>40</lifetime>
 			<progenyPeriod>2</progenyPeriod>
 			<searchRadius>1</searchRadius>
 			<location>
@@ -95,12 +125,21 @@
 			</location>
 		</fish>
 		<fish>
-			<lifetime>20</lifetime>
+			<lifetime>40</lifetime>
 			<progenyPeriod>2</progenyPeriod>
 			<searchRadius>1</searchRadius>
 			<location>
 				<x>9</x>
 				<y>40</y>
+			</location>
+		</fish>
+		<fish>
+			<lifetime>40</lifetime>
+			<progenyPeriod>2</progenyPeriod>
+			<searchRadius>1</searchRadius>
+			<location>
+				<x>11</x>
+				<y>50</y>
 			</location>
 		</fish>
 	</smallFishes>

@@ -5,7 +5,6 @@ import static com.netcracker.unc.model.FishType.SMALL;
 import com.netcracker.unc.model.interfaces.IFish;
 import com.sun.istack.NotNull;
 import java.util.ArrayList;
-import java.util.Iterator;
 
 import java.util.List;
 import java.util.Random;
@@ -137,7 +136,6 @@ public class Ocean {
                     return null;
                 }
             } catch (Exception e) {
-                System.out.println("jhkl");
                 return null;
             }
         } else {
@@ -249,6 +247,10 @@ public class Ocean {
 
     public IFish[][] getMatrix() {
         return matrix;
+    }
+
+    public int getStep() {
+        return step;
     }
 
 }

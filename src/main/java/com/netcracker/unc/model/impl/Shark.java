@@ -28,7 +28,6 @@ public class Shark extends Fish {
     public Shark(Location location, int lifetime, int progenyPeriod, int searchRadius, int hungerTime) {
         super(location, lifetime, progenyPeriod, searchRadius);
         this.hungerTime = hungerTime;
-        hungerCounter = 0;
     }
 
     public Shark(Fish fish, int hungerTime) {
@@ -39,9 +38,6 @@ public class Shark extends Fish {
     @Override
     public void action() {
         Ocean ocean = Ocean.getInstanse();
-        if (ocean.getFishByLocation(location) == null) {
-            return;
-        }
         isAte = false;
         if (age >= lifetime || (hungerCounter >= hungerTime)) {
             die();
@@ -95,8 +91,7 @@ public class Shark extends Fish {
     }
 
     @Override
-    protected boolean isEnemyPresent(Location currentLocation
-    ) {
+    protected boolean isEnemyPresent(Location currentLocation) {
         Ocean ocean = Ocean.getInstanse();
         return ocean.getFishByLocation(currentLocation) instanceof SmallFish;
     }

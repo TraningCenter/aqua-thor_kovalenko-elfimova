@@ -45,8 +45,6 @@ public class FishCreator {
     }
 
     private static IFish createShark(Location location, Shark fish) {
-        Random rnd = new Random();
-        Ocean ocean = Ocean.getInstanse();
         if (fish != null) {
             return new Shark(location, fish.getLifetime(), fish.getProgenyPeriod(), fish.getSearchRadius(), fish.getHungerTime());
         }
@@ -57,8 +55,6 @@ public class FishCreator {
     }
 
     private static IFish createSmallFish(Location location, SmallFish fish) {
-        Random rnd = new Random();
-        Ocean ocean = Ocean.getInstanse();
         if (fish != null) {
             return new SmallFish(location, fish.getLifetime(), fish.getProgenyPeriod(), fish.getSearchRadius());
         }
