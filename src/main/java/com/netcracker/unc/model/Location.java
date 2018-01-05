@@ -13,7 +13,6 @@ public class Location {
     private int y;
 
     public Location() {
-
     }
 
     public Location(int x, int y) {

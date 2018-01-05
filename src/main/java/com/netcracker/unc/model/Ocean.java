@@ -5,7 +5,6 @@ import static com.netcracker.unc.model.FishType.SMALL;
 import com.netcracker.unc.model.interfaces.IFish;
 import com.sun.istack.NotNull;
 import java.util.ArrayList;
-
 import java.util.List;
 import java.util.Random;
 
@@ -252,5 +251,4 @@ public class Ocean {
     public int getStep() {
         return step;
     }
-
 }

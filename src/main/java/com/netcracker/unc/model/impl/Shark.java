@@ -30,7 +30,6 @@ public class Shark extends Fish {
         this.hungerTime = hungerTime;
     }
 
-
     public Shark(Location location, int lifetime, int progenyPeriod, int searchRadius, int hungerTime) {
         super(location, lifetime, progenyPeriod, searchRadius);
         this.hungerTime = hungerTime;
@@ -150,4 +149,3 @@ public class Shark extends Fish {
         return this.hungerCounter == other.hungerCounter;
     }
 }
-

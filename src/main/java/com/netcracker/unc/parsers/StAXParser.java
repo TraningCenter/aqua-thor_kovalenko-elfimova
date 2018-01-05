@@ -226,5 +226,4 @@ public class StAXParser implements IXMLParser {
     public void write(OceanConfig oceanConfig, OutputStream outputStream) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
 }

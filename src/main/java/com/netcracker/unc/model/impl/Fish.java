@@ -202,6 +202,4 @@ public abstract class Fish implements IFish {
         }
         return Objects.equals(this.target, other.target);
     }
-
 }
-

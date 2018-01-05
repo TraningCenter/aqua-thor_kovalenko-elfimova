@@ -17,30 +17,23 @@ public class OceanConfig {
 
     @XmlElement(name = "tor")
     private boolean isTor;
-
     @XmlElement
     private int height;
-
     @XmlElement
     private int width;
-
     @XmlElementWrapper(name = "flows")
     @XmlElement(name = "flow")
     private List<Flow> flowList;
-
     @XmlElement
     private int changeFlow;
-
     @XmlElementWrapper(name = "sharks")
     @XmlElement(name = "shark", type = Shark.class)
     private List<IFish> sharks;
-
     @XmlElementWrapper(name = "smallFishes")
     @XmlElement(name = "fish", type = SmallFish.class)
     private List<IFish> smallFishes;
 
     public OceanConfig() {
-
     }
 
     public OceanConfig(boolean isTor, int height, int width, List<Flow> flowList, int changeFlow, List<IFish> sharks, List<IFish> smallFishes) {
@@ -157,5 +150,4 @@ public class OceanConfig {
         }
         return true;
     }
-
 }

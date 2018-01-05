@@ -1,6 +1,5 @@
 package com.netcracker.unc.parsers;
 
-
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -20,11 +19,7 @@ import com.netcracker.unc.model.impl.SmallFish;
 import com.netcracker.unc.model.interfaces.IFish;
 import org.w3c.dom.*;
 
-/**
- * Created on 19.12.2017.
- */
-
-public class DOMParser implements IXMLParser{
+public class DOMParser implements IXMLParser {
 
     private OceanConfig oceanConfig;
 
@@ -44,27 +39,28 @@ public class DOMParser implements IXMLParser{
     }
 
     private void domParse(Document document) {
-        oceanConfig=new OceanConfig();
+        oceanConfig = new OceanConfig();
         Element documentElement = document.getDocumentElement();
 
-        parseOceanType(getFirstElementByTagName(documentElement,"tor"));
-        parseOceanHeight(getFirstElementByTagName(documentElement,"height"));
-        parseOceanWeight(getFirstElementByTagName(documentElement,"width"));
-        parseOceanFlowList(getFirstElementByTagName(documentElement,"flows"));
-        parseOceanChangeFlow(getFirstElementByTagName(documentElement,"changeFlow"));
-        parseFish(getFirstElementByTagName(documentElement,"sharks"));
-        parseFish(getFirstElementByTagName(documentElement,"smallFishes"));
+        parseOceanType(getFirstElementByTagName(documentElement, "tor"));
+        parseOceanHeight(getFirstElementByTagName(documentElement, "height"));
+        parseOceanWeight(getFirstElementByTagName(documentElement, "width"));
+        parseOceanFlowList(getFirstElementByTagName(documentElement, "flows"));
+        parseOceanChangeFlow(getFirstElementByTagName(documentElement, "changeFlow"));
+        parseFish(getFirstElementByTagName(documentElement, "sharks"));
+        parseFish(getFirstElementByTagName(documentElement, "smallFishes"));
     }
 
-    private void parseFish(Element sameFishes){
+    private void parseFish(Element sameFishes) {
         int hungerTime = 0;
         List<IFish> smallfishes = new ArrayList<>();
         List<IFish> sharkfishes = new ArrayList<>();
-        String name=null;
-        if (sameFishes.getTagName().equals("sharks"))
-        {name="shark";
-        } else if (sameFishes.getTagName().equals("smallFishes"))
-        {name="fish";}
+        String name = null;
+        if (sameFishes.getTagName().equals("sharks")) {
+            name = "shark";
+        } else if (sameFishes.getTagName().equals("smallFishes")) {
+            name = "fish";
+        }
         NodeList fishNodeList = sameFishes.getElementsByTagName(name);
         for (int i = 0; i < fishNodeList.getLength(); i++) {
             if (fishNodeList.item(i).getNodeType() == Node.ELEMENT_NODE) {
@@ -109,8 +105,8 @@ public class DOMParser implements IXMLParser{
         oceanConfig.setChangeFlow(parseInteger(changeFlow));
     }
 
-    private Element getFirstElementByTagName(Element elementToSearch, String tagName){
-        return (Element)elementToSearch.getElementsByTagName(tagName).item(0);
+    private Element getFirstElementByTagName(Element elementToSearch, String tagName) {
+        return (Element) elementToSearch.getElementsByTagName(tagName).item(0);
     }
 
     private void parseOceanHeight(Element oceanHeightElement) {
@@ -122,7 +118,7 @@ public class DOMParser implements IXMLParser{
     }
 
     private void parseOceanType(Node oceanTypeNode) {
-        switch (oceanTypeNode.getTextContent()){
+        switch (oceanTypeNode.getTextContent()) {
             case "true":
                 oceanConfig.setIsTor(true);
                 break;
@@ -144,7 +140,7 @@ public class DOMParser implements IXMLParser{
         oceanConfig.setFlowList(flows);
     }
 
-    private Location parseLocation(Element locationElement){
+    private Location parseLocation(Element locationElement) {
         Location location = new Location();
         NodeList locationChildNodes = locationElement.getChildNodes();
         for (int j = 0; j < locationChildNodes.getLength(); j++) {
@@ -163,14 +159,13 @@ public class DOMParser implements IXMLParser{
         return location;
     }
 
-    private Integer parseInteger(Node integerNode){
+    private Integer parseInteger(Node integerNode) {
         return Integer.parseInt(integerNode.getTextContent());
     }
 
-
-    public void write(OceanConfig oceanConfig, OutputStream outputStream){
+    public void write(OceanConfig oceanConfig, OutputStream outputStream) {
         try {
-            this.oceanConfig=oceanConfig;
+            this.oceanConfig = oceanConfig;
             DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder documentBuilder = docFactory.newDocumentBuilder();
             Document document = documentBuilder.newDocument();
@@ -179,19 +174,19 @@ public class DOMParser implements IXMLParser{
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
             Transformer transformer = transformerFactory.newTransformer();
             transformer.transform(new DOMSource(document), new StreamResult(outputStream));
-        } catch (ParserConfigurationException| TransformerException e) {
+        } catch (ParserConfigurationException | TransformerException e) {
             e.printStackTrace();
         }
     }
 
-    private void writeElements(Document document){
-        Element oceanMonitoring =document.createElement("oceanMonitoring");
+    private void writeElements(Document document) {
+        Element oceanMonitoring = document.createElement("oceanMonitoring");
         document.appendChild(oceanMonitoring);
-        Element sharksCount =document.createElement("sharksCount");
+        Element sharksCount = document.createElement("sharksCount");
         sharksCount.appendChild(document.createTextNode(String.valueOf(oceanConfig.getSharks().size())));
-        Element smallFishesCount =document.createElement("smallFishesCount");
+        Element smallFishesCount = document.createElement("smallFishesCount");
         smallFishesCount.appendChild(document.createTextNode(String.valueOf(oceanConfig.getSmallFishes().size())));
-        oceanMonitoring.appendChild (sharksCount);
-        oceanMonitoring.appendChild (smallFishesCount);
+        oceanMonitoring.appendChild(sharksCount);
+        oceanMonitoring.appendChild(smallFishesCount);
     }
 }

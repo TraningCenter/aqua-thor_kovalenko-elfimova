@@ -28,5 +28,4 @@ public enum Direction {
         }
         return directions;
     }
-
 }

@@ -9,7 +9,6 @@ import com.netcracker.unc.model.impl.Shark;
 import com.netcracker.unc.model.impl.SmallFish;
 import com.netcracker.unc.model.interfaces.IFish;
 import com.netcracker.unc.utils.CommonUtils;
-import java.util.Random;
 
 public class FishCreator {
 

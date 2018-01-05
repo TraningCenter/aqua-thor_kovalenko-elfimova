@@ -29,16 +29,15 @@ public class OceanVisualizer {
             terminal = defaultTerminalFactory.createTerminal();
             screen = new TerminalScreen(terminal);
         } catch (IOException ex) {
-            System.out.println("Ошибка создания экрана!");
+            System.out.println(ex.getMessage());
         }
-
     }
 
     public void startScreen() {
         try {
             screen.startScreen();
         } catch (IOException ex) {
-            System.out.println("Ошибка начала работы с экраном!");
+            System.out.println(ex.getMessage());
         }
         screen.setCursorPosition(null);
     }
@@ -47,7 +46,7 @@ public class OceanVisualizer {
         try {
             screen.stopScreen();
         } catch (IOException ex) {
-            System.out.println("Ошибка окончания работы с экраном!");
+            System.out.println(ex.getMessage());
         }
     }
 
@@ -58,10 +57,8 @@ public class OceanVisualizer {
             printInfo();
             screen.refresh();
             Thread.sleep(300);
-        } catch (IOException ex) {
-            System.out.println("Ошибка отображения океана!");
-        } catch (InterruptedException ex) {
-            System.out.println("Ошибка работы с потоком!");
+        } catch (IOException | InterruptedException ex) {
+            System.out.println(ex.getMessage());
         }
     }
 
@@ -69,7 +66,6 @@ public class OceanVisualizer {
         Ocean ocean = Ocean.getInstanse();
         int shiftX = 5;
         int shiftY = 0;
-
         IFish[][] matrix = ocean.getMatrix();
         for (int i = 0; i < ocean.getHeight(); i++) {
             for (int j = 0; j < ocean.getWidth(); j++) {
@@ -97,21 +93,13 @@ public class OceanVisualizer {
     }
 
     private void printInfo() {
-        try {
-            terminal.setBackgroundColor(TextColor.ANSI.BLUE);
-            terminal.setForegroundColor(TextColor.ANSI.YELLOW);
-        } catch (IOException ex) {
-            System.out.println("Ошибка отображения экрана!");
-        }
-
         Ocean ocean = Ocean.getInstanse();
-        String infoLabel = String.format("Aquator [STEP %s]. Tor: %s, sharks: %s, smallFishes: %s.", ocean.getStep(), ocean.isTor(), ocean.getSharks().size(), ocean.getSmallFishes().size());
+        String infoLabel = String.format("Aquator [STEP %s]. Tor: %s, sharks: %s, smallFishes: %s. Press Esq to exit!", ocean.getStep(), ocean.isTor(), ocean.getSharks().size(), ocean.getSmallFishes().size());
         TerminalPosition labelBoxTopLeft = new TerminalPosition(0, 1);
         TerminalSize labelBoxSize = new TerminalSize(infoLabel.length() + 2, 3);
         TerminalPosition labelBoxTopRightCorner;
         labelBoxTopRightCorner = labelBoxTopLeft.withRelativeColumn(labelBoxSize.getColumns() - 1);
         TextGraphics textGraphics = screen.newTextGraphics();
-
         //draw horizontal and vertical lines
         TextColor textColor = TextColor.ANSI.YELLOW;
         textGraphics.drawLine(
@@ -136,5 +124,17 @@ public class OceanVisualizer {
                 new TextCharacter(Symbols.DOUBLE_LINE_BOTTOM_RIGHT_CORNER, textColor, TextColor.ANSI.DEFAULT));
         //put the text inside the box
         textGraphics.putString(labelBoxTopLeft.withRelative(1, 1), infoLabel, SGR.BOLD);
+    }
+
+    public void clear() {
+        screen.clear();
+    }
+
+    public void refresh() throws IOException {
+        screen.refresh();
+    }
+
+    public Screen getScreen() {
+        return screen;
     }
 }
