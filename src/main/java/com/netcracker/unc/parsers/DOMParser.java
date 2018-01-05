@@ -8,6 +8,7 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
@@ -18,6 +19,8 @@ import com.netcracker.unc.model.impl.Shark;
 import com.netcracker.unc.model.impl.SmallFish;
 import com.netcracker.unc.model.interfaces.IFish;
 import org.w3c.dom.*;
+import org.xml.sax.SAXException;
+import org.xml.sax.SAXParseException;
 
 public class DOMParser implements IXMLParser {
 
@@ -38,7 +41,7 @@ public class DOMParser implements IXMLParser {
         return dbFactory.newDocumentBuilder();
     }
 
-    private void domParse(Document document) {
+    private void domParse(Document document) throws NullPointerException {
         oceanConfig = new OceanConfig();
         Element documentElement = document.getDocumentElement();
 
@@ -51,7 +54,7 @@ public class DOMParser implements IXMLParser {
         parseFish(getFirstElementByTagName(documentElement, "smallFishes"));
     }
 
-    private void parseFish(Element sameFishes) {
+    private void parseFish(Element sameFishes) throws NullPointerException {
         int hungerTime = 0;
         List<IFish> smallfishes = new ArrayList<>();
         List<IFish> sharkfishes = new ArrayList<>();

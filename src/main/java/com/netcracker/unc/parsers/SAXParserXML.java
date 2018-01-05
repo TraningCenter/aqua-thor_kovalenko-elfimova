@@ -7,6 +7,7 @@ import com.netcracker.unc.model.impl.Fish;
 import com.netcracker.unc.model.impl.Shark;
 import com.netcracker.unc.model.impl.SmallFish;
 import com.netcracker.unc.model.interfaces.IFish;
+import com.netcracker.unc.utils.CommonUtils;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
@@ -45,11 +46,14 @@ public class SAXParserXML extends DefaultHandler implements IXMLParser {
             SAXParserXML handler = new SAXParserXML();
             saxParser.parse(config, handler);
             OceanConfig oceanConfig = handler.getOceanConfig();
+            if (CommonUtils.checkEmpty(oceanConfig.getSharks()) && CommonUtils.checkEmpty(oceanConfig.getSmallFishes())) {
+                return null;
+            }
             return oceanConfig;
-        } catch (SAXException | ParserConfigurationException | IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
-        return null;
+       return null;
     }
 
     OceanConfig getOceanConfig() {
@@ -57,7 +61,7 @@ public class SAXParserXML extends DefaultHandler implements IXMLParser {
     }
 
     @Override
-    public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
+    public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException{
         currentElement = qName;
         switch (currentElement) {
             case "ocean":
@@ -85,7 +89,7 @@ public class SAXParserXML extends DefaultHandler implements IXMLParser {
     }
 
     @Override
-    public void characters(char[] ch, int start, int length) throws SAXException {
+    public void characters(char[] ch, int start, int length) throws SAXException  {
         String text = new String(ch, start, length);
         if (text.contains("<") || currentElement == null) {
             return;
