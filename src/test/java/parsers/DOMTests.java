@@ -4,7 +4,6 @@ import tools.ParsersTools;
 import com.netcracker.unc.model.OceanConfig;
 import com.netcracker.unc.parsers.*;
 import junit.framework.Assert;
-import org.junit.Before;
 import org.junit.Test;
 
 import java.io.ByteArrayInputStream;
@@ -25,6 +24,24 @@ public class DOMTests {
         IXMLParser domParser = new DOMParser();
         OceanConfig oceanConfig = domParser.read(inputStream);
         Assert.assertTrue(oceanConfig.equals(ParsersTools.getOceanConfig()));
+    }
+
+    @Test
+    public void readXMLWithoutOceanTag() {
+        XMLString = ParsersTools.XMLStringWithoutOceanTag;
+        InputStream inputStream = new ByteArrayInputStream(XMLString.getBytes());
+        IXMLParser domParser = new DOMParser();
+        OceanConfig oceanConfig = domParser.read(inputStream);
+        Assert.assertNull(oceanConfig);
+    }
+
+    @Test
+    public void readXMLWithoutFishes() {
+        XMLString = ParsersTools.XMLStringWithoutFishes;
+        InputStream inputStream = new ByteArrayInputStream(XMLString.getBytes());
+        IXMLParser domParser = new DOMParser();
+        OceanConfig oceanConfig = domParser.read(inputStream);
+        Assert.assertNull(oceanConfig);
     }
 
     @Test

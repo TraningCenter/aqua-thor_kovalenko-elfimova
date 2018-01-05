@@ -25,6 +25,24 @@ public class SAXTests {
     }
 
     @Test
+    public void readXMLWithoutOceanTag() {
+        XMLString = ParsersTools.XMLStringWithoutOceanTag;
+        InputStream inputStream = new ByteArrayInputStream(XMLString.getBytes());
+        IXMLParser saxParser = new SAXParserXML();
+        OceanConfig oceanConfig = saxParser.read(inputStream);
+        Assert.assertNull(oceanConfig);
+    }
+
+    @Test
+    public void readXMLWithoutFishes() {
+        XMLString = ParsersTools.XMLStringWithoutFishes;
+        InputStream inputStream = new ByteArrayInputStream(XMLString.getBytes());
+        IXMLParser saxParser = new SAXParserXML();
+        OceanConfig oceanConfig = saxParser.read(inputStream);
+        Assert.assertNull(oceanConfig);
+    }
+
+    @Test
     public void writeXMLTest()throws UnsupportedEncodingException {
         XMLString = ParsersTools.XMLStringMonitoring;
         OceanConfig oceanConfig=ParsersTools.getOceanConfig();
