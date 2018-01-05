@@ -12,13 +12,10 @@ public class CountOfSharkMetric implements IMetric{
 
     @Override
     public void calculateValue(Ocean o) {
-        value=o.getSharks().size();
     }
 
     @Override
     public String getName() {
-        name=String.valueOf(value);
-        return name;
     }
 }
 
