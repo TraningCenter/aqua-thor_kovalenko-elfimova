@@ -5,21 +5,16 @@ import com.googlecode.lanterna.TextColor;
 import com.googlecode.lanterna.graphics.TextGraphics;
 import com.googlecode.lanterna.input.KeyStroke;
 import com.googlecode.lanterna.input.KeyType;
-import com.netcracker.unc.model.Flow;
-import com.netcracker.unc.model.Location;
+import com.netcracker.unc.creator.OceanCreator;
 import com.netcracker.unc.model.Ocean;
 import com.netcracker.unc.model.OceanConfig;
-import com.netcracker.unc.model.impl.Shark;
-import com.netcracker.unc.model.impl.SmallFish;
-import com.netcracker.unc.model.interfaces.IFish;
 import com.netcracker.unc.parsers.IXMLParser;
 import com.netcracker.unc.parsers.JAXBParser;
+import com.netcracker.unc.utils.CommonUtils;
 import com.netcracker.unc.visualizer.OceanVisualizer;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -55,13 +50,13 @@ public class OceanManager {
                     mainMenu();
                 }
             } catch (IOException ex) {
-                System.out.println(ex.getMessage());
+                ex.printStackTrace();
             }
 
         }
     }
 
-    public void configMenu() {
+    private void configMenu() {
         visualizer.clear();
         TextGraphics textGraphics = visualizer.getScreen().newTextGraphics();
         try {
@@ -80,12 +75,10 @@ public class OceanManager {
                 System.out.println(keyStroke.getKeyType().toString());
                 switch (keyStroke.getKeyType()) {
                     case Escape:
-                        visualizer.stopScreen();
-                        System.exit(0);
+                        exit();
                         break;
                     case EOF:
-                        visualizer.stopScreen();
-                        System.exit(0);
+                        exit();
                         break;
                     case Character:
                         switch (keyStroke.getCharacter()) {
@@ -93,10 +86,10 @@ public class OceanManager {
                                 ocean = new Ocean(readConfig());
                                 return;
                             case '2':
-                                ocean = new Ocean(getOceanConfig());
+                                ocean = new Ocean(OceanCreator.getDefaultOceanConfig());
                                 return;
                             case '3':
-                                inputParserSettings();
+                                parserSettingsMenu("");
                                 break;
                             default:
                                 textGraphics.setForegroundColor(TextColor.ANSI.RED);
@@ -106,12 +99,116 @@ public class OceanManager {
                 }
             }
         } catch (IOException ex) {
-            System.out.println("Ошибка отображения меню!");
+            ex.printStackTrace();
         }
     }
 
-    private void inputParserSettings() {
+    private void parserSettingsMenu(String message) {
+        visualizer.clear();
+        TextGraphics textGraphics = visualizer.getScreen().newTextGraphics();
+        if (message != null && !message.isEmpty()) {
+            textGraphics.setForegroundColor(TextColor.ANSI.GREEN);
+            textGraphics.putString(new TerminalPosition(0, 0), message);
+        }
+        try {
+            while (true) {
+                textGraphics.setForegroundColor(TextColor.ANSI.WHITE);
+                textGraphics.putString(new TerminalPosition(0, 1), "Выбор парсеров: ");
+                textGraphics.putString(new TerminalPosition(0, 2), "1. Парсер ввода");
+                textGraphics.putString(new TerminalPosition(0, 3), "2. Парсер вывода");
+                textGraphics.putString(new TerminalPosition(0, 4), "Esq. Назад");
+                visualizer.refresh();
+                KeyStroke keyStroke = visualizer.getScreen().readInput();
+                while (keyStroke == null) {
+                    keyStroke = visualizer.getScreen().readInput();
+                }
+                System.out.println(keyStroke.getKeyType().toString());
+                switch (keyStroke.getKeyType()) {
+                    case Escape:
+                        mainMenu();
+                        break;
+                    case EOF:
+                        exit();
+                        break;
+                    case Character:
+                        switch (keyStroke.getCharacter()) {
+                            case '1':
+                                concreteParserSettingsMenu(true);
+                                return;
+                            case '2':
+                                concreteParserSettingsMenu(false);
+                                return;
+                            default:
+                                textGraphics.setForegroundColor(TextColor.ANSI.RED);
+                                textGraphics.putString(new TerminalPosition(0, 0), "Ошибка! Введите число от 1 до 2!");
+                                break;
+                        }
+                }
+            }
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
 
+    private void concreteParserSettingsMenu(boolean isInput) {
+        visualizer.clear();
+        TextGraphics textGraphics = visualizer.getScreen().newTextGraphics();
+        String key = isInput ? "inputparser" : "outputparser";
+        try {
+            while (true) {
+                textGraphics.setForegroundColor(TextColor.ANSI.WHITE);
+                textGraphics.putString(new TerminalPosition(0, 1), "Типы парсеров: ");
+                textGraphics.putString(new TerminalPosition(0, 2), "1. DOM");
+                textGraphics.putString(new TerminalPosition(0, 3), "2. SAX");
+                textGraphics.putString(new TerminalPosition(0, 4), "3. StAX");
+                textGraphics.putString(new TerminalPosition(0, 5), "4. JAXB");
+                textGraphics.putString(new TerminalPosition(0, 6), "Esq. Назад");
+                visualizer.refresh();
+                KeyStroke keyStroke = visualizer.getScreen().readInput();
+                while (keyStroke == null) {
+                    keyStroke = visualizer.getScreen().readInput();
+                }
+                System.out.println(keyStroke.getKeyType().toString());
+                switch (keyStroke.getKeyType()) {
+                    case Escape:
+                        parserSettingsMenu("");
+                        return;
+                    case EOF:
+                        exit();
+                        break;
+                    case Character:
+                        switch (keyStroke.getCharacter()) {
+                            case '1':
+                                CommonUtils.setParserProperty(key, "dom");
+                                parserSettingsMenu(String.format("%s -> dom. Настройки сохранены", key));
+                                return;
+                            case '2':
+                                CommonUtils.setParserProperty(key, "sax");
+                                parserSettingsMenu(String.format("%s -> sax. Настройки сохранены", key));
+                                return;
+                            case '3':
+                                CommonUtils.setParserProperty(key, "stax");
+                                parserSettingsMenu(String.format("%s -> stax. Настройки сохранены", key));
+                                return;
+                            case '4':
+                                CommonUtils.setParserProperty(key, "jaxb");
+                                parserSettingsMenu(String.format("%s -> jaxb. Настройки сохранены", key));
+                                return;
+                            default:
+                                textGraphics.setForegroundColor(TextColor.ANSI.RED);
+                                textGraphics.putString(new TerminalPosition(0, 0), "Ошибка! Введите число от 1 до 4!");
+                                break;
+                        }
+                }
+            }
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    private void exit() {
+        visualizer.stopScreen();
+        System.exit(0);
     }
 
     public OceanConfig readConfig() throws IOException {
@@ -120,17 +217,5 @@ public class OceanManager {
         OceanConfig config = jaxbParser.read(inputStream);
         inputStream.close();
         return config;
-    }
-
-    public OceanConfig getOceanConfig() {
-        List<Flow> flows = new ArrayList();
-        flows.add(Flow.LEFT);
-        flows.add(Flow.RIGHT);
-        List<IFish> sharks = new ArrayList();
-        sharks.add(new Shark(new Location(0, 1), 40, 1, 4, 20));
-        List<IFish> smallFishes = new ArrayList();
-        smallFishes.add(new SmallFish(new Location(0, 7), 30, 3, 2));
-        smallFishes.add(new SmallFish(new Location(1, 9), 30, 3, 2));
-        return new OceanConfig(true, 2, 20, flows, 10, sharks, smallFishes);
     }
 }

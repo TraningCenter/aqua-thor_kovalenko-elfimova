@@ -1,7 +1,13 @@
 package com.netcracker.unc.utils;
 
 import com.netcracker.unc.model.Location;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.Collection;
+import java.util.Properties;
 import java.util.Random;
 
 public class CommonUtils {
@@ -43,5 +49,17 @@ public class CommonUtils {
         Random rand = new Random();
         int randomNum = rand.nextInt((max - min) + 1) + min;
         return randomNum;
+    }
+
+    public static void setParserProperty(String key, String value) {
+        String propertiesFilename = "config.properties";
+        Properties prop = new Properties();
+        try {
+            prop.load(new FileInputStream(propertiesFilename));
+            prop.setProperty(key.toLowerCase().trim(), value.toLowerCase().trim());
+            prop.store(new FileOutputStream(propertiesFilename), null);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        } 
     }
 }
