@@ -10,12 +10,9 @@ public class CountOfFishMetric implements IMetric{
 
     @Override
     public void calculateValue(Ocean o) {
-        value=o.getSmallFishes().size();
     }
 
     @Override
-    public String getName() {
-        name=String.valueOf(value);
-        return name;
+    public String getName() 
     }
 }
