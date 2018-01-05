@@ -8,15 +8,20 @@ import com.googlecode.lanterna.input.KeyType;
 import com.netcracker.unc.creator.OceanCreator;
 import com.netcracker.unc.model.Ocean;
 import com.netcracker.unc.model.OceanConfig;
+import com.netcracker.unc.parsers.DOMParserXML;
 import com.netcracker.unc.parsers.IXMLParser;
-import com.netcracker.unc.parsers.JAXBParser;
+import com.netcracker.unc.parsers.JAXBParserXML;
+import com.netcracker.unc.parsers.SAXParserXML;
+import com.netcracker.unc.parsers.StAXParserXML;
 import com.netcracker.unc.utils.CommonUtils;
 import com.netcracker.unc.visualizer.OceanVisualizer;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Properties;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import javax.xml.parsers.SAXParser;
 
 public class OceanManager {
 
@@ -213,8 +218,27 @@ public class OceanManager {
 
     public OceanConfig readConfig() throws IOException {
         InputStream inputStream = new FileInputStream("config.xml");
-        IXMLParser jaxbParser = new JAXBParser();
-        OceanConfig config = jaxbParser.read(inputStream);
+        String value = CommonUtils.getParserProperty("inputparser").toLowerCase().trim();
+        IXMLParser parser;
+        switch (value) {
+            case "dom":
+               parser = new DOMParserXML();
+                break;
+            case "sax":
+                parser = new SAXParserXML();
+                break;
+            case "stax":
+                parser = new StAXParserXML();
+                break;
+            case "jaxb":
+                parser = new JAXBParserXML();
+                break;
+            default:
+                parserSettingsMenu("Ошибка! Выбранный в настройках парсер не найден");
+                return null;
+        }
+        
+        OceanConfig config = parser.read(inputStream);
         inputStream.close();
         return config;
     }

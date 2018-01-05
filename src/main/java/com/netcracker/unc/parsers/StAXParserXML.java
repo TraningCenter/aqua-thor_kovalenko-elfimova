@@ -17,7 +17,7 @@ import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
-public class StAXParser implements IXMLParser {
+public class StAXParserXML implements IXMLParser {
 
     @Override
     public OceanConfig read(InputStream config) {

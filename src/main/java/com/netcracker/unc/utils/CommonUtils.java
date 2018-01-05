@@ -60,6 +60,21 @@ public class CommonUtils {
             prop.store(new FileOutputStream(propertiesFilename), null);
         } catch (IOException ex) {
             ex.printStackTrace();
-        } 
+        }
+    }
+
+    public static String getParserProperty(String key) {
+        String propertiesFilename = "config.properties";
+        Properties prop = new Properties();
+        String value;
+        value = null;
+        try {
+            prop.load(new FileInputStream(propertiesFilename));
+            value = prop.getProperty(key);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            return null;
+        }
+        return value;
     }
 }

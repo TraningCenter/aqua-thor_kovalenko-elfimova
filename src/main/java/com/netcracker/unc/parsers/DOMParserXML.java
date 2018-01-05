@@ -22,7 +22,7 @@ import org.w3c.dom.*;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
-public class DOMParser implements IXMLParser {
+public class DOMParserXML implements IXMLParser {
 
     private OceanConfig oceanConfig;
 

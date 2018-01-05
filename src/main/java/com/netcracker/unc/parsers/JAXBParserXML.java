@@ -9,7 +9,7 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.ValidationEvent;
 
-public class JAXBParser implements IXMLParser {
+public class JAXBParserXML implements IXMLParser {
 
     @Override
     public OceanConfig read(InputStream config) {

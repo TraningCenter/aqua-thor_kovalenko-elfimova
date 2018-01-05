@@ -21,7 +21,7 @@ public class DOMTests {
     public void readXMLTest() {
         XMLString = ParsersTools.XMLString;
         InputStream inputStream = new ByteArrayInputStream(XMLString.getBytes());
-        IXMLParser domParser = new DOMParser();
+        IXMLParser domParser = new DOMParserXML();
         OceanConfig oceanConfig = domParser.read(inputStream);
         Assert.assertTrue(oceanConfig.equals(ParsersTools.getOceanConfig()));
     }
@@ -30,7 +30,7 @@ public class DOMTests {
     public void readXMLWithoutOceanTag() {
         XMLString = ParsersTools.XMLStringWithoutOceanTag;
         InputStream inputStream = new ByteArrayInputStream(XMLString.getBytes());
-        IXMLParser domParser = new DOMParser();
+        IXMLParser domParser = new DOMParserXML();
         OceanConfig oceanConfig = domParser.read(inputStream);
         Assert.assertNull(oceanConfig);
     }
@@ -39,7 +39,7 @@ public class DOMTests {
     public void readXMLWithoutFishes() {
         XMLString = ParsersTools.XMLStringWithoutFishes;
         InputStream inputStream = new ByteArrayInputStream(XMLString.getBytes());
-        IXMLParser domParser = new DOMParser();
+        IXMLParser domParser = new DOMParserXML();
         OceanConfig oceanConfig = domParser.read(inputStream);
         Assert.assertNull(oceanConfig);
     }
@@ -49,7 +49,7 @@ public class DOMTests {
         XMLString = ParsersTools.XMLStringMonitoring;
         OceanConfig oceanConfig=ParsersTools.getOceanConfig();
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        IXMLParser domParser = new DOMParser();
+        IXMLParser domParser = new DOMParserXML();
         domParser.write(oceanConfig,outputStream);
         String XMLStringRes = new String(outputStream.toByteArray(), "UTF-8");
         Assert.assertTrue(XMLString.equals(XMLStringRes));

@@ -4,7 +4,7 @@ package parsers;
 import tools.ParsersTools;
 import com.netcracker.unc.model.OceanConfig;
 import com.netcracker.unc.parsers.IXMLParser;
-import com.netcracker.unc.parsers.StAXParser;
+import com.netcracker.unc.parsers.StAXParserXML;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import junit.framework.Assert;
@@ -18,7 +18,7 @@ public class StAXTests {
     public void readXMLTest() {
         XMLString = ParsersTools.XMLString;
         InputStream inputStream = new ByteArrayInputStream(XMLString.getBytes());
-        IXMLParser staxReader = new StAXParser();
+        IXMLParser staxReader = new StAXParserXML();
         OceanConfig oceanConfig = staxReader.read(inputStream);
         Assert.assertTrue(oceanConfig.equals(ParsersTools.getOceanConfig()));
     }
@@ -27,7 +27,7 @@ public class StAXTests {
     public void readXMLWithoutOceanTag() {
         XMLString = ParsersTools.XMLStringWithoutOceanTag;
         InputStream inputStream = new ByteArrayInputStream(XMLString.getBytes());
-        IXMLParser staxReader = new StAXParser();
+        IXMLParser staxReader = new StAXParserXML();
         OceanConfig oceanConfig = staxReader.read(inputStream);
         Assert.assertNull(oceanConfig);
     }
@@ -36,7 +36,7 @@ public class StAXTests {
     public void readXMLWithWrongTags() {
         XMLString = ParsersTools.XMLStringWrongTags;
         InputStream inputStream = new ByteArrayInputStream(XMLString.getBytes());
-        IXMLParser staxReader = new StAXParser();
+        IXMLParser staxReader = new StAXParserXML();
         OceanConfig oceanConfig = staxReader.read(inputStream);
         Assert.assertNull(oceanConfig);
     }
@@ -45,7 +45,7 @@ public class StAXTests {
     public void readXMLWithoutFishes() {
         XMLString = ParsersTools.XMLStringWithoutFishes;
         InputStream inputStream = new ByteArrayInputStream(XMLString.getBytes());
-        IXMLParser staxReader = new StAXParser();
+        IXMLParser staxReader = new StAXParserXML();
         OceanConfig oceanConfig = staxReader.read(inputStream);
         Assert.assertNull(oceanConfig);
     }

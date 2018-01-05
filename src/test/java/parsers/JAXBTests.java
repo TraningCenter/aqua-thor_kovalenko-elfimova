@@ -4,7 +4,7 @@ package parsers;
 import tools.ParsersTools;
 import com.netcracker.unc.model.OceanConfig;
 import com.netcracker.unc.parsers.IXMLParser;
-import com.netcracker.unc.parsers.JAXBParser;
+import com.netcracker.unc.parsers.JAXBParserXML;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import junit.framework.Assert;
@@ -18,7 +18,7 @@ public class JAXBTests {
     public void readXMLTest() {
         XMLString = ParsersTools.XMLString;
         InputStream inputStream = new ByteArrayInputStream(XMLString.getBytes());
-        IXMLParser jaxbParser = new JAXBParser();
+        IXMLParser jaxbParser = new JAXBParserXML();
         OceanConfig oceanConfig = jaxbParser.read(inputStream);
         Assert.assertTrue(oceanConfig.equals(ParsersTools.getOceanConfig()));
     }
@@ -27,7 +27,7 @@ public class JAXBTests {
     public void readXMLWithoutOceanTag() {
         XMLString = ParsersTools.XMLStringWithoutOceanTag;
         InputStream inputStream = new ByteArrayInputStream(XMLString.getBytes());
-        IXMLParser jaxbParser = new JAXBParser();
+        IXMLParser jaxbParser = new JAXBParserXML();
         OceanConfig oceanConfig = jaxbParser.read(inputStream);
         Assert.assertNull(oceanConfig);
     }
@@ -36,7 +36,7 @@ public class JAXBTests {
     public void readXMLWithWrongTags() {
         XMLString = ParsersTools.XMLStringWrongTags;
         InputStream inputStream = new ByteArrayInputStream(XMLString.getBytes());
-        IXMLParser jaxbParser = new JAXBParser();
+        IXMLParser jaxbParser = new JAXBParserXML();
         OceanConfig oceanConfig = jaxbParser.read(inputStream);
         Assert.assertNull(oceanConfig);
     }
@@ -45,7 +45,7 @@ public class JAXBTests {
     public void readXMLWithoutFishes() {
         XMLString = ParsersTools.XMLStringWithoutFishes;
         InputStream inputStream = new ByteArrayInputStream(XMLString.getBytes());
-        IXMLParser jaxbParser = new JAXBParser();
+        IXMLParser jaxbParser = new JAXBParserXML();
         OceanConfig oceanConfig = jaxbParser.read(inputStream);
         Assert.assertNull(oceanConfig);
     }
