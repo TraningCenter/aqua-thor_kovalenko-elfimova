@@ -9,15 +9,29 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * Realization of Fish - SmallFish
+ */
 public class SmallFish extends Fish {
 
     public SmallFish() {
     }
 
+    /**
+     * constructor
+     *
+     * @param location current location
+     * @param lifetime max age
+     * @param progenyPeriod number of births
+     * @param searchRadius maximum number of cells to search
+     */
     public SmallFish(Location location, int lifetime, int progenyPeriod, int searchRadius) {
         super(location, lifetime, progenyPeriod, searchRadius);
     }
 
+    /**
+     * one fish action (move, give birth, die)
+     */
     @Override
     public void action() {
         Ocean ocean = Ocean.getInstanse();
@@ -34,6 +48,9 @@ public class SmallFish extends Fish {
         age++;
     }
 
+    /**
+     * move to next cell (random or target)
+     */
     @Override
     public void move() {
         Ocean ocean = Ocean.getInstanse();
@@ -77,12 +94,23 @@ public class SmallFish extends Fish {
         }
     }
 
+    /**
+     * check the presence of the enemy
+     *
+     * @param currentLocation location to check
+     * @return true if shark is in this location
+     */
     @Override
     protected boolean isEnemyPresent(Location currentLocation) {
         Ocean ocean = Ocean.getInstanse();
         return ocean.getFishByLocation(currentLocation) instanceof Shark;
     }
 
+    /**
+     * get fish type (SHARK/SMALL)
+     *
+     * @return SMALL
+     */
     @Override
     public FishType getType() {
         return FishType.SMALL;

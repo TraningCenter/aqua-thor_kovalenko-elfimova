@@ -18,12 +18,18 @@ import com.netcracker.unc.model.Ocean;
 import com.netcracker.unc.model.interfaces.IFish;
 import java.io.IOException;
 
+/**
+ * Ocean visualizer
+ */
 public class OceanVisualizer {
 
     Screen screen;
     Terminal terminal;
     TextGraphics textGraphics;
 
+    /**
+     * visualizer constructor
+     */
     public OceanVisualizer() {
         DefaultTerminalFactory defaultTerminalFactory = new DefaultTerminalFactory();
         try {
@@ -35,6 +41,9 @@ public class OceanVisualizer {
         }
     }
 
+    /**
+     * start screen
+     */
     public void startScreen() {
         try {
             screen.startScreen();
@@ -44,6 +53,9 @@ public class OceanVisualizer {
         screen.setCursorPosition(null);
     }
 
+    /**
+     * stop screen
+     */
     public void stopScreen() {
         try {
             screen.stopScreen();
@@ -52,6 +64,9 @@ public class OceanVisualizer {
         }
     }
 
+    /**
+     * visualize ocean system
+     */
     public void visualize() {
         try {
             screen.clear();
@@ -64,6 +79,9 @@ public class OceanVisualizer {
         }
     }
 
+    /**
+     * visualize matrix with fishes
+     */
     private void printMatrix() {
         Ocean ocean = Ocean.getInstanse();
         int shiftX = 5;
@@ -95,6 +113,9 @@ public class OceanVisualizer {
         }
     }
 
+    /**
+     * visualize information block
+     */
     private void printInfo() {
         Ocean ocean = Ocean.getInstanse();
         String infoLabel = String.format("Aquator [STEP %s]. Tor: %s, sharks: %s, smallFishes: %s. Press Esq to exit!", ocean.getStep(), ocean.isTor(), ocean.getSharks().size(), ocean.getSmallFishes().size());
@@ -128,10 +149,18 @@ public class OceanVisualizer {
         textGraphics.putString(labelBoxTopLeft.withRelative(1, 1), infoLabel, SGR.BOLD);
     }
 
+    /**
+     * clear screen
+     */
     public void clear() {
         screen.clear();
     }
 
+    /**
+     * refresh screen
+     *
+     * @throws IOException
+     */
     public void refresh() throws IOException {
         screen.refresh();
     }

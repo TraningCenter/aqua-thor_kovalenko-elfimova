@@ -22,6 +22,9 @@ import java.io.InputStream;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+/**
+ * Ocean system manager
+ */
 public class OceanManager {
 
     Ocean ocean;
@@ -30,12 +33,18 @@ public class OceanManager {
     boolean isStop = false;
     MetricsWriter metricsWriter;
 
+    /**
+     * start the ocean system
+     */
     public void run() {
         visualizer = new OceanVisualizer();
         visualizer.startScreen();
         mainMenu();
     }
 
+    /**
+     * start user menu
+     */
     private void mainMenu() {
         executor = Executors.newFixedThreadPool(1);
         configMenu();
@@ -60,6 +69,9 @@ public class OceanManager {
         }
     }
 
+    /**
+     * configuration menu
+     */
     private void configMenu() {
         visualizer.clear();
         TextGraphics textGraphics = visualizer.getTextGraphics();
@@ -106,6 +118,11 @@ public class OceanManager {
         }
     }
 
+    /**
+     * parser settings menu
+     *
+     * @param message message to user
+     */
     private void parserSettingsMenu(String message) {
         visualizer.clear();
         TextGraphics textGraphics = visualizer.getTextGraphics();
@@ -152,6 +169,11 @@ public class OceanManager {
         }
     }
 
+    /**
+     * concrete parser settings menu
+     *
+     * @param isInput true if parse is input
+     */
     private void concreteParserSettingsMenu(boolean isInput) {
         visualizer.clear();
         TextGraphics textGraphics = visualizer.getTextGraphics();
@@ -207,11 +229,20 @@ public class OceanManager {
         }
     }
 
+    /**
+     * exit of the system
+     */
     private void exit() {
         visualizer.stopScreen();
         System.exit(0);
     }
 
+    /**
+     * read configuration from file
+     *
+     * @return ocean configuration
+     * @throws IOException
+     */
     private OceanConfig readConfig() throws IOException {
         InputStream inputStream = new FileInputStream("config.xml");
         String value = CommonUtils.getParserProperty("inputparser").toLowerCase().trim();
