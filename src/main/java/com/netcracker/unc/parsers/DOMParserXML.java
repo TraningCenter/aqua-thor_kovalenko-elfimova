@@ -8,7 +8,6 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
@@ -18,19 +17,20 @@ import com.netcracker.unc.model.impl.Fish;
 import com.netcracker.unc.model.impl.Shark;
 import com.netcracker.unc.model.impl.SmallFish;
 import com.netcracker.unc.model.interfaces.IFish;
+import java.io.IOException;
 import org.w3c.dom.*;
 import org.xml.sax.SAXException;
-import org.xml.sax.SAXParseException;
 
 public class DOMParserXML implements IXMLParser {
 
     private OceanConfig oceanConfig;
 
+    @Override
     public OceanConfig read(InputStream config) {
         try {
             domParse(createDocumentBuilder().parse(config));
             return oceanConfig;
-        } catch (Exception e) {
+        } catch (IOException | NullPointerException | ParserConfigurationException | SAXException e) {
             e.printStackTrace();
         }
         return null;
@@ -166,6 +166,7 @@ public class DOMParserXML implements IXMLParser {
         return Integer.parseInt(integerNode.getTextContent());
     }
 
+    @Override
     public void write(OceanConfig oceanConfig, OutputStream outputStream) {
         try {
             this.oceanConfig = oceanConfig;

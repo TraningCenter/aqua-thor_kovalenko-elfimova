@@ -67,7 +67,6 @@ public class CommonUtils {
         String propertiesFilename = "config.properties";
         Properties prop = new Properties();
         String value;
-        value = null;
         try {
             prop.load(new FileInputStream(propertiesFilename));
             value = prop.getProperty(key);

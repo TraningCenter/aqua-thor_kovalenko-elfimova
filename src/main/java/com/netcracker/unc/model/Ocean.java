@@ -41,6 +41,11 @@ public class Ocean {
         this.width = oceanConfig.getWidth();
         this.isTor = oceanConfig.isTor();
         this.flowList = oceanConfig.getFlowList();
+        if (flowList.size() != height) {
+            for (int i = height - flowList.size(); i < height; i++) {
+                flowList.add(Flow.NONE);
+            }
+        }
         this.changeFlow = oceanConfig.getChangeFlow();
         this.sharks = oceanConfig.getSharks();
         fillMatrix(sharks);

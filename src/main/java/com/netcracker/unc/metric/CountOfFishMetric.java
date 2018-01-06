@@ -2,8 +2,7 @@ package com.netcracker.unc.metric;
 
 import com.netcracker.unc.model.Ocean;
 
-
-public class CountOfFishMetric implements IMetric{
+public class CountOfFishMetric implements IMetric {
 
     private String name;
     private double value;
@@ -13,6 +12,7 @@ public class CountOfFishMetric implements IMetric{
     }
 
     @Override
-    public String getName() 
+    public String getName() {
+        return name;
     }
 }

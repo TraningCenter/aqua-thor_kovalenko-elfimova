@@ -195,12 +195,15 @@ public class StAXParserXML implements IXMLParser {
             event = reader.next();
             switch (event) {
                 case XMLStreamConstants.START_ELEMENT:
-                    if (reader.getLocalName().equals("x")) {
-                        xFlag = true;
-                    } else if (reader.getLocalName().equals("y")) {
-                        yFlag = true;
-                    } else {
-                        return null;
+                    switch (reader.getLocalName()) {
+                        case "x":
+                            xFlag = true;
+                            break;
+                        case "y":
+                            yFlag = true;
+                            break;
+                        default:
+                            return null;
                     }
                     break;
                 case XMLStreamConstants.CHARACTERS:

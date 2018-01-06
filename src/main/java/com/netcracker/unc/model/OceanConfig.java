@@ -145,9 +145,6 @@ public class OceanConfig {
         if (!Objects.equals(this.sharks, other.sharks)) {
             return false;
         }
-        if (!Objects.equals(this.smallFishes, other.smallFishes)) {
-            return false;
-        }
-        return true;
+        return Objects.equals(this.smallFishes, other.smallFishes);
     }
 }

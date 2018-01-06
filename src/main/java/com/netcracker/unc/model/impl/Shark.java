@@ -44,7 +44,7 @@ public class Shark extends Fish {
             return;
         }
         searchTarget();
-        if (progenyPeriod == 1 && age % (lifetime / 2 + 1) == 0 && age != 0 || age != 1 && age % (lifetime / progenyPeriod - 1) == 0 && age != 0) {
+        if (age % (lifetime / 2 + 1) == 0 && age != 0) {
             giveBirth();
         } else {
             move();

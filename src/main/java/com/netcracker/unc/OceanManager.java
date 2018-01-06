@@ -18,10 +18,8 @@ import com.netcracker.unc.visualizer.OceanVisualizer;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Properties;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import javax.xml.parsers.SAXParser;
 
 public class OceanManager {
 
@@ -57,13 +55,12 @@ public class OceanManager {
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
-
         }
     }
 
     private void configMenu() {
         visualizer.clear();
-        TextGraphics textGraphics = visualizer.getScreen().newTextGraphics();
+        TextGraphics textGraphics = visualizer.getTextGraphics();
         try {
             while (true) {
                 textGraphics.setForegroundColor(TextColor.ANSI.WHITE);
@@ -77,7 +74,6 @@ public class OceanManager {
                 while (keyStroke == null) {
                     keyStroke = visualizer.getScreen().readInput();
                 }
-                System.out.println(keyStroke.getKeyType().toString());
                 switch (keyStroke.getKeyType()) {
                     case Escape:
                         exit();
@@ -110,7 +106,7 @@ public class OceanManager {
 
     private void parserSettingsMenu(String message) {
         visualizer.clear();
-        TextGraphics textGraphics = visualizer.getScreen().newTextGraphics();
+        TextGraphics textGraphics = visualizer.getTextGraphics();
         if (message != null && !message.isEmpty()) {
             textGraphics.setForegroundColor(TextColor.ANSI.GREEN);
             textGraphics.putString(new TerminalPosition(0, 0), message);
@@ -127,7 +123,6 @@ public class OceanManager {
                 while (keyStroke == null) {
                     keyStroke = visualizer.getScreen().readInput();
                 }
-                System.out.println(keyStroke.getKeyType().toString());
                 switch (keyStroke.getKeyType()) {
                     case Escape:
                         mainMenu();
@@ -157,7 +152,7 @@ public class OceanManager {
 
     private void concreteParserSettingsMenu(boolean isInput) {
         visualizer.clear();
-        TextGraphics textGraphics = visualizer.getScreen().newTextGraphics();
+        TextGraphics textGraphics = visualizer.getTextGraphics();
         String key = isInput ? "inputparser" : "outputparser";
         try {
             while (true) {
@@ -173,7 +168,6 @@ public class OceanManager {
                 while (keyStroke == null) {
                     keyStroke = visualizer.getScreen().readInput();
                 }
-                System.out.println(keyStroke.getKeyType().toString());
                 switch (keyStroke.getKeyType()) {
                     case Escape:
                         parserSettingsMenu("");
@@ -216,13 +210,13 @@ public class OceanManager {
         System.exit(0);
     }
 
-    public OceanConfig readConfig() throws IOException {
+    private OceanConfig readConfig() throws IOException {
         InputStream inputStream = new FileInputStream("config.xml");
         String value = CommonUtils.getParserProperty("inputparser").toLowerCase().trim();
         IXMLParser parser;
         switch (value) {
             case "dom":
-               parser = new DOMParserXML();
+                parser = new DOMParserXML();
                 break;
             case "sax":
                 parser = new SAXParserXML();
@@ -237,7 +231,6 @@ public class OceanManager {
                 parserSettingsMenu("Ошибка! Выбранный в настройках парсер не найден");
                 return null;
         }
-        
         OceanConfig config = parser.read(inputStream);
         inputStream.close();
         return config;

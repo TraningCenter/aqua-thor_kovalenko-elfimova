@@ -22,12 +22,14 @@ public class OceanVisualizer {
 
     Screen screen;
     Terminal terminal;
+    TextGraphics textGraphics;
 
     public OceanVisualizer() {
         DefaultTerminalFactory defaultTerminalFactory = new DefaultTerminalFactory();
         try {
             terminal = defaultTerminalFactory.createTerminal();
             screen = new TerminalScreen(terminal);
+            textGraphics = screen.newTextGraphics();
         } catch (IOException ex) {
             System.out.println(ex.getMessage());
         }
@@ -69,6 +71,7 @@ public class OceanVisualizer {
         IFish[][] matrix = ocean.getMatrix();
         for (int i = 0; i < ocean.getHeight(); i++) {
             for (int j = 0; j < ocean.getWidth(); j++) {
+                screen.doResizeIfNecessary();
                 if (matrix[i][j] != null) {
                     if (matrix[i][j].getType() == SHARK) {
                         screen.setCharacter(j + shiftY, i + shiftX, new TextCharacter(' ', TextColor.ANSI.RED, TextColor.ANSI.RED));
@@ -99,7 +102,6 @@ public class OceanVisualizer {
         TerminalSize labelBoxSize = new TerminalSize(infoLabel.length() + 2, 3);
         TerminalPosition labelBoxTopRightCorner;
         labelBoxTopRightCorner = labelBoxTopLeft.withRelativeColumn(labelBoxSize.getColumns() - 1);
-        TextGraphics textGraphics = screen.newTextGraphics();
         //draw horizontal and vertical lines
         TextColor textColor = TextColor.ANSI.YELLOW;
         textGraphics.drawLine(
@@ -136,5 +138,9 @@ public class OceanVisualizer {
 
     public Screen getScreen() {
         return screen;
+    }
+
+    public TextGraphics getTextGraphics() {
+        return textGraphics;
     }
 }

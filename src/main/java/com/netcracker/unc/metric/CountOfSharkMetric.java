@@ -16,6 +16,7 @@ public class CountOfSharkMetric implements IMetric{
 
     @Override
     public String getName() {
+        return name;
     }
 }
 

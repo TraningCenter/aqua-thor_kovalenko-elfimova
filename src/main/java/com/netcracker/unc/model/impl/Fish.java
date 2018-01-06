@@ -135,6 +135,7 @@ public abstract class Fish implements IFish {
         this.progenyPeriod = progenyPeriod;
     }
 
+    @Override
     public int getAge() {
         return age;
     }

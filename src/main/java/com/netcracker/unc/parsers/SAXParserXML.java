@@ -8,10 +8,10 @@ import com.netcracker.unc.model.impl.Shark;
 import com.netcracker.unc.model.impl.SmallFish;
 import com.netcracker.unc.model.interfaces.IFish;
 import com.netcracker.unc.utils.CommonUtils;
+import java.io.IOException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
-import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 import javax.xml.transform.TransformerConfigurationException;
@@ -19,11 +19,11 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.sax.SAXTransformerFactory;
 import javax.xml.transform.sax.TransformerHandler;
 import javax.xml.transform.stream.StreamResult;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
+import javax.xml.parsers.ParserConfigurationException;
 
 public class SAXParserXML extends DefaultHandler implements IXMLParser {
 
@@ -39,6 +39,7 @@ public class SAXParserXML extends DefaultHandler implements IXMLParser {
     private SAXTransformerFactory saxTransFactory;
     private TransformerHandler transHandler;
 
+    @Override
     public OceanConfig read(InputStream config) {
         try {
             SAXParserFactory factory = SAXParserFactory.newInstance();
@@ -50,7 +51,7 @@ public class SAXParserXML extends DefaultHandler implements IXMLParser {
                 return null;
             }
             return oceanConfig;
-        } catch (Exception e) {
+        } catch (IOException | ParserConfigurationException | SAXException e) {
             e.printStackTrace();
         }
        return null;
@@ -171,7 +172,7 @@ public class SAXParserXML extends DefaultHandler implements IXMLParser {
     public void write(OceanConfig oceanConfig, OutputStream outputStream) {
         try {
             this.oceanConfig = oceanConfig;
-            factory = TransformerFactory.newInstance().newInstance();
+            factory = TransformerFactory.newInstance();
             saxTransFactory = (SAXTransformerFactory) factory;
             transHandler = saxTransFactory.newTransformerHandler();
             transHandler.setResult(new StreamResult(outputStream));
