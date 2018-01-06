@@ -17,8 +17,17 @@ import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
+/**
+ * StAX parser
+ */
 public class StAXParserXML implements IXMLParser {
 
+    /**
+     * read ocean configuration from input stream
+     *
+     * @param config input stream
+     * @return ocean configuration
+     */
     @Override
     public OceanConfig read(InputStream config) {
         OceanConfig oceanConfig = new OceanConfig();
@@ -93,6 +102,14 @@ public class StAXParserXML implements IXMLParser {
         return oceanConfig;
     }
 
+    /**
+     * parse flows
+     *
+     * @param reader XMLStreamReader
+     * @return list of flows
+     * @throws XMLStreamException
+     * @throws IllegalArgumentException
+     */
     private List<Flow> getFlows(XMLStreamReader reader) throws XMLStreamException, IllegalArgumentException {
         List<Flow> flows = new ArrayList<>();
         boolean flowFlag = false;
@@ -123,7 +140,15 @@ public class StAXParserXML implements IXMLParser {
         return null;
     }
 
-    private List<IFish> getFishes(XMLStreamReader reader, boolean sharks) throws XMLStreamException {
+    /**
+     * parse fishes
+     *
+     * @param reader XMLStreamReader
+     * @param isSharks
+     * @return list of fishes (Sharks/SmallFishes)
+     * @throws XMLStreamException
+     */
+    private List<IFish> getFishes(XMLStreamReader reader, boolean isSharks) throws XMLStreamException {
         List<IFish> fishes = new ArrayList<>();
         boolean lifetimeFlag = false, progenyPeriodFlag = false, searchRadiusFlag = false, hungerTimeFlag = false;
         Fish fish = new SmallFish();
@@ -143,7 +168,7 @@ public class StAXParserXML implements IXMLParser {
                         progenyPeriodFlag = true;
                     } else if (name.equals("searchRadius")) {
                         searchRadiusFlag = true;
-                    } else if (sharks && name.equals("hungerTime")) {
+                    } else if (isSharks && name.equals("hungerTime")) {
                         hungerTimeFlag = true;
                     } else if (reader.getLocalName().equals("location")) {
                         fish.setLocation(getLocation(reader));
@@ -171,7 +196,7 @@ public class StAXParserXML implements IXMLParser {
                     break;
                 case XMLStreamConstants.END_ELEMENT:
                     name = reader.getLocalName();
-                    if (sharks && name.equals("shark")) {
+                    if (isSharks && name.equals("shark")) {
                         fish = new Shark(fish, hungerTime);
                         fishes.add(fish);
                         fish = new SmallFish();
@@ -187,6 +212,13 @@ public class StAXParserXML implements IXMLParser {
         return null;
     }
 
+    /**
+     * parse location
+     *
+     * @param reader XMLStreamReader
+     * @return location
+     * @throws XMLStreamException
+     */
     private Location getLocation(XMLStreamReader reader) throws XMLStreamException {
         Location location = new Location();
         boolean xFlag = false, yFlag = false;

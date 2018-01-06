@@ -9,8 +9,16 @@ import com.netcracker.unc.model.interfaces.IFish;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Class to create new random ocean
+ */
 public class OceanCreator {
 
+    /**
+     * get default ocean configuration (10*50)
+     *
+     * @return ocean configuration
+     */
     public static OceanConfig getDefaultOceanConfig() {
         List<Flow> flows = new ArrayList();
         flows.add(Flow.LEFT);

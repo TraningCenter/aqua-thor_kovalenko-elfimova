@@ -10,27 +10,48 @@ import com.netcracker.unc.model.impl.SmallFish;
 import com.netcracker.unc.model.interfaces.IFish;
 import com.netcracker.unc.utils.CommonUtils;
 
+/**
+ * Class to create new object of fish (smallfish/shark)
+ */
 public class FishCreator {
 
+    /**
+     * create new random fish by type (SHARK/SMALL)
+     *
+     * @param fishType type of fish
+     * @return new random fish. If type is incorrect returns null
+     */
     public static IFish createFish(FishType fishType) {
         Location emptyLocation = getEmptyLocation();
         if (fishType == SHARK) {
-            return createShark(emptyLocation, null);
+            return createShark(null, emptyLocation);
         } else if (fishType == SMALL) {
-            return createSmallFish(emptyLocation, null);
+            return createSmallFish(null, emptyLocation);
         }
         return null;
     }
 
+    /**
+     * create new fish with parent parameters in specific location
+     *
+     * @param fish parent fish
+     * @param location specific location
+     * @return new successor fish. If type is incorrect returns null
+     */
     public static IFish createSuccessorFish(IFish fish, Location location) {
         if (fish.getType() == SHARK) {
-            return createShark(location, (Shark) fish);
+            return createShark((Shark) fish, location);
         } else if (fish.getType() == SMALL) {
-            return createSmallFish(location, (SmallFish) fish);
+            return createSmallFish((SmallFish) fish, location);
         }
         return null;
     }
 
+    /**
+     * get random empty location
+     *
+     * @return empty location
+     */
     private static Location getEmptyLocation() {
         int i, j;
         Ocean ocean = Ocean.getInstanse();
@@ -43,7 +64,15 @@ public class FishCreator {
         }
     }
 
-    private static IFish createShark(Location location, Shark fish) {
+    /**
+     * create new shark with parent parameters (or random shark) in specific
+     * location
+     *
+     * @param fish parent fish
+     * @param location specific location
+     * @return new successor shark. If parent fish is null returns random shark
+     */
+    private static IFish createShark(Shark fish, Location location) {
         if (fish != null) {
             return new Shark(location, fish.getLifetime(), fish.getProgenyPeriod(), fish.getSearchRadius(), fish.getHungerTime());
         }
@@ -53,7 +82,16 @@ public class FishCreator {
         return new Shark(location, lifetime, 1, searchRadius, hungerTime);
     }
 
-    private static IFish createSmallFish(Location location, SmallFish fish) {
+    /**
+     * create new smallfish with parent parameters (or random smallfish) in
+     * specific location
+     *
+     * @param fish parent fish
+     * @param location specific location
+     * @return new successor smallfish. If parent fish is null returns random
+     * smallfish
+     */
+    private static IFish createSmallFish(SmallFish fish, Location location) {
         if (fish != null) {
             return new SmallFish(location, fish.getLifetime(), fish.getProgenyPeriod(), fish.getSearchRadius());
         }
@@ -62,5 +100,4 @@ public class FishCreator {
         int searchRadius = CommonUtils.randInt(1, 5);
         return new SmallFish(location, lifetime, progenyPeriod, searchRadius);
     }
-
 }

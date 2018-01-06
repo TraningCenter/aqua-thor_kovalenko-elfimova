@@ -4,6 +4,9 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 
+/**
+ * Location (cell of matrix)
+ */
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Location {
 
@@ -15,6 +18,11 @@ public class Location {
     public Location() {
     }
 
+    /**
+     * location constructor
+     * @param x row
+     * @param y column
+     */
     public Location(int x, int y) {
         this.x = x;
         this.y = y;

@@ -11,6 +11,9 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 
+/**
+ * Ocean configuration for ocean creation
+ */
 @XmlRootElement(name = "ocean")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class OceanConfig {
@@ -36,6 +39,17 @@ public class OceanConfig {
     public OceanConfig() {
     }
 
+    /**
+     * ocean configuration constructor
+     *
+     * @param isTor closed system
+     * @param height count of rows
+     * @param width count of columns
+     * @param flowList flow for each row
+     * @param changeFlow step to change flows
+     * @param sharks list of sharks
+     * @param smallFishes list of smallFishes
+     */
     public OceanConfig(boolean isTor, int height, int width, List<Flow> flowList, int changeFlow, List<IFish> sharks, List<IFish> smallFishes) {
         this.isTor = isTor;
         this.height = height;

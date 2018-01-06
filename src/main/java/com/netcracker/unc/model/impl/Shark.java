@@ -13,6 +13,9 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 
+/**
+ * Realization of Fish - Shark
+ */
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Shark extends Fish {
 
@@ -25,16 +28,34 @@ public class Shark extends Fish {
 
     }
 
+    /**
+     * shark constructor
+     *
+     * @param fish parent fish
+     * @param hungerTime maximum hunger time
+     */
     public Shark(Fish fish, int hungerTime) {
         super(fish.getLocation(), fish.getLifetime(), fish.getProgenyPeriod(), fish.getSearchRadius());
         this.hungerTime = hungerTime;
     }
 
+    /**
+     * shark constructor
+     *
+     * @param location current location
+     * @param lifetime max age
+     * @param progenyPeriod number of births
+     * @param searchRadius maximum number of cells to search
+     * @param hungerTime maximum hunger time
+     */
     public Shark(Location location, int lifetime, int progenyPeriod, int searchRadius, int hungerTime) {
         super(location, lifetime, progenyPeriod, searchRadius);
         this.hungerTime = hungerTime;
     }
 
+    /**
+     * one fish action (move, give birth, die)
+     */
     @Override
     public void action() {
         Ocean ocean = Ocean.getInstanse();
@@ -55,6 +76,9 @@ public class Shark extends Fish {
         }
     }
 
+    /**
+     * move to next cell (random or target)
+     */
     @Override
     public void move() {
         Ocean ocean = Ocean.getInstanse();
@@ -90,17 +114,33 @@ public class Shark extends Fish {
         }
     }
 
+    /**
+     * check the presence of the enemy
+     *
+     * @param currentLocation location to check
+     * @return true if smallfish is in this location
+     */
     @Override
     protected boolean isEnemyPresent(Location currentLocation) {
         Ocean ocean = Ocean.getInstanse();
         return ocean.getFishByLocation(currentLocation) instanceof SmallFish;
     }
 
+    /**
+     * get fish type (SHARK/SMALL)
+     *
+     * @return SHARK
+     */
     @Override
     public FishType getType() {
         return FishType.SHARK;
     }
 
+    /**
+     * eat smallfish in specific location
+     *
+     * @param newLocation smallfish location
+     */
     public void eat(Location newLocation) {
         Ocean ocean = Ocean.getInstanse();
         IFish fish = ocean.getFishByLocation(newLocation);

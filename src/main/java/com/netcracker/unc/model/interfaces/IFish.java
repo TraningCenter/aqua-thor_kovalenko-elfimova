@@ -3,6 +3,9 @@ package com.netcracker.unc.model.interfaces;
 import com.netcracker.unc.model.FishType;
 import com.netcracker.unc.model.Location;
 
+/**
+ * Fish interface
+ */
 public interface IFish {
 
     void action();

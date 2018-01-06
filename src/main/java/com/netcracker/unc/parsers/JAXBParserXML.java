@@ -9,8 +9,16 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.ValidationEvent;
 
+/**
+ * JAXB parser
+ */
 public class JAXBParserXML implements IXMLParser {
 
+    /**
+     * read config from input stream 
+     * @param config input stream
+     * @return ocean configuration
+     */
     @Override
     public OceanConfig read(InputStream config) {
         try {

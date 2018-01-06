@@ -21,10 +21,21 @@ import java.io.IOException;
 import org.w3c.dom.*;
 import org.xml.sax.SAXException;
 
+/**
+ * Dom parser
+ *
+ * @author KovNa
+ */
 public class DOMParserXML implements IXMLParser {
 
     private OceanConfig oceanConfig;
 
+    /**
+     * read config from input stream
+     *
+     * @param config input stream
+     * @return ocean configuration
+     */
     @Override
     public OceanConfig read(InputStream config) {
         try {
@@ -36,11 +47,23 @@ public class DOMParserXML implements IXMLParser {
         return null;
     }
 
+    /**
+     * create document builder
+     *
+     * @return document builder
+     * @throws ParserConfigurationException
+     */
     private DocumentBuilder createDocumentBuilder() throws ParserConfigurationException {
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
         return dbFactory.newDocumentBuilder();
     }
 
+    /**
+     * parse ocean config
+     *
+     * @param document
+     * @throws NullPointerException
+     */
     private void domParse(Document document) throws NullPointerException {
         oceanConfig = new OceanConfig();
         Element documentElement = document.getDocumentElement();
@@ -54,6 +77,12 @@ public class DOMParserXML implements IXMLParser {
         parseFish(getFirstElementByTagName(documentElement, "smallFishes"));
     }
 
+    /**
+     * parse fish
+     *
+     * @param sameFishes fishes
+     * @throws NullPointerException
+     */
     private void parseFish(Element sameFishes) throws NullPointerException {
         int hungerTime = 0;
         List<IFish> smallfishes = new ArrayList<>();
@@ -104,22 +133,49 @@ public class DOMParserXML implements IXMLParser {
         }
     }
 
+    /**
+     * parse changeFlow
+     *
+     * @param changeFlow
+     */
     private void parseOceanChangeFlow(Element changeFlow) {
         oceanConfig.setChangeFlow(parseInteger(changeFlow));
     }
 
+    /**
+     * get first element by tag name
+     *
+     * @param elementToSearch element to search
+     * @param tagName tag name
+     * @return
+     */
     private Element getFirstElementByTagName(Element elementToSearch, String tagName) {
         return (Element) elementToSearch.getElementsByTagName(tagName).item(0);
     }
 
+    /**
+     * parse height
+     *
+     * @param oceanHeightElement element
+     */
     private void parseOceanHeight(Element oceanHeightElement) {
         oceanConfig.setHeight(parseInteger(oceanHeightElement));
     }
 
+    /**
+     * parse weight
+     *
+     * @param oceanWeightElement element
+     */
     private void parseOceanWeight(Element oceanWeightElement) {
         oceanConfig.setWidth(parseInteger(oceanWeightElement));
     }
 
+    /**
+     * parse tor
+     *
+     * @param oceanTypeNode node
+     */
     private void parseOceanType(Node oceanTypeNode) {
         switch (oceanTypeNode.getTextContent()) {
             case "true":
@@ -131,6 +187,11 @@ public class DOMParserXML implements IXMLParser {
         }
     }
 
+    /**
+     * parse flows
+     *
+     * @param flowElement element
+     */
     private void parseOceanFlowList(Element flowElement) {
         List<Flow> flows = new ArrayList<>();
         NodeList oceanFlowList = flowElement.getElementsByTagName("flow");
@@ -143,6 +204,12 @@ public class DOMParserXML implements IXMLParser {
         oceanConfig.setFlowList(flows);
     }
 
+    /**
+     * parse location
+     *
+     * @param locationElement element
+     * @return location
+     */
     private Location parseLocation(Element locationElement) {
         Location location = new Location();
         NodeList locationChildNodes = locationElement.getChildNodes();
@@ -162,6 +229,12 @@ public class DOMParserXML implements IXMLParser {
         return location;
     }
 
+    /**
+     * parse integer value
+     *
+     * @param integerNode node
+     * @return integer value
+     */
     private Integer parseInteger(Node integerNode) {
         return Integer.parseInt(integerNode.getTextContent());
     }

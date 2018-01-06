@@ -8,6 +8,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * Ocean class with matrix of cells, flows and fishes
+ */
 public class Ocean {
 
     private static Ocean ocean;
@@ -21,6 +24,17 @@ public class Ocean {
     private List<IFish> smallFishes;
     private int step;
 
+    /**
+     * ocean constructor
+     *
+     * @param height count of rows
+     * @param width count of columns
+     * @param isTor closed system
+     * @param flowList flow for each row
+     * @param changeFlow step to change flows
+     * @param sharks list of sharks
+     * @param smallFishes list of smallFishes
+     */
     public Ocean(int height, int width, boolean isTor, List<Flow> flowList, int changeFlow, List<IFish> sharks, List<IFish> smallFishes) {
         matrix = new IFish[height][width];
         this.height = height;
@@ -35,6 +49,11 @@ public class Ocean {
         ocean = this;
     }
 
+    /**
+     * ocean constructor based on ocean configuration
+     *
+     * @param oceanConfig ocean configuration
+     */
     public Ocean(OceanConfig oceanConfig) {
         matrix = new IFish[oceanConfig.getHeight()][oceanConfig.getWidth()];
         this.height = oceanConfig.getHeight();
@@ -54,6 +73,9 @@ public class Ocean {
         ocean = this;
     }
 
+    /**
+     * one step of all fishes
+     */
     public void oneStep() {
         if (step % changeFlow == 0 && step != 0) {
             changeFlow();
@@ -65,6 +87,9 @@ public class Ocean {
         step++;
     }
 
+    /**
+     * random flows change
+     */
     public void changeFlow() {
         Random rnd = new Random();
         int num;
@@ -74,6 +99,12 @@ public class Ocean {
         }
     }
 
+    /**
+     * move fish in matrix
+     *
+     * @param fish fish for movement
+     * @param newLocation new location
+     */
     public void moveFish(IFish fish, Location newLocation) {
         Location oldLocation = fish.getLocation();
         matrix[newLocation.getX()][newLocation.getY()] = fish;
@@ -81,6 +112,13 @@ public class Ocean {
         fish.setLocation(newLocation);
     }
 
+    /**
+     * get next location in matrix by direction
+     *
+     * @param direction direction
+     * @param location current location
+     * @return next location. If next cell is busy returns null
+     */
     public Location getNextLocation(Direction direction, @NotNull Location location) {
         Location newLocation;
         int x = location.getX();
@@ -147,11 +185,21 @@ public class Ocean {
         }
     }
 
+    /**
+     * add fish to matrix
+     *
+     * @param fish fish
+     */
     private void addFishInMatrix(IFish fish) {
         Location location = fish.getLocation();
         matrix[location.getX()][location.getY()] = fish;
     }
 
+    /**
+     * add fish to ocean
+     *
+     * @param fish fish
+     */
     public void addFish(IFish fish) {
         addFishInMatrix(fish);
         if (fish.getType() == FishType.SHARK) {
@@ -161,22 +209,49 @@ public class Ocean {
         }
     }
 
+    /**
+     * fill matrix with fishes
+     *
+     * @param fishes list of fishes
+     */
     private void fillMatrix(List<IFish> fishes) {
         fishes.forEach(this::addFishInMatrix);
     }
 
+    /**
+     * get fish by matrix location
+     *
+     * @param location location
+     * @return fish
+     */
     public IFish getFishByLocation(Location location) {
         return matrix[location.getX()][location.getY()];
     }
 
+    /**
+     * check location to emptiness
+     *
+     * @param location location
+     * @return true - if location is empty
+     */
     public boolean isEmptyLocation(Location location) {
         return matrix[location.getX()][location.getY()] == null;
     }
 
+    /**
+     * get maximum population of all fishes
+     *
+     * @return max population
+     */
     public int getMaxPopulation() {
         return height * width / 3;
     }
 
+    /**
+     * get current population of all fishes in the ocean
+     *
+     * @return current population
+     */
     public int getAllPopulation() {
         return getSharks().size() + getSmallFishes().size();
     }

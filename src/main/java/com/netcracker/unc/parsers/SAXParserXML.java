@@ -39,6 +39,12 @@ public class SAXParserXML extends DefaultHandler implements IXMLParser {
     private SAXTransformerFactory saxTransFactory;
     private TransformerHandler transHandler;
 
+    /**
+     * read ocean config from input stream
+     *
+     * @param config input stream
+     * @return ocean configuration
+     */
     @Override
     public OceanConfig read(InputStream config) {
         try {
@@ -54,15 +60,24 @@ public class SAXParserXML extends DefaultHandler implements IXMLParser {
         } catch (IOException | ParserConfigurationException | SAXException e) {
             e.printStackTrace();
         }
-       return null;
+        return null;
     }
 
     OceanConfig getOceanConfig() {
         return oceanConfig;
     }
 
+    /**
+     * start element
+     *
+     * @param uri
+     * @param localName
+     * @param qName
+     * @param attributes
+     * @throws SAXException
+     */
     @Override
-    public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException{
+    public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
         currentElement = qName;
         switch (currentElement) {
             case "ocean":
@@ -89,8 +104,16 @@ public class SAXParserXML extends DefaultHandler implements IXMLParser {
         }
     }
 
+    /**
+     * characters
+     *
+     * @param ch chars
+     * @param start start position
+     * @param length length
+     * @throws SAXException
+     */
     @Override
-    public void characters(char[] ch, int start, int length) throws SAXException  {
+    public void characters(char[] ch, int start, int length) throws SAXException {
         String text = new String(ch, start, length);
         if (text.contains("<") || currentElement == null) {
             return;
@@ -141,6 +164,14 @@ public class SAXParserXML extends DefaultHandler implements IXMLParser {
         }
     }
 
+    /**
+     * end element
+     *
+     * @param uri
+     * @param localName
+     * @param qName
+     * @throws SAXException
+     */
     @Override
     public void endElement(String uri, String localName, String qName) throws SAXException {
         switch (qName) {

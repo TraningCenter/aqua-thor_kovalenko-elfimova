@@ -12,6 +12,9 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlTransient;
 
+/**
+ * Abstarct fish class
+ */
 @XmlTransient
 @XmlAccessorType(XmlAccessType.FIELD)
 public abstract class Fish implements IFish {
@@ -27,10 +30,21 @@ public abstract class Fish implements IFish {
     protected int searchRadius;
     protected Location target;
 
+    /**
+     * empty fish constructor
+     */
     public Fish() {
 
     }
 
+    /**
+     * constructor
+     *
+     * @param location current location
+     * @param lifetime max age
+     * @param progenyPeriod number of births
+     * @param searchRadius maximum number of cells to search
+     */
     public Fish(Location location, int lifetime, int progenyPeriod, int searchRadius) {
         this.location = location;
         this.lifetime = lifetime;
@@ -38,14 +52,31 @@ public abstract class Fish implements IFish {
         this.searchRadius = searchRadius;
     }
 
+    /**
+     * move to next cell
+     */
     @Override
     public abstract void move();
 
+    /**
+     * get fish type (SHARK/SMALL)
+     *
+     * @return fish type
+     */
     @Override
     public abstract FishType getType();
 
+    /**
+     * check the presence of the enemy
+     *
+     * @param currentLocation location to check
+     * @return true if enemy is in this location
+     */
     protected abstract boolean isEnemyPresent(Location currentLocation);
 
+    /**
+     * select the target (cell) where to go
+     */
     @Override
     public void searchTarget() {
         Ocean ocean = Ocean.getInstanse();
@@ -82,6 +113,9 @@ public abstract class Fish implements IFish {
         this.setTarget(nearestLocation);
     }
 
+    /**
+     * create a new fish due to the progeny period
+     */
     @Override
     public void giveBirth() {
         Ocean ocean = Ocean.getInstanse();
@@ -98,6 +132,9 @@ public abstract class Fish implements IFish {
         ocean.addFish(fish);
     }
 
+    /**
+     * die fish
+     */
     @Override
     public void die() {
         Ocean ocean = Ocean.getInstanse();
