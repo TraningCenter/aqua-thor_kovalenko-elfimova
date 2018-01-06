@@ -32,6 +32,7 @@ public class OceanManager {
     ExecutorService executor;
     boolean isStop = false;
     MetricsWriter metricsWriter;
+    int writePeriod = 10;
 
     /**
      * start the ocean system
@@ -81,7 +82,7 @@ public class OceanManager {
                 textGraphics.putString(new TerminalPosition(0, 1), "Выберите конфигурацию: ");
                 textGraphics.putString(new TerminalPosition(0, 2), "1. Из файла config.xml");
                 textGraphics.putString(new TerminalPosition(0, 3), "2. Пример по умолчанию");
-                textGraphics.putString(new TerminalPosition(0, 4), "3. Настройка парсера");
+                textGraphics.putString(new TerminalPosition(0, 4), "3. Настройка парсеров");
                 textGraphics.putString(new TerminalPosition(0, 5), "Esq. Выход");
                 visualizer.refresh();
                 KeyStroke keyStroke = visualizer.getScreen().readInput();
@@ -104,7 +105,7 @@ public class OceanManager {
                                 ocean = new Ocean(OceanCreator.getDefaultOceanConfig());
                                 return;
                             case '3':
-                                parserSettingsMenu("");
+                                parserSettingsMenu("", false);
                                 break;
                             default:
                                 textGraphics.setForegroundColor(TextColor.ANSI.RED);
@@ -122,21 +123,28 @@ public class OceanManager {
      * parser settings menu
      *
      * @param message message to user
+     * @param isError
      */
-    private void parserSettingsMenu(String message) {
+    private void parserSettingsMenu(String message, boolean isError) {
         visualizer.clear();
         TextGraphics textGraphics = visualizer.getTextGraphics();
         if (message != null && !message.isEmpty()) {
-            textGraphics.setForegroundColor(TextColor.ANSI.GREEN);
-            textGraphics.putString(new TerminalPosition(0, 0), message);
+            if (isError) {
+                textGraphics.setForegroundColor(TextColor.ANSI.RED);
+                textGraphics.putString(new TerminalPosition(0, 0), message);
+            } else {
+                textGraphics.setForegroundColor(TextColor.ANSI.GREEN);
+                textGraphics.putString(new TerminalPosition(0, 0), message);
+            }
         }
         try {
             while (true) {
                 textGraphics.setForegroundColor(TextColor.ANSI.WHITE);
-                textGraphics.putString(new TerminalPosition(0, 1), "Выбор парсеров: ");
+                textGraphics.putString(new TerminalPosition(0, 1), "Настройка парсеров: ");
                 textGraphics.putString(new TerminalPosition(0, 2), "1. Парсер ввода");
                 textGraphics.putString(new TerminalPosition(0, 3), "2. Парсер вывода");
-                textGraphics.putString(new TerminalPosition(0, 4), "Esq. Назад");
+                textGraphics.putString(new TerminalPosition(0, 4), "3. Периодичность сохранения в файл");
+                textGraphics.putString(new TerminalPosition(0, 5), "Esq. Назад");
                 visualizer.refresh();
                 KeyStroke keyStroke = visualizer.getScreen().readInput();
                 while (keyStroke == null) {
@@ -157,9 +165,12 @@ public class OceanManager {
                             case '2':
                                 concreteParserSettingsMenu(false);
                                 return;
+                            case '3':
+                                inputWritePeriod();
+                                break;
                             default:
                                 textGraphics.setForegroundColor(TextColor.ANSI.RED);
-                                textGraphics.putString(new TerminalPosition(0, 0), "Ошибка! Введите число от 1 до 2!");
+                                textGraphics.putString(new TerminalPosition(0, 0), "Ошибка! Введите число от 1 до 3!");
                                 break;
                         }
                 }
@@ -194,7 +205,7 @@ public class OceanManager {
                 }
                 switch (keyStroke.getKeyType()) {
                     case Escape:
-                        parserSettingsMenu("");
+                        parserSettingsMenu("", false);
                         return;
                     case EOF:
                         exit();
@@ -203,25 +214,74 @@ public class OceanManager {
                         switch (keyStroke.getCharacter()) {
                             case '1':
                                 CommonUtils.setParserProperty(key, "dom");
-                                parserSettingsMenu(String.format("%s -> dom. Настройки сохранены", key));
+                                parserSettingsMenu(String.format("%s -> dom. Настройки сохранены", key), false);
                                 return;
                             case '2':
                                 CommonUtils.setParserProperty(key, "sax");
-                                parserSettingsMenu(String.format("%s -> sax. Настройки сохранены", key));
+                                parserSettingsMenu(String.format("%s -> sax. Настройки сохранены", key), false);
                                 return;
                             case '3':
                                 CommonUtils.setParserProperty(key, "stax");
-                                parserSettingsMenu(String.format("%s -> stax. Настройки сохранены", key));
+                                parserSettingsMenu(String.format("%s -> stax. Настройки сохранены", key), false);
                                 return;
                             case '4':
                                 CommonUtils.setParserProperty(key, "jaxb");
-                                parserSettingsMenu(String.format("%s -> jaxb. Настройки сохранены", key));
+                                parserSettingsMenu(String.format("%s -> jaxb. Настройки сохранены", key), false);
                                 return;
                             default:
                                 textGraphics.setForegroundColor(TextColor.ANSI.RED);
                                 textGraphics.putString(new TerminalPosition(0, 0), "Ошибка! Введите число от 1 до 4!");
                                 break;
                         }
+                }
+            }
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    /**
+     * input positive integer (writePeriod)
+     */
+    private void inputWritePeriod() {
+        visualizer.clear();
+        TextGraphics textGraphics = visualizer.getTextGraphics();
+        StringBuilder sb = new StringBuilder();
+        try {
+            while (true) {
+                textGraphics.setForegroundColor(TextColor.ANSI.WHITE);
+                textGraphics.putString(new TerminalPosition(0, 1), String.format("Текушая периодичность: %s", writePeriod));
+                textGraphics.putString(new TerminalPosition(0, 2), "Введите положительное число: " + sb.toString());
+                visualizer.refresh();
+                KeyStroke keyStroke = visualizer.getScreen().readInput();
+                while (keyStroke == null) {
+                    keyStroke = visualizer.getScreen().readInput();
+                }
+                switch (keyStroke.getKeyType()) {
+                    case Escape:
+                        parserSettingsMenu("", false);
+                        return;
+                    case EOF:
+                        exit();
+                        break;
+                    case Enter:
+                        int i;
+                        try {
+                            i = Integer.parseInt(sb.toString());
+                        } catch (NumberFormatException ex) {
+                            parserSettingsMenu(String.format("Ошибка! Введено некорректное число. Текущая периодичность: %s", writePeriod), true);
+                            return;
+                        }
+                        if (i <= 0) {
+                            parserSettingsMenu(String.format("Ошибка! Введено отрицательное число. Текущая периодичность: %s", writePeriod), true);
+                            return;
+                        }
+                        writePeriod = i;
+                        parserSettingsMenu(String.format("Число было сохранено. Текущая периодичность: %s", writePeriod), false);
+                        return;
+                    case Character:
+                        sb.append(keyStroke.getCharacter());
+                        break;
                 }
             }
         } catch (IOException ex) {
@@ -261,7 +321,7 @@ public class OceanManager {
                 parser = new JAXBParserXML();
                 break;
             default:
-                parserSettingsMenu("Ошибка! Выбранный в настройках парсер не найден");
+                parserSettingsMenu("Ошибка! Выбранный в настройках парсер не найден", true);
                 return null;
         }
         OceanConfig config = parser.read(inputStream);
