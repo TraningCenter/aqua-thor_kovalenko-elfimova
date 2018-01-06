@@ -1,5 +1,6 @@
 package com.netcracker.unc.parsers;
 
+import com.netcracker.unc.metric.MetricsWriter;
 import com.netcracker.unc.model.OceanConfig;
 import com.netcracker.unc.utils.CommonUtils;
 import java.io.InputStream;
@@ -28,7 +29,7 @@ public class JAXBParserXML implements IXMLParser {
     }
 
     @Override
-    public void write(OceanConfig oceanConfig, OutputStream outputStream) {
+    public void write(MetricsWriter metricsWriter, OutputStream outputStream) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

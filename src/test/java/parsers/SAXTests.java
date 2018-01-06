@@ -1,5 +1,6 @@
 package parsers;
 
+import com.netcracker.unc.metric.MetricsWriter;
 import tools.ParsersTools;
 import com.netcracker.unc.model.OceanConfig;
 import com.netcracker.unc.parsers.IXMLParser;
@@ -45,10 +46,10 @@ public class SAXTests {
     @Test
     public void writeXMLTest()throws UnsupportedEncodingException {
         XMLString = ParsersTools.XMLStringMonitoring;
-        OceanConfig oceanConfig=ParsersTools.getOceanConfig();
+        MetricsWriter metricsWriter=ParsersTools.getMetricsWriter();
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         IXMLParser saxParser = new SAXParserXML();
-        saxParser.write(oceanConfig,outputStream);
+        saxParser.write(metricsWriter,outputStream);
         String XMLStringRes = new String(outputStream.toByteArray(), "UTF-8");
         Assert.assertTrue( XMLString.equals(XMLStringRes));
     }

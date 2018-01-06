@@ -1,5 +1,6 @@
 package com.netcracker.unc.parsers;
 
+import com.netcracker.unc.metric.MetricsWriter;
 import com.netcracker.unc.model.Flow;
 import com.netcracker.unc.model.Location;
 import com.netcracker.unc.model.OceanConfig;
@@ -28,7 +29,7 @@ import javax.xml.parsers.ParserConfigurationException;
 public class SAXParserXML extends DefaultHandler implements IXMLParser {
 
     private int hungerTime = 0;
-    private OceanConfig oceanConfig;
+    private OceanConfig oceanConfig=new OceanConfig();
     private List<Flow> flows;
     private Fish fish;
     private List<IFish> smallfishes;
@@ -169,39 +170,49 @@ public class SAXParserXML extends DefaultHandler implements IXMLParser {
     }
 
     @Override
-    public void write(OceanConfig oceanConfig, OutputStream outputStream) {
+    public void write(MetricsWriter metricsWriter, OutputStream outputStream) {
         try {
-            this.oceanConfig = oceanConfig;
-            factory = TransformerFactory.newInstance();
+            // this.metricsWriter=metricsWriter;
+            factory = TransformerFactory.newInstance().newInstance();
             saxTransFactory = (SAXTransformerFactory) factory;
             transHandler = saxTransFactory.newTransformerHandler();
             transHandler.setResult(new StreamResult(outputStream));
-            writeData();
+            writeRoot(metricsWriter);
         } catch (TransformerConfigurationException | SAXException e) {
             e.printStackTrace();
         }
     }
 
-    private void writeData() throws SAXException {
+    private void writeRoot(MetricsWriter metricsWriter) throws SAXException {
         transHandler.startDocument();
-        transHandler.startElement("", "", "oceanMonitoring", null);
-        writeSharKsCount();
-        writeSmallFishesCount();
-        transHandler.endElement("", "", "oceanMonitoring");
+        transHandler.startElement("", "", "snapshots", null);
+        writeSnapshot(metricsWriter);
+        transHandler.endElement("", "", "snapshots");
         transHandler.endDocument();
     }
 
-    private void writeSharKsCount() throws SAXException {
-        transHandler.startElement("", "", "sharksCount", null);
-        char[] tempSharcs = String.valueOf(oceanConfig.getSharks().size()).toCharArray();
-        transHandler.characters(tempSharcs, 0, tempSharcs.length);
-        transHandler.endElement("", "", "sharksCount");
-    }
-
-    private void writeSmallFishesCount() throws SAXException {
-        transHandler.startElement("", "", "smallFishesCount", null);
-        char[] tempSmallFishes = String.valueOf(oceanConfig.getSmallFishes().size()).toCharArray();
-        transHandler.characters(tempSmallFishes, 0, tempSmallFishes.length);
-        transHandler.endElement("", "", "smallFishesCount");
+    private void writeSnapshot(MetricsWriter metricsWriter) throws SAXException {
+        for (int i = 0; i < metricsWriter.snapshots.size(); i++) {
+            transHandler.startElement("", "", "snapshot", null);
+            transHandler.startElement("", "", "step", null);
+            char[] tempStep = String.valueOf(metricsWriter.snapshots.get(i).getStep()).toCharArray();
+            transHandler.characters(tempStep, 0, tempStep.length);
+            transHandler.endElement("", "", "step");
+            transHandler.startElement("", "", "metrics", null);
+            for (int j = 0; j < metricsWriter.snapshots.get(i).getMetricList().size(); j++) {
+                transHandler.startElement("", "", "metric", null);
+                transHandler.startElement("", "", "name", null);
+                char[] tempName = String.valueOf(metricsWriter.snapshots.get(i).getMetricList().get(j).getName()).toCharArray();
+                transHandler.characters(tempName, 0, tempName.length);
+                transHandler.endElement("", "", "name");
+                transHandler.startElement("", "", "value", null);
+                char[] tempValue = String.valueOf(metricsWriter.snapshots.get(i).getMetricList().get(j).getValue()).toCharArray();
+                transHandler.characters(tempValue, 0, tempValue.length);
+                transHandler.endElement("", "", "value");
+                transHandler.endElement("", "", "metric");
+            }
+            transHandler.endElement("", "", "metrics");
+            transHandler.endElement("", "", "snapshot");
+        }
     }
 }

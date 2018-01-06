@@ -20,6 +20,7 @@ import com.netcracker.unc.model.interfaces.IFish;
 import java.io.IOException;
 import org.w3c.dom.*;
 import org.xml.sax.SAXException;
+import com.netcracker.unc.metric.*;
 
 public class DOMParserXML implements IXMLParser {
 
@@ -167,30 +168,44 @@ public class DOMParserXML implements IXMLParser {
     }
 
     @Override
-    public void write(OceanConfig oceanConfig, OutputStream outputStream) {
+    public void write(MetricsWriter metricsWriter, OutputStream outputStream) {
         try {
-            this.oceanConfig = oceanConfig;
             DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder documentBuilder = docFactory.newDocumentBuilder();
             Document document = documentBuilder.newDocument();
             document.setXmlStandalone(true);
-            writeElements(document);
+            writeElements(metricsWriter,document);
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
             Transformer transformer = transformerFactory.newTransformer();
+            //transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+            //transformer.transform(new DOMSource(document), new StreamResult(new FileOutputStream("test.xml")));
             transformer.transform(new DOMSource(document), new StreamResult(outputStream));
-        } catch (ParserConfigurationException | TransformerException e) {
+        } catch (ParserConfigurationException| TransformerException e) {
             e.printStackTrace();
         }
     }
 
-    private void writeElements(Document document) {
-        Element oceanMonitoring = document.createElement("oceanMonitoring");
-        document.appendChild(oceanMonitoring);
-        Element sharksCount = document.createElement("sharksCount");
-        sharksCount.appendChild(document.createTextNode(String.valueOf(oceanConfig.getSharks().size())));
-        Element smallFishesCount = document.createElement("smallFishesCount");
-        smallFishesCount.appendChild(document.createTextNode(String.valueOf(oceanConfig.getSmallFishes().size())));
-        oceanMonitoring.appendChild(sharksCount);
-        oceanMonitoring.appendChild(smallFishesCount);
+    private void writeElements(MetricsWriter metricsWriter,Document document){
+        Element snapshots =document.createElement("snapshots");
+        document.appendChild(snapshots);
+        for (int i = 0; i < metricsWriter.snapshots.size(); i++) {
+            Element snapshot =document.createElement("snapshot");
+            Element step =document.createElement("step");
+            Element metrics =document.createElement("metrics");
+            snapshots.appendChild (snapshot);
+            snapshot.appendChild (step);
+            step.appendChild(document.createTextNode(String.valueOf(metricsWriter.snapshots.get(i).getStep())));
+            snapshot.appendChild (metrics);
+            for (int  j= 0; j < metricsWriter.snapshots.get(i).getMetricList().size(); j++) {
+                Element metric =document.createElement("metric");
+                metrics.appendChild (metric);
+                Element name =document.createElement("name");
+                Element value =document.createElement("value");
+                metric.appendChild (name);
+                name.appendChild(document.createTextNode(metricsWriter.snapshots.get(i).getMetricList().get(j).getName()));
+                value.appendChild(document.createTextNode(String.valueOf(metricsWriter.snapshots.get(i).getMetricList().get(j).getValue())));
+                metric.appendChild (value);
+            }
+        }
     }
 }

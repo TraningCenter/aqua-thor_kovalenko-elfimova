@@ -1,5 +1,6 @@
 package com.netcracker.unc.parsers;
 
+import com.netcracker.unc.metric.MetricsWriter;
 import com.netcracker.unc.model.Flow;
 import com.netcracker.unc.model.Location;
 import com.netcracker.unc.model.OceanConfig;
@@ -226,7 +227,7 @@ public class StAXParserXML implements IXMLParser {
     }
 
     @Override
-    public void write(OceanConfig oceanConfig, OutputStream outputStream) {
+    public void write(MetricsWriter metricsWriter, OutputStream outputStream) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

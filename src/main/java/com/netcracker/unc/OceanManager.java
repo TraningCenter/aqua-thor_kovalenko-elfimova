@@ -6,6 +6,7 @@ import com.googlecode.lanterna.graphics.TextGraphics;
 import com.googlecode.lanterna.input.KeyStroke;
 import com.googlecode.lanterna.input.KeyType;
 import com.netcracker.unc.creator.OceanCreator;
+import com.netcracker.unc.metric.MetricsWriter;
 import com.netcracker.unc.model.Ocean;
 import com.netcracker.unc.model.OceanConfig;
 import com.netcracker.unc.parsers.DOMParserXML;
@@ -27,6 +28,7 @@ public class OceanManager {
     OceanVisualizer visualizer;
     ExecutorService executor;
     boolean isStop = false;
+    MetricsWriter metricsWriter;
 
     public void run() {
         visualizer = new OceanVisualizer();
