@@ -46,8 +46,12 @@ public class MetricsWriter {
         snapshots.add(new Snapshot(ocean.getStep(), metricList));
     }
 
-
     public List<Snapshot> getSnapshots() {
         return snapshots;
-   }
+    }
+
+    public void setSnapshots(List<Snapshot> snapshots) {
+        this.snapshots = snapshots;
+    }
+
 }

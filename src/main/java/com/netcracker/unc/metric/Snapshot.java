@@ -31,6 +31,12 @@ public class Snapshot {
         this.metricList = metricList;
     }
 
+    /**
+     * Empty snapshot constructor
+     */
+    public Snapshot() {
+    }
+
     public int getStep() {
         return step;
     }

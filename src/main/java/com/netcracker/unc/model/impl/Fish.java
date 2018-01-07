@@ -177,10 +177,6 @@ public abstract class Fish implements IFish {
         return age;
     }
 
-    public void setAge(int age) {
-        this.age = age;
-    }
-
     public int getSearchRadius() {
         return searchRadius;
     }

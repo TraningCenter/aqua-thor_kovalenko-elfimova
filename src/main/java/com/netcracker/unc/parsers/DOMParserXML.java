@@ -18,7 +18,6 @@ import com.netcracker.unc.model.impl.Shark;
 import com.netcracker.unc.model.impl.SmallFish;
 import com.netcracker.unc.model.interfaces.IFish;
 import org.w3c.dom.*;
-import org.xml.sax.SAXException;
 import com.netcracker.unc.metric.*;
 
 /**
@@ -39,7 +38,7 @@ public class DOMParserXML implements IXMLParser {
         try {
             domParse(createDocumentBuilder().parse(config));
             return oceanConfig;
-        } catch (IOException | NullPointerException | ParserConfigurationException | SAXException e) {
+        } catch (Exception e) {
             return null;
         }
     }

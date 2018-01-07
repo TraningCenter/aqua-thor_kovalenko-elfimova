@@ -162,9 +162,6 @@ public class Shark extends Fish {
         return hungerCounter;
     }
 
-    public void setHungerCounter(int hungerCounter) {
-        this.hungerCounter = hungerCounter;
-    }
 
     @Override
     public int hashCode() {

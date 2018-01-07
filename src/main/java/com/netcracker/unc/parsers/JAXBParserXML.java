@@ -40,6 +40,7 @@ public class JAXBParserXML implements IXMLParser {
 
     /**
      * write snapshots to xml file
+     *
      * @param metricsWriter contains snapshots
      * @param outputStream output stream
      */
@@ -51,7 +52,6 @@ public class JAXBParserXML implements IXMLParser {
             marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
             marshaller.marshal(metricsWriter, outputStream);
         } catch (JAXBException ex) {
-            ex.printStackTrace();
         }
     }
 }

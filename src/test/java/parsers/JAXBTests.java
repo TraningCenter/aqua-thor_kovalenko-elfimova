@@ -54,12 +54,15 @@ public class JAXBTests {
 
     @Test
     public void writeXMLTest() throws UnsupportedEncodingException {
-        XMLString = ParsersTools.XMLStringMonitoring;
+        XMLString = ParsersTools.XMLStringMonitoringJAXB;
         MetricsWriter metricsWriter = ParsersTools.getMetricsWriter();
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         IXMLParser jaxbParser = new JAXBParserXML();
         jaxbParser.write(metricsWriter, outputStream);
         String XMLStringRes = new String(outputStream.toByteArray(), "UTF-8");
+        XMLStringRes = XMLStringRes.replaceAll("\\s+", "");
+        XMLStringRes = XMLStringRes.replaceAll("\"", "\" ");
+        XMLStringRes = XMLStringRes.replace("xmlversion", "xml version");
         Assert.assertTrue(XMLString.equals(XMLStringRes));
     }
 }

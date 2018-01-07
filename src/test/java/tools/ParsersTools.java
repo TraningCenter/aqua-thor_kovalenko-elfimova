@@ -44,6 +44,8 @@ public class ParsersTools {
             "</snapshot>\n" +
             "</snapshots>\n";
 
+    public static String XMLStringMonitoringJAXB = "<?xml version=\" 1.0\" encoding=\" UTF-8\" standalone=\" yes\" ?><snapshots><snapshot><step>4</step><metrics><metric><name>FishCount</name><value>1.0</value></metric><metric>" + "<name>SharkCount</name><value>4.0</value></metric></metrics></snapshot></snapshots>";
+    
     public static String XMLStringMonitoringStax = "<?xml version=\"1.0\" ?><snapshots><snapshot><step>4</step><metrics><metric><name>FishCount</name><value>1.0</value></metric><metric>" + "<name>SharkCount</name><value>4.0</value></metric></metrics></snapshot></snapshots>";
 
     public static OceanConfig getOceanConfig() {

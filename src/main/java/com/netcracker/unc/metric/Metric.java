@@ -28,6 +28,13 @@ public class Metric implements IMetric{
         this.value = value;
     }
 
+    /**
+     * empty metric constructor
+     */
+    public Metric() {
+   
+    }
+
     public void setName(String name) {
         this.name = name;
     }

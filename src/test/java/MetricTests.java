@@ -1,3 +1,4 @@
+
 import com.netcracker.unc.metric.IMetric;
 import com.netcracker.unc.metric.Metric;
 import com.netcracker.unc.metric.MetricsWriter;
@@ -10,9 +11,6 @@ import tools.ParsersTools;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.netcracker.unc.metric.MetricsWriter.snapshots;
-import static com.netcracker.unc.metric.MetricsWriter.writeMetric;
 
 /**
  * Class for testing the MetricWriter class
@@ -28,14 +26,21 @@ public class MetricTests {
 
     @Test
     public void metricsWriterTest() {
-        writeMetric(ocean);
-        List<IMetric> metricList= new ArrayList();
-        metricList.add(new Metric("FishCount", 1));
+        MetricsWriter metricsWriter = new MetricsWriter();
+        metricsWriter.writeMetric();
+        List<IMetric> metricList = new ArrayList();
+        Metric metric = new Metric();
+        metric.setName("FishCount");
+        metric.setValue(1);
+        metricList.add(metric);
         metricList.add(new Metric("SharkCount", 4));
         List<Snapshot> snapshotslist = new ArrayList();
-        snapshotslist.add(new Snapshot (0,  metricList));
-        MetricsWriter metricsWriter=new MetricsWriter(snapshotslist);
-        ocean.changeFlow();
-        Assert.assertEquals(metricsWriter.getSnapshots(), snapshots);
+        Snapshot snapshot = new Snapshot();
+        snapshot.setStep(10);
+        snapshot.setMetricList(metricList);
+        snapshotslist.add(snapshot);
+        snapshotslist.add(new Snapshot(20, metricList));
+        metricsWriter.setSnapshots(snapshotslist);
+        Assert.assertEquals(2, metricsWriter.getSnapshots().size());
     }
 }

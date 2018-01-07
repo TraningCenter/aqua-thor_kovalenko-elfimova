@@ -2,6 +2,7 @@
 import tools.ParsersTools;
 import com.netcracker.unc.model.Location;
 import com.netcracker.unc.model.Ocean;
+import com.netcracker.unc.model.impl.Fish;
 import com.netcracker.unc.model.impl.Shark;
 import com.netcracker.unc.model.impl.SmallFish;
 import com.netcracker.unc.model.interfaces.IFish;
@@ -182,5 +183,21 @@ public class FishesTests {
         Assert.assertEquals(2, shark.getHungerCounter());
         shark.action();
         Assert.assertEquals(2, ocean.getSharks().size());
+    }
+
+    @Test
+    public void fishEqualsTest() {
+        Fish sh1 = new Shark(new Location(3, 4), 10, 1, 4, 5);
+        Shark sh2 = new Shark(new Location(3, 4), 10, 1, 4, 5);
+        Assert.assertEquals(sh1, sh2);
+        Assert.assertEquals(sh1.hashCode(), sh2.hashCode());
+        sh2.setHungerTime(10);
+        Assert.assertNotSame(sh1, sh2);
+        IFish fish = new SmallFish(new Location(3, 4), 10, 1, 4);
+        Assert.assertNotSame(sh1, fish);
+        sh2 = new Shark(new Location(3, 4), 10, 1, 5, 5);
+        Assert.assertNotSame(sh1, sh2);
+        sh2.setProgenyPeriod(2);
+        Assert.assertNotSame(sh1, sh2);
     }
 }

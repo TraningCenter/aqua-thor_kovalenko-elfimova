@@ -16,6 +16,7 @@ import java.io.UnsupportedEncodingException;
  * Created on 19.12.2017.
  */
 public class DOMTests {
+
     String XMLString;
 
     @Test
@@ -28,15 +29,6 @@ public class DOMTests {
     }
 
     @Test
-    public void readXMLWithoutOceanTag() {
-        XMLString = ParsersTools.XMLStringWithoutOceanTag;
-        InputStream inputStream = new ByteArrayInputStream(XMLString.getBytes());
-        IXMLParser domParser = new DOMParserXML();
-        OceanConfig oceanConfig = domParser.read(inputStream);
-        Assert.assertNull(oceanConfig);
-    }
-
-    @Test
     public void readXMLWithoutFishes() {
         XMLString = ParsersTools.XMLStringWithoutFishes;
         InputStream inputStream = new ByteArrayInputStream(XMLString.getBytes());
@@ -46,12 +38,12 @@ public class DOMTests {
     }
 
     @Test
-    public void writeXMLTest()throws UnsupportedEncodingException {
+    public void writeXMLTest() throws UnsupportedEncodingException {
         XMLString = ParsersTools.XMLStringMonitoring;
-        MetricsWriter metricsWriter=ParsersTools.getMetricsWriter();
+        MetricsWriter metricsWriter = ParsersTools.getMetricsWriter();
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         IXMLParser domParser = new DOMParserXML();
-        domParser.write(metricsWriter,outputStream);
+        domParser.write(metricsWriter, outputStream);
         String XMLStringRes = new String(outputStream.toByteArray(), "UTF-8");
         Assert.assertTrue(XMLString.equals(XMLStringRes));
     }
