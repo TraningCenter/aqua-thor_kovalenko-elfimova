@@ -253,6 +253,7 @@ public class DOMParserXML implements IXMLParser {
             writeElements(metricsWriter, document);
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
             Transformer transformer = transformerFactory.newTransformer();
+            System.setProperty("line.separator","\n");
             transformer.setOutputProperty(OutputKeys.INDENT, "yes");
             transformer.transform(new DOMSource(document), new StreamResult(outputStream));
         } catch (ParserConfigurationException | TransformerException e) {

@@ -217,6 +217,7 @@ public class SAXParserXML extends DefaultHandler implements IXMLParser {
             factory = TransformerFactory.newInstance().newInstance();
             saxTransFactory = (SAXTransformerFactory) factory;
             transHandler = saxTransFactory.newTransformerHandler();
+            System.setProperty("line.separator","\n");
             transHandler.getTransformer().setOutputProperty(OutputKeys.INDENT, "yes");
             transHandler.setResult(new StreamResult(outputStream));
             writeRoot(metricsWriter);

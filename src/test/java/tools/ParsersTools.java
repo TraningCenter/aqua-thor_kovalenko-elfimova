@@ -28,7 +28,21 @@ public class ParsersTools {
 
     public static String XMLStringWithoutFishes = "<ocean><tor>true</tor><height>2</height><width>20</width><flows><flow>LEFT</flow><flow>RIGHT</flow></flows><changeFlow>10</changeFlow></ocean>";
 
-    public static String XMLStringMonitoring = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><snapshots><snapshot><step>4</step><metrics><metric><name>FishCount</name><value>1.0</value></metric><metric><name>SharkCount</name><value>4.0</value></metric></metrics></snapshot></snapshots>";
+    public static String XMLStringMonitoring ="<?xml version=\"1.0\" encoding=\"UTF-8\"?><snapshots>\n" +
+            "<snapshot>\n" +
+            "<step>4</step>\n" +
+            "<metrics>\n" +
+            "<metric>\n" +
+            "<name>FishCount</name>\n" +
+            "<value>1.0</value>\n" +
+            "</metric>\n" +
+            "<metric>\n" +
+            "<name>SharkCount</name>\n" +
+            "<value>4.0</value>\n" +
+            "</metric>\n" +
+            "</metrics>\n" +
+            "</snapshot>\n" +
+            "</snapshots>\n";
 
     public static String XMLStringMonitoringStax = "<?xml version=\"1.0\" ?><snapshots><snapshot><step>4</step><metrics><metric><name>FishCount</name><value>1.0</value></metric><metric>" + "<name>SharkCount</name><value>4.0</value></metric></metrics></snapshot></snapshots>";
 
