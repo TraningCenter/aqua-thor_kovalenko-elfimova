@@ -1,10 +1,11 @@
 package com.netcracker.unc.metric;
 
-import com.netcracker.unc.model.Ocean;
-
+/**
+ * Metric interface
+ */
 
 public interface IMetric {
-    public void calculateValue(Ocean o);
+
     public String getName();
     public double getValue();
 }

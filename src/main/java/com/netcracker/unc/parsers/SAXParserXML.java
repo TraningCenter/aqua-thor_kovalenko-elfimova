@@ -26,6 +26,10 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.xml.parsers.ParserConfigurationException;
 
+/**
+ * SAX parser
+ */
+
 public class SAXParserXML extends DefaultHandler implements IXMLParser {
 
     private int hungerTime = 0;
@@ -69,7 +73,7 @@ public class SAXParserXML extends DefaultHandler implements IXMLParser {
     }
 
     /**
-     * start element
+     * method start element is called at the beginning of an XML element
      *
      * @param uri
      * @param localName
@@ -106,7 +110,8 @@ public class SAXParserXML extends DefaultHandler implements IXMLParser {
     }
 
     /**
-     * characters
+     * method characters - reads text between tags,
+     * parse ocean config
      *
      * @param ch chars
      * @param start start position
@@ -166,7 +171,8 @@ public class SAXParserXML extends DefaultHandler implements IXMLParser {
     }
 
     /**
-     * end element
+     * method end element is called at the end of an XML element,
+     * parse fishes, flows
      *
      * @param uri
      * @param localName
@@ -200,10 +206,17 @@ public class SAXParserXML extends DefaultHandler implements IXMLParser {
         currentElement = null;
     }
 
+    /**
+     * write snapshots metrics in a certain step in Output Stream
+     *
+     * @param outputStream Output Stream
+     * @param metricsWriter MetricsWriter
+     *
+     */
+
     @Override
     public void write(MetricsWriter metricsWriter, OutputStream outputStream) {
         try {
-            // this.metricsWriter=metricsWriter;
             factory = TransformerFactory.newInstance().newInstance();
             saxTransFactory = (SAXTransformerFactory) factory;
             transHandler = saxTransFactory.newTransformerHandler();
@@ -214,15 +227,29 @@ public class SAXParserXML extends DefaultHandler implements IXMLParser {
         }
     }
 
+    /**
+     * create the document root element
+     *
+     * @param metricsWriter MetricsWriter
+     *
+     */
+
     private void writeRoot(MetricsWriter metricsWriter) throws SAXException {
         transHandler.startDocument();
         transHandler.startElement("", "", "snapshots", null);
-        writeSnapshot(metricsWriter);
+        writeSnapshots(metricsWriter);
         transHandler.endElement("", "", "snapshots");
         transHandler.endDocument();
     }
 
-    private void writeSnapshot(MetricsWriter metricsWriter) throws SAXException {
+    /**
+     * create document elements and write metrics for some step
+     *
+     * @param metricsWriter MetricsWriter
+     *
+     */
+
+    private void writeSnapshots(MetricsWriter metricsWriter) throws SAXException {
         for (int i = 0; i < metricsWriter.snapshots.size(); i++) {
             transHandler.startElement("", "", "snapshot", null);
             transHandler.startElement("", "", "step", null);

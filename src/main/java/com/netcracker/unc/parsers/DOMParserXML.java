@@ -3,13 +3,13 @@ package com.netcracker.unc.parsers;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import com.netcracker.unc.model.*;
@@ -17,15 +17,12 @@ import com.netcracker.unc.model.impl.Fish;
 import com.netcracker.unc.model.impl.Shark;
 import com.netcracker.unc.model.impl.SmallFish;
 import com.netcracker.unc.model.interfaces.IFish;
-import java.io.IOException;
 import org.w3c.dom.*;
 import org.xml.sax.SAXException;
 import com.netcracker.unc.metric.*;
 
 /**
  * Dom parser
- *
- * @author KovNa
  */
 public class DOMParserXML implements IXMLParser {
 
@@ -240,6 +237,13 @@ public class DOMParserXML implements IXMLParser {
         return Integer.parseInt(integerNode.getTextContent());
     }
 
+    /**
+     * write snapshots metrics in a certain step in Output Stream
+     *
+     * @param outputStream Output Stream
+     * @param metricsWriter MetricsWriter
+     *
+     */
     @Override
     public void write(MetricsWriter metricsWriter, OutputStream outputStream) {
         try {
@@ -250,13 +254,20 @@ public class DOMParserXML implements IXMLParser {
             writeElements(metricsWriter,document);
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
             Transformer transformer = transformerFactory.newTransformer();
-            //transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-            //transformer.transform(new DOMSource(document), new StreamResult(new FileOutputStream("test.xml")));
+            transformer.setOutputProperty(OutputKeys.INDENT, "yes");
             transformer.transform(new DOMSource(document), new StreamResult(outputStream));
         } catch (ParserConfigurationException| TransformerException e) {
             e.printStackTrace();
         }
     }
+
+    /**
+     * create document elements and write metrics for some step
+     *
+     * @param document Document
+     * @param metricsWriter MetricsWriter
+     *
+     */
 
     private void writeElements(MetricsWriter metricsWriter,Document document){
         Element snapshots =document.createElement("snapshots");
