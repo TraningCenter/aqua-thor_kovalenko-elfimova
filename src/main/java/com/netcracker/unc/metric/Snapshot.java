@@ -3,11 +3,20 @@ package com.netcracker.unc.metric;
 import java.util.List;
 
 /**
- * Created on 06.01.2018.
+ * Snapshot class
+ * list of metrics in a certain step
  */
 public class Snapshot {
     private int step;
     private List<IMetric> metricList;
+
+    /**
+     * Snapshot constructor
+     *
+     * @param step contains the current step number of the ocean
+     * @param metricList contains a list of metrics on the current step of the ocean
+     *
+     */
 
     public Snapshot(int step, List<IMetric> metricList) {
         this.step = step;

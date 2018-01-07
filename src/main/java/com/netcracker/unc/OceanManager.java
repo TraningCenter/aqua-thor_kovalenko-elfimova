@@ -16,11 +16,12 @@ import com.netcracker.unc.parsers.SAXParserXML;
 import com.netcracker.unc.parsers.StAXParserXML;
 import com.netcracker.unc.utils.CommonUtils;
 import com.netcracker.unc.visualizer.OceanVisualizer;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+
+import java.io.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+
+import static com.netcracker.unc.metric.MetricsWriter.snapshots;
 
 /**
  * Ocean system manager
@@ -48,7 +49,7 @@ public class OceanManager {
      * start user menu
      */
     private void mainMenu() {
-        executor = Executors.newFixedThreadPool(1);
+        executor = Executors.newFixedThreadPool(2);
         configMenu();
         executor.submit(() -> {
             isStop = false;
@@ -63,6 +64,14 @@ public class OceanManager {
                 keyStroke = visualizer.getScreen().readInput();
                 if (keyStroke.getKeyType() == KeyType.Escape || keyStroke.getKeyType() == KeyType.EOF) {
                     isStop = true;
+                    executor.submit(() -> {
+                        try {
+                            writeMetrics();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    });
+                    executor.shutdown();
                     mainMenu();
                 }
             } catch (IOException ex) {
@@ -328,5 +337,37 @@ public class OceanManager {
         OceanConfig config = parser.read(inputStream);
         inputStream.close();
         return config;
+    }
+
+    /**
+     * write metrics to a file
+     *
+     * @throws IOException
+     */
+
+    private void writeMetrics() throws IOException {
+        OutputStream outputStream = new FileOutputStream("metric.xml");
+        String value = CommonUtils.getParserProperty("outputparser").toLowerCase().trim();
+        IXMLParser parser = null;
+        switch (value) {
+            case "dom":
+                parser = new DOMParserXML();
+                break;
+            case "sax":
+                parser = new SAXParserXML();
+                break;
+            case "stax":
+                parser = new StAXParserXML();
+                break;
+            case "jaxb":
+                parser = new JAXBParserXML();
+                break;
+            default:
+                parserSettingsMenu("Ошибка! Выбранный в настройках парсер не найден");
+                break;
+        }
+        //IXMLParser parser = new DOMParserXML();
+        parser.write(new MetricsWriter(snapshots), outputStream);
+        outputStream.close();
     }
 }

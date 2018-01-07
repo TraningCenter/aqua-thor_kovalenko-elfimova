@@ -1,7 +1,9 @@
 package com.netcracker.unc.model;
 
+import static com.netcracker.unc.metric.MetricsWriter.writeMetric;
 import static com.netcracker.unc.model.FishType.SHARK;
 import static com.netcracker.unc.model.FishType.SMALL;
+
 import com.netcracker.unc.model.interfaces.IFish;
 import com.sun.istack.NotNull;
 import java.util.ArrayList;
@@ -23,6 +25,7 @@ public class Ocean {
     private List<IFish> sharks;
     private List<IFish> smallFishes;
     private int step;
+    private int paramWriteMetric=10;
 
     /**
      * ocean constructor based on ocean configuration
@@ -59,6 +62,9 @@ public class Ocean {
         sharkList.forEach(IFish::action);
         List<IFish> smallFishList = new ArrayList(ocean.getSmallFishes());
         smallFishList.forEach(IFish::action);
+        if (step % paramWriteMetric == 0 && step != 0) {
+           writeMetric(ocean);
+       }
         step++;
     }
 

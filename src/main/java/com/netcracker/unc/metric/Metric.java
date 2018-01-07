@@ -1,11 +1,20 @@
 package com.netcracker.unc.metric;
 
-import com.netcracker.unc.model.Ocean;
-
+/**
+ * Metric class
+ */
 public class Metric implements IMetric{
 
     private String name;
     private double value;
+
+    /**
+     * metric constructor
+     *
+     * @param name current name of metric
+     * @param value current value of metric
+     *
+     */
 
     public Metric(String name, double value) {
         this.name = name;
@@ -26,11 +35,8 @@ public class Metric implements IMetric{
     }
 
     @Override
-    public void calculateValue(Ocean o) {
-    }
-
-    @Override
     public String getName() {
         return name;
     }
+
 }

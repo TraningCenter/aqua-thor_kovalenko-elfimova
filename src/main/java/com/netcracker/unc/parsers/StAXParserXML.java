@@ -9,14 +9,12 @@ import com.netcracker.unc.model.impl.Shark;
 import com.netcracker.unc.model.impl.SmallFish;
 import com.netcracker.unc.model.interfaces.IFish;
 import com.netcracker.unc.utils.CommonUtils;
+
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
-import javax.xml.stream.XMLInputFactory;
-import javax.xml.stream.XMLStreamConstants;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamReader;
+import javax.xml.stream.*;
 
 /**
  * StAX parser
@@ -255,8 +253,51 @@ public class StAXParserXML implements IXMLParser {
         return null;
     }
 
+    /**
+     * write snapshots metrics at a certain step in the Output Stream
+     *
+     * @param outputStream Output Stream
+     * @param metricsWriter MetricsWriter
+     *
+     */
+
     @Override
     public void write(MetricsWriter metricsWriter, OutputStream outputStream) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        try {
+            XMLOutputFactory factory = XMLOutputFactory.newInstance();
+            XMLStreamWriter staxWriter = factory.createXMLStreamWriter(outputStream);
+            staxWriter.writeStartDocument();
+            staxWriter.writeStartElement("snapshots");
+            for (int i = 0; i < metricsWriter.snapshots.size(); i++) {
+                staxWriter.writeStartElement("snapshot");
+                staxWriter.writeStartElement("step");
+                char[] tempStep = String.valueOf(metricsWriter.snapshots.get(i).getStep()).toCharArray();
+                staxWriter.writeCharacters(tempStep, 0, tempStep.length);
+                staxWriter.writeEndElement();
+                staxWriter.writeStartElement("metrics");
+                for (int j = 0; j < metricsWriter.snapshots.get(i).getMetricList().size(); j++) {
+                    staxWriter.writeStartElement("metric");
+                    staxWriter.writeStartElement("name");
+                    char[] tempName = String.valueOf(metricsWriter.snapshots.get(i).getMetricList().get(j).getName()).toCharArray();
+                    staxWriter.writeCharacters(tempName, 0, tempName.length);
+                    staxWriter.writeEndElement();
+                    staxWriter.writeStartElement("value");
+                    char[] tempValue = String.valueOf(metricsWriter.snapshots.get(i).getMetricList().get(j).getValue()).toCharArray();
+                    staxWriter.writeCharacters(tempValue, 0, tempValue.length);
+                    staxWriter.writeEndElement();
+                    staxWriter.writeEndElement();
+                }
+                staxWriter.writeEndElement();
+                staxWriter.writeEndElement();
+            }
+            staxWriter.writeEndElement();
+            staxWriter.writeEndDocument();
+            staxWriter.flush();
+            staxWriter.close();
+        } catch (XMLStreamException e) {
+            e.printStackTrace();
+        }
     }
 }
+
+
