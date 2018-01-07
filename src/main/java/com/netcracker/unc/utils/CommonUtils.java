@@ -94,16 +94,12 @@ public class CommonUtils {
      * @param key
      * @param value
      */
-    public static void setParserProperty(String key, String value) {
-        String propertiesFilename = "config.properties";
+    public static void setParserProperty(String propertiesFilename, String key, String value) throws IOException {
         Properties prop = new Properties();
-        try {
-            prop.load(new FileInputStream(propertiesFilename));
-            prop.setProperty(key.toLowerCase().trim(), value.toLowerCase().trim());
-            prop.store(new FileOutputStream(propertiesFilename), null);
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
+        prop.load(new FileInputStream(propertiesFilename));
+        prop.setProperty(key.toLowerCase().trim(), value.toLowerCase().trim());
+        prop.store(new FileOutputStream(propertiesFilename), null);
+
     }
 
     /**
@@ -112,17 +108,11 @@ public class CommonUtils {
      * @param key
      * @return value
      */
-    public static String getParserProperty(String key) {
-        String propertiesFilename = "config.properties";
+    public static String getParserProperty(String propertiesFilename, String key) throws IOException {
         Properties prop = new Properties();
         String value;
-        try {
-            prop.load(new FileInputStream(propertiesFilename));
-            value = prop.getProperty(key);
-        } catch (IOException ex) {
-            ex.printStackTrace();
-            return null;
-        }
+        prop.load(new FileInputStream(propertiesFilename));
+        value = prop.getProperty(key);
         return value;
     }
 }

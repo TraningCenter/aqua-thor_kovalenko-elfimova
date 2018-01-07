@@ -28,31 +28,6 @@ public class Ocean {
     private int paramWriteMetric=10;
 
     /**
-     * ocean constructor
-     *
-     * @param height count of rows
-     * @param width count of columns
-     * @param isTor closed system
-     * @param flowList flow for each row
-     * @param changeFlow step to change flows
-     * @param sharks list of sharks
-     * @param smallFishes list of smallFishes
-     */
-    public Ocean(int height, int width, boolean isTor, List<Flow> flowList, int changeFlow, List<IFish> sharks, List<IFish> smallFishes) {
-        matrix = new IFish[height][width];
-        this.height = height;
-        this.width = width;
-        this.isTor = isTor;
-        this.flowList = flowList;
-        this.changeFlow = changeFlow;
-        this.sharks = sharks;
-        fillMatrix(sharks);
-        this.smallFishes = smallFishes;
-        fillMatrix(smallFishes);
-        ocean = this;
-    }
-
-    /**
      * ocean constructor based on ocean configuration
      *
      * @param oceanConfig ocean configuration
@@ -64,7 +39,7 @@ public class Ocean {
         this.isTor = oceanConfig.isTor();
         this.flowList = oceanConfig.getFlowList();
         if (flowList.size() != height) {
-            for (int i = height - flowList.size(); i < height; i++) {
+            for (int i = flowList.size(); i < height; i++) {
                 flowList.add(Flow.NONE);
             }
         }
@@ -294,47 +269,15 @@ public class Ocean {
         return smallFishes;
     }
 
-    public static void setOcean(Ocean ocean) {
-        Ocean.ocean = ocean;
-    }
-
-    public void setMatrix(IFish[][] matrix) {
-        this.matrix = matrix;
-    }
-
-    public void setHeight(int height) {
-        this.height = height;
-    }
-
-    public void setWidth(int width) {
-        this.width = width;
-    }
-
-    public void setIsTor(boolean isTor) {
-        this.isTor = isTor;
-    }
-
-    public void setFlowList(List<Flow> flowList) {
-        this.flowList = flowList;
-    }
-
-    public void setChangeFlow(int changeFlow) {
-        this.changeFlow = changeFlow;
-    }
-
-    public void setSharks(List<IFish> sharks) {
-        this.sharks = sharks;
-    }
-
-    public void setSmallFishes(List<IFish> smallFishes) {
-        this.smallFishes = smallFishes;
-    }
-
     public IFish[][] getMatrix() {
         return matrix;
     }
 
     public int getStep() {
         return step;
+    }
+
+    public void setIsTor(boolean isTor) {
+        this.isTor = isTor;
     }
 }

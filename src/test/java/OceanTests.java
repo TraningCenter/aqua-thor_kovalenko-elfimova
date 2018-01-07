@@ -1,8 +1,10 @@
 
 import tools.ParsersTools;
 import com.netcracker.unc.model.Direction;
+import com.netcracker.unc.model.Flow;
 import com.netcracker.unc.model.Location;
 import com.netcracker.unc.model.Ocean;
+import com.netcracker.unc.model.OceanConfig;
 import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -83,5 +85,41 @@ public class OceanTests {
     public void changeFlowTest() {
         ocean.changeFlow();
         Assert.assertEquals(2, ocean.getFlowList().size());
+    }
+
+    @Test
+    public void oneStepTest(){
+        ocean.oneStep();
+        Assert.assertEquals(1, ocean.getSharks().get(0).getAge());
+        Assert.assertEquals(1, ocean.getSmallFishes().get(0).getAge());
+        Assert.assertEquals(1, ocean.getStep());
+    }
+    
+    @Test
+    public void getFlowByIndexTest() {
+        Flow flow = Flow.fromIndex(0);
+        Assert.assertEquals(flow, Flow.RIGHT);
+        flow = Flow.fromIndex(5);
+        Assert.assertNull(flow);
+    }
+
+    @Test
+    public void locationEqualsTest() {
+        Location l1 = new Location(3, 2);
+        Location l2 = null;
+        Assert.assertFalse(l1.equals(l2));
+        l2 = new Location(3, 2);
+        Assert.assertEquals(l1, l2);
+        Assert.assertEquals(l1.hashCode(), l2.hashCode());
+    }
+
+    @Test
+    public void oceanConfigEqualsTest() {
+        OceanConfig oc1 = new OceanConfig(true, 10, 10, null, 10, null, null);
+        OceanConfig oc2 = null;
+        Assert.assertFalse(oc1.equals(oc2));
+        oc2 = new OceanConfig(true, 10, 10, null, 10, null, null);
+        Assert.assertEquals(oc1, oc2);
+        Assert.assertEquals(oc1.hashCode(), oc2.hashCode());
     }
 }

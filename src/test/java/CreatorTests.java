@@ -1,6 +1,7 @@
 
 import tools.ParsersTools;
 import com.netcracker.unc.creator.FishCreator;
+import com.netcracker.unc.creator.OceanCreator;
 import com.netcracker.unc.model.FishType;
 import com.netcracker.unc.model.Location;
 import com.netcracker.unc.model.Ocean;
@@ -56,7 +57,11 @@ public class CreatorTests {
     }
 
     @Test
-    public void createOcean() {
-
+    public void createDefaultOceanConfigTest() {
+        Ocean ocean = new Ocean(OceanCreator.getDefaultOceanConfig());
+        Assert.assertEquals(10, ocean.getFlowList().size());
+        Assert.assertEquals(10, ocean.getChangeFlow());
+        Assert.assertEquals(10, ocean.getHeight());
+        Assert.assertEquals(50, ocean.getWidth());
     }
 }

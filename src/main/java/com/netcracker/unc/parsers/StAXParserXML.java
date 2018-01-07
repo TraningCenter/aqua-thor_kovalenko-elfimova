@@ -81,9 +81,6 @@ public class StAXParserXML implements IXMLParser {
                         } else if (changeFlowFlag) {
                             oceanConfig.setChangeFlow(Integer.parseInt(reader.getText()));
                             changeFlowFlag = false;
-                        } else if (changeFlowFlag) {
-                            oceanConfig.setChangeFlow(Integer.parseInt(reader.getText()));
-                            changeFlowFlag = false;
                         }
                         break;
                 }
