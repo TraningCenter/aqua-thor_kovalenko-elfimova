@@ -1,11 +1,18 @@
 package com.netcracker.unc.metric;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+
 /**
  * Metric class
  */
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Metric implements IMetric{
 
+    @XmlElement(name="name")    
     private String name;
+    @XmlElement(name="value")
     private double value;
 
     /**
@@ -38,5 +45,4 @@ public class Metric implements IMetric{
     public String getName() {
         return name;
     }
-
 }

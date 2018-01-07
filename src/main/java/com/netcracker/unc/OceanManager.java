@@ -21,7 +21,6 @@ import java.io.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import static com.netcracker.unc.metric.MetricsWriter.snapshots;
 
 /**
  * Ocean system manager
@@ -51,13 +50,6 @@ public class OceanManager {
     private void mainMenu() {
         executor = Executors.newFixedThreadPool(2);
         configMenu();
-        executor.submit(() -> {
-            isStop = false;
-            while (!isStop) {
-                visualizer.visualize();
-                ocean.oneStep();
-            }
-        });
         while (true) {
             KeyStroke keyStroke;
             try {
@@ -110,9 +102,11 @@ public class OceanManager {
                         switch (keyStroke.getCharacter()) {
                             case '1':
                                 ocean = new Ocean(readConfig());
+                                simulate();
                                 return;
                             case '2':
                                 ocean = new Ocean(OceanCreator.getDefaultOceanConfig());
+                                simulate();
                                 return;
                             case '3':
                                 parserSettingsMenu("", false);
@@ -344,10 +338,9 @@ public class OceanManager {
      *
      * @throws IOException
      */
-
     private void writeMetrics() throws IOException {
         OutputStream outputStream = new FileOutputStream("metric.xml");
-        String value = CommonUtils.getParserProperty("outputparser").toLowerCase().trim();
+        String value = CommonUtils.getParserProperty(propertiesFilename, "outputparser").toLowerCase().trim();
         IXMLParser parser = null;
         switch (value) {
             case "dom":
@@ -363,11 +356,27 @@ public class OceanManager {
                 parser = new JAXBParserXML();
                 break;
             default:
-                parserSettingsMenu("Ошибка! Выбранный в настройках парсер не найден");
+                parserSettingsMenu("Ошибка! Выбранный в настройках парсер не найден", true);
                 break;
         }
-        //IXMLParser parser = new DOMParserXML();
-        parser.write(new MetricsWriter(snapshots), outputStream);
+        parser.write(metricsWriter, outputStream);
         outputStream.close();
+    }
+
+    /**
+     * simulation of ocean system
+     */
+    private void simulate() {
+        metricsWriter = new MetricsWriter();
+        executor.submit(() -> {
+            isStop = false;
+            while (!isStop) {
+                visualizer.visualize();
+                ocean.oneStep();
+                if (ocean.getStep() % writePeriod == 0 && ocean.getStep() != 0) {
+                    metricsWriter.writeMetric();
+                }
+            }
+        });
     }
 }

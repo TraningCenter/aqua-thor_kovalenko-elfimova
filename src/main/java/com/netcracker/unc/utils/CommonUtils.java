@@ -91,8 +91,10 @@ public class CommonUtils {
     /**
      * set property in properties file
      *
+     * @param propertiesFilename
      * @param key
      * @param value
+     * @throws java.io.IOException
      */
     public static void setParserProperty(String propertiesFilename, String key, String value) throws IOException {
         Properties prop = new Properties();
@@ -105,8 +107,10 @@ public class CommonUtils {
     /**
      * get property from properties file
      *
+     * @param propertiesFilename
      * @param key
      * @return value
+     * @throws java.io.IOException
      */
     public static String getParserProperty(String propertiesFilename, String key) throws IOException {
         Properties prop = new Properties();

@@ -7,6 +7,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.ValidationEvent;
 
@@ -16,7 +17,8 @@ import javax.xml.bind.ValidationEvent;
 public class JAXBParserXML implements IXMLParser {
 
     /**
-     * read config from input stream 
+     * read config from input stream
+     *
      * @param config input stream
      * @return ocean configuration
      */
@@ -36,8 +38,20 @@ public class JAXBParserXML implements IXMLParser {
         }
     }
 
+    /**
+     * write snapshots to xml file
+     * @param metricsWriter contains snapshots
+     * @param outputStream output stream
+     */
     @Override
     public void write(MetricsWriter metricsWriter, OutputStream outputStream) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        try {
+            JAXBContext jc = JAXBContext.newInstance(MetricsWriter.class);
+            Marshaller marshaller = jc.createMarshaller();
+            marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+            marshaller.marshal(metricsWriter, outputStream);
+        } catch (JAXBException ex) {
+            ex.printStackTrace();
+        }
     }
 }

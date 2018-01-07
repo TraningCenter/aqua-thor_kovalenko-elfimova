@@ -4,13 +4,20 @@ import com.netcracker.unc.model.Ocean;
 
 import java.util.ArrayList;
 import java.util.List;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  * MetricsWriter class
  */
+@XmlRootElement(name = "snapshots")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class MetricsWriter {
 
-    public static List<Snapshot> snapshots=new ArrayList();
+    @XmlElement(name = "snapshot")
+    public List<Snapshot> snapshots = new ArrayList();
 
     /**
      * MetricsWriter constructor
@@ -30,14 +37,13 @@ public class MetricsWriter {
 
     /**
      * add a snapshot to the snapshot list at each step
-     *
-     * @param ocean ocean
      */
-    public static void writeMetric(Ocean ocean){
-        List<IMetric> metricList=new ArrayList();
-        metricList.add(new Metric("FishCount",ocean.getSmallFishes().size()));
-        metricList.add(new Metric("SharkCount",ocean.getSharks().size()));
-        snapshots.add(new Snapshot (ocean.getStep(),  metricList));
+    public void writeMetric() {
+        Ocean ocean = Ocean.getInstanse();
+        List<IMetric> metricList = new ArrayList();
+        metricList.add(new Metric("FishCount", ocean.getSmallFishes().size()));
+        metricList.add(new Metric("SharkCount", ocean.getSharks().size()));
+        snapshots.add(new Snapshot(ocean.getStep(), metricList));
     }
 
     public List<Snapshot> getSnapshots() {

@@ -10,10 +10,8 @@ import org.junit.Test;
 
 import java.io.*;
 
-/**
- * Created on 27.12.2017.
- */
 public class SAXTests {
+
     String XMLString;
 
     @Test
@@ -44,13 +42,13 @@ public class SAXTests {
     }
 
     @Test
-    public void writeXMLTest()throws UnsupportedEncodingException {
+    public void writeXMLTest() throws UnsupportedEncodingException {
         XMLString = ParsersTools.XMLStringMonitoring;
-        MetricsWriter metricsWriter=ParsersTools.getMetricsWriter();
+        MetricsWriter metricsWriter = ParsersTools.getMetricsWriter();
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         IXMLParser saxParser = new SAXParserXML();
-        saxParser.write(metricsWriter,outputStream);
+        saxParser.write(metricsWriter, outputStream);
         String XMLStringRes = new String(outputStream.toByteArray(), "UTF-8");
-        Assert.assertTrue( XMLString.equals(XMLStringRes));
+        Assert.assertTrue(XMLString.equals(XMLStringRes));
     }
 }

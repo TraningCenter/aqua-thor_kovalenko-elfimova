@@ -40,9 +40,8 @@ public class DOMParserXML implements IXMLParser {
             domParse(createDocumentBuilder().parse(config));
             return oceanConfig;
         } catch (IOException | NullPointerException | ParserConfigurationException | SAXException e) {
-            e.printStackTrace();
+            return null;
         }
-        return null;
     }
 
     /**
@@ -251,12 +250,12 @@ public class DOMParserXML implements IXMLParser {
             DocumentBuilder documentBuilder = docFactory.newDocumentBuilder();
             Document document = documentBuilder.newDocument();
             document.setXmlStandalone(true);
-            writeElements(metricsWriter,document);
+            writeElements(metricsWriter, document);
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
             Transformer transformer = transformerFactory.newTransformer();
             transformer.setOutputProperty(OutputKeys.INDENT, "yes");
             transformer.transform(new DOMSource(document), new StreamResult(outputStream));
-        } catch (ParserConfigurationException| TransformerException e) {
+        } catch (ParserConfigurationException | TransformerException e) {
             e.printStackTrace();
         }
     }
@@ -268,27 +267,26 @@ public class DOMParserXML implements IXMLParser {
      * @param metricsWriter MetricsWriter
      *
      */
-
-    private void writeElements(MetricsWriter metricsWriter,Document document){
-        Element snapshots =document.createElement("snapshots");
+    private void writeElements(MetricsWriter metricsWriter, Document document) {
+        Element snapshots = document.createElement("snapshots");
         document.appendChild(snapshots);
         for (int i = 0; i < metricsWriter.snapshots.size(); i++) {
-            Element snapshot =document.createElement("snapshot");
-            Element step =document.createElement("step");
-            Element metrics =document.createElement("metrics");
-            snapshots.appendChild (snapshot);
-            snapshot.appendChild (step);
+            Element snapshot = document.createElement("snapshot");
+            Element step = document.createElement("step");
+            Element metrics = document.createElement("metrics");
+            snapshots.appendChild(snapshot);
+            snapshot.appendChild(step);
             step.appendChild(document.createTextNode(String.valueOf(metricsWriter.snapshots.get(i).getStep())));
-            snapshot.appendChild (metrics);
-            for (int  j= 0; j < metricsWriter.snapshots.get(i).getMetricList().size(); j++) {
-                Element metric =document.createElement("metric");
-                metrics.appendChild (metric);
-                Element name =document.createElement("name");
-                Element value =document.createElement("value");
-                metric.appendChild (name);
+            snapshot.appendChild(metrics);
+            for (int j = 0; j < metricsWriter.snapshots.get(i).getMetricList().size(); j++) {
+                Element metric = document.createElement("metric");
+                metrics.appendChild(metric);
+                Element name = document.createElement("name");
+                Element value = document.createElement("value");
+                metric.appendChild(name);
                 name.appendChild(document.createTextNode(metricsWriter.snapshots.get(i).getMetricList().get(j).getName()));
                 value.appendChild(document.createTextNode(String.valueOf(metricsWriter.snapshots.get(i).getMetricList().get(j).getValue())));
-                metric.appendChild (value);
+                metric.appendChild(value);
             }
         }
     }

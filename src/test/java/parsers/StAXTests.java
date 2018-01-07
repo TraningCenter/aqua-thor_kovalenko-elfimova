@@ -1,8 +1,6 @@
 package parsers;
 
-
-import com.netcracker.unc.metric.MetricsWriter;
-import com.netcracker.unc.parsers.SAXParserXML;
+import com.netcracker.unc.metric.MetricsWriter;;
 import tools.ParsersTools;
 import com.netcracker.unc.model.OceanConfig;
 import com.netcracker.unc.parsers.IXMLParser;
@@ -56,13 +54,13 @@ public class StAXTests {
     }
 
     @Test
-    public void writeXMLTest()throws UnsupportedEncodingException {
+    public void writeXMLTest() throws UnsupportedEncodingException {
         XMLString = ParsersTools.XMLStringMonitoringStax;
-        MetricsWriter metricsWriter=ParsersTools.getMetricsWriter();
+        MetricsWriter metricsWriter = ParsersTools.getMetricsWriter();
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         IXMLParser staxWriter = new StAXParserXML();
-        staxWriter.write(metricsWriter,outputStream);
+        staxWriter.write(metricsWriter, outputStream);
         String XMLStringRes = new String(outputStream.toByteArray(), "UTF-8");
-        Assert.assertTrue( XMLString.equals(XMLStringRes));
+        Assert.assertTrue(XMLString.equals(XMLStringRes));
     }
 }

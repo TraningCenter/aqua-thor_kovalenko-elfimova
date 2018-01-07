@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<snapshots>
+    <snapshot>
+        <step>5</step>
+        <metrics>
+            <metric>
+                <name>FishCount</name>
+                <value>5.0</value>
+            </metric>
+            <metric>
+                <name>SharkCount</name>
+                <value>6.0</value>
+            </metric>
+        </metrics>
+    </snapshot>
+    <snapshot>
+        <step>10</step>
+        <metrics>
+            <metric>
+                <name>FishCount</name>
+                <value>4.0</value>
+            </metric>
+            <metric>
+                <name>SharkCount</name>
+                <value>6.0</value>
+            </metric>
+        </metrics>
+    </snapshot>
+    <snapshot>
+        <step>15</step>
+        <metrics>
+            <metric>
+                <name>FishCount</name>
+                <value>4.0</value>
+            </metric>
+            <metric>
+                <name>SharkCount</name>
+                <value>6.0</value>
+            </metric>
+        </metrics>
+    </snapshot>
+</snapshots>

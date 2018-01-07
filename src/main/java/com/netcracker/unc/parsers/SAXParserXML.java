@@ -30,11 +30,10 @@ import javax.xml.parsers.ParserConfigurationException;
 /**
  * SAX parser
  */
-
 public class SAXParserXML extends DefaultHandler implements IXMLParser {
 
     private int hungerTime = 0;
-    private OceanConfig oceanConfig=new OceanConfig();
+    private OceanConfig oceanConfig = new OceanConfig();
     private List<Flow> flows;
     private Fish fish;
     private List<IFish> smallfishes;
@@ -64,9 +63,8 @@ public class SAXParserXML extends DefaultHandler implements IXMLParser {
             }
             return oceanConfig;
         } catch (IOException | ParserConfigurationException | SAXException e) {
-            e.printStackTrace();
+            return null;
         }
-        return null;
     }
 
     OceanConfig getOceanConfig() {
@@ -111,8 +109,7 @@ public class SAXParserXML extends DefaultHandler implements IXMLParser {
     }
 
     /**
-     * method characters - reads text between tags,
-     * parse ocean config
+     * method characters - reads text between tags, parse ocean config
      *
      * @param ch chars
      * @param start start position
@@ -172,8 +169,8 @@ public class SAXParserXML extends DefaultHandler implements IXMLParser {
     }
 
     /**
-     * method end element is called at the end of an XML element,
-     * parse fishes, flows
+     * method end element is called at the end of an XML element, parse fishes,
+     * flows
      *
      * @param uri
      * @param localName
@@ -214,7 +211,6 @@ public class SAXParserXML extends DefaultHandler implements IXMLParser {
      * @param metricsWriter MetricsWriter
      *
      */
-
     @Override
     public void write(MetricsWriter metricsWriter, OutputStream outputStream) {
         try {
@@ -235,7 +231,6 @@ public class SAXParserXML extends DefaultHandler implements IXMLParser {
      * @param metricsWriter MetricsWriter
      *
      */
-
     private void writeRoot(MetricsWriter metricsWriter) throws SAXException {
         transHandler.startDocument();
         transHandler.startElement("", "", "snapshots", null);
@@ -250,7 +245,6 @@ public class SAXParserXML extends DefaultHandler implements IXMLParser {
      * @param metricsWriter MetricsWriter
      *
      */
-
     private void writeSnapshots(MetricsWriter metricsWriter) throws SAXException {
         for (int i = 0; i < metricsWriter.snapshots.size(); i++) {
             transHandler.startElement("", "", "snapshot", null);
