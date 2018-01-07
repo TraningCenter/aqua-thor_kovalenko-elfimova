@@ -30,7 +30,6 @@ public class OceanCreator {
         flows.add(Flow.RIGHT);
         flows.add(Flow.NONE);
         flows.add(Flow.NONE);
-        flows.add(Flow.RIGHT);
         List<IFish> sharks = new ArrayList();
         sharks.add(new Shark(new Location(0, 1), 40, 1, 4, 25));
         sharks.add(new Shark(new Location(9, 49), 45, 1, 4, 25));

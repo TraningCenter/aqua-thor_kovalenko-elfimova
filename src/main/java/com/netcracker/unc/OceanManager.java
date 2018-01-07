@@ -33,6 +33,7 @@ public class OceanManager {
     boolean isStop = false;
     MetricsWriter metricsWriter;
     int writePeriod = 10;
+    String propertiesFilename = "config.properties";
 
     /**
      * start the ocean system
@@ -213,19 +214,19 @@ public class OceanManager {
                     case Character:
                         switch (keyStroke.getCharacter()) {
                             case '1':
-                                CommonUtils.setParserProperty(key, "dom");
+                                CommonUtils.setParserProperty(propertiesFilename, key, "dom");
                                 parserSettingsMenu(String.format("%s -> dom. Настройки сохранены", key), false);
                                 return;
                             case '2':
-                                CommonUtils.setParserProperty(key, "sax");
+                                CommonUtils.setParserProperty(propertiesFilename, key, "sax");
                                 parserSettingsMenu(String.format("%s -> sax. Настройки сохранены", key), false);
                                 return;
                             case '3':
-                                CommonUtils.setParserProperty(key, "stax");
+                                CommonUtils.setParserProperty(propertiesFilename, key, "stax");
                                 parserSettingsMenu(String.format("%s -> stax. Настройки сохранены", key), false);
                                 return;
                             case '4':
-                                CommonUtils.setParserProperty(key, "jaxb");
+                                CommonUtils.setParserProperty(propertiesFilename, key, "jaxb");
                                 parserSettingsMenu(String.format("%s -> jaxb. Настройки сохранены", key), false);
                                 return;
                             default:
@@ -305,7 +306,7 @@ public class OceanManager {
      */
     private OceanConfig readConfig() throws IOException {
         InputStream inputStream = new FileInputStream("config.xml");
-        String value = CommonUtils.getParserProperty("inputparser").toLowerCase().trim();
+        String value = CommonUtils.getParserProperty(propertiesFilename, "inputparser").toLowerCase().trim();
         IXMLParser parser;
         switch (value) {
             case "dom":

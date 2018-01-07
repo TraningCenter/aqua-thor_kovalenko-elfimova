@@ -2,7 +2,6 @@ package com.netcracker.unc.creator;
 
 import com.netcracker.unc.model.FishType;
 import static com.netcracker.unc.model.FishType.SHARK;
-import static com.netcracker.unc.model.FishType.SMALL;
 import com.netcracker.unc.model.Location;
 import com.netcracker.unc.model.Ocean;
 import com.netcracker.unc.model.impl.Shark;
@@ -19,16 +18,15 @@ public class FishCreator {
      * create new random fish by type (SHARK/SMALL)
      *
      * @param fishType type of fish
-     * @return new random fish. If type is incorrect returns null
+     * @return new random fish.
      */
     public static IFish createFish(FishType fishType) {
         Location emptyLocation = getEmptyLocation();
         if (fishType == SHARK) {
             return createShark(null, emptyLocation);
-        } else if (fishType == SMALL) {
+        } else {
             return createSmallFish(null, emptyLocation);
         }
-        return null;
     }
 
     /**
@@ -36,15 +34,14 @@ public class FishCreator {
      *
      * @param fish parent fish
      * @param location specific location
-     * @return new successor fish. If type is incorrect returns null
+     * @return new successor fish.
      */
     public static IFish createSuccessorFish(IFish fish, Location location) {
         if (fish.getType() == SHARK) {
             return createShark((Shark) fish, location);
-        } else if (fish.getType() == SMALL) {
+        } else {
             return createSmallFish((SmallFish) fish, location);
         }
-        return null;
     }
 
     /**
