@@ -286,7 +286,27 @@ public class OceanManager {
 
     private void writeMetrics() throws IOException {
         OutputStream outputStream = new FileOutputStream("metric.xml");
-        IXMLParser parser = new DOMParserXML();
+        String value = CommonUtils.getParserProperty("outputparser").toLowerCase().trim();
+        IXMLParser parser = null;
+        switch (value) {
+            case "dom":
+                parser = new DOMParserXML();
+                break;
+            case "sax":
+                parser = new SAXParserXML();
+                break;
+            case "stax":
+                parser = new StAXParserXML();
+                break;
+            case "jaxb":
+                parser = new JAXBParserXML();
+                break;
+            default:
+                parserSettingsMenu("Ошибка! Выбранный в настройках парсер не найден");
+                break;
+        }
+        //IXMLParser parser = new DOMParserXML();
         parser.write(new MetricsWriter(snapshots), outputStream);
+        outputStream.close();
     }
 }

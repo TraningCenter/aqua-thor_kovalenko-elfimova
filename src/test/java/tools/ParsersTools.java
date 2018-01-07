@@ -30,6 +30,8 @@ public class ParsersTools {
 
     public static String XMLStringMonitoring = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><snapshots><snapshot><step>4</step><metrics><metric><name>FishCount</name><value>1.0</value></metric><metric><name>SharkCount</name><value>4.0</value></metric></metrics></snapshot></snapshots>";
 
+    public static String XMLStringMonitoringStax = "<?xml version=\"1.0\" ?><snapshots><snapshot><step>4</step><metrics><metric><name>FishCount</name><value>1.0</value></metric><metric>" + "<name>SharkCount</name><value>4.0</value></metric></metrics></snapshot></snapshots>";
+
     public static OceanConfig getOceanConfig() {
         List<Flow> flows = new ArrayList();
         flows.add(Flow.LEFT);

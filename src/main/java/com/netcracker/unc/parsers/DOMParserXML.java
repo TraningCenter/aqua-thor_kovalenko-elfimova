@@ -238,7 +238,7 @@ public class DOMParserXML implements IXMLParser {
     }
 
     /**
-     * write snapshots metrics in a certain step in Output Stream
+     * write snapshots metrics at a certain step in the Output Stream
      *
      * @param outputStream Output Stream
      * @param metricsWriter MetricsWriter

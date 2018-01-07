@@ -15,6 +15,7 @@ import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
+import javax.xml.transform.OutputKeys;
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.sax.SAXTransformerFactory;
@@ -207,7 +208,7 @@ public class SAXParserXML extends DefaultHandler implements IXMLParser {
     }
 
     /**
-     * write snapshots metrics in a certain step in Output Stream
+     * write snapshots metrics at a certain step in the Output Stream
      *
      * @param outputStream Output Stream
      * @param metricsWriter MetricsWriter
@@ -220,6 +221,7 @@ public class SAXParserXML extends DefaultHandler implements IXMLParser {
             factory = TransformerFactory.newInstance().newInstance();
             saxTransFactory = (SAXTransformerFactory) factory;
             transHandler = saxTransFactory.newTransformerHandler();
+            transHandler.getTransformer().setOutputProperty(OutputKeys.INDENT, "yes");
             transHandler.setResult(new StreamResult(outputStream));
             writeRoot(metricsWriter);
         } catch (TransformerConfigurationException | SAXException e) {
