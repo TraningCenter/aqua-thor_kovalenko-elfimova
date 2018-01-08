@@ -8,9 +8,7 @@ import com.googlecode.lanterna.TextCharacter;
 import com.googlecode.lanterna.TextColor;
 import com.googlecode.lanterna.graphics.TextGraphics;
 import com.googlecode.lanterna.screen.Screen;
-import com.googlecode.lanterna.screen.TerminalScreen;
 import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
-import com.googlecode.lanterna.terminal.Terminal;
 import static com.netcracker.unc.model.FishType.SHARK;
 import static com.netcracker.unc.model.Flow.LEFT;
 import static com.netcracker.unc.model.Flow.RIGHT;
@@ -24,59 +22,51 @@ import java.io.IOException;
 public class OceanVisualizer {
 
     Screen screen;
-    Terminal terminal;
     TextGraphics textGraphics;
+    DefaultTerminalFactory defaultTerminalFactory;
 
     /**
      * visualizer constructor
+     *
+     * @throws java.io.IOException
      */
-    public OceanVisualizer() {
-        DefaultTerminalFactory defaultTerminalFactory = new DefaultTerminalFactory();
-        try {
-            terminal = defaultTerminalFactory.createTerminal();
-            screen = new TerminalScreen(terminal);
-            textGraphics = screen.newTextGraphics();
-        } catch (IOException ex) {
-            System.out.println(ex.getMessage());
-        }
+    public OceanVisualizer() throws IOException {
+        defaultTerminalFactory = new DefaultTerminalFactory();
+        screen = defaultTerminalFactory.createScreen();
+        textGraphics = screen.newTextGraphics();
     }
 
     /**
      * start screen
+     *
+     * @throws java.io.IOException
      */
-    public void startScreen() {
-        try {
-            screen.startScreen();
-        } catch (IOException ex) {
-            System.out.println(ex.getMessage());
-        }
+    public void startScreen() throws IOException {
+        screen.startScreen();
         screen.setCursorPosition(null);
     }
 
     /**
      * stop screen
+     *
+     * @throws java.io.IOException
      */
-    public void stopScreen() {
-        try {
-            screen.stopScreen();
-        } catch (IOException ex) {
-            System.out.println(ex.getMessage());
-        }
+    public void stopScreen() throws IOException {
+        screen.stopScreen();
     }
 
     /**
      * visualize ocean system
+     *
+     * @throws java.io.IOException
+     * @throws java.lang.InterruptedException
      */
-    public void visualize() {
-        try {
-            screen.clear();
-            printMatrix();
-            printInfo();
-            screen.refresh();
-            Thread.sleep(300);
-        } catch (IOException | InterruptedException ex) {
-            System.out.println(ex.getMessage());
-        }
+    public void visualize() throws IOException, InterruptedException {
+        screen.clear();
+        printMatrix();
+        printInfo();
+        screen.refresh();
+        Thread.sleep(300);
     }
 
     /**
@@ -118,7 +108,7 @@ public class OceanVisualizer {
      */
     private void printInfo() {
         Ocean ocean = Ocean.getInstanse();
-        String infoLabel = String.format("Aquator [STEP %s]. Tor: %s, sharks: %s, smallFishes: %s. Press Esq to exit!", ocean.getStep(), ocean.isTor(), ocean.getSharks().size(), ocean.getSmallFishes().size());
+        String infoLabel = String.format("Aquator [STEP %s]. Tor: %s, sharks: %s, smallFishes: %s. Press Esc to exit!", ocean.getStep(), ocean.isTor(), ocean.getSharks().size(), ocean.getSmallFishes().size());
         TerminalPosition labelBoxTopLeft = new TerminalPosition(0, 1);
         TerminalSize labelBoxSize = new TerminalSize(infoLabel.length() + 2, 3);
         TerminalPosition labelBoxTopRightCorner;

@@ -20,7 +20,8 @@ import com.netcracker.unc.visualizer.OceanVisualizer;
 import java.io.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Ocean system manager
@@ -31,26 +32,46 @@ public class OceanManager {
     OceanVisualizer visualizer;
     ExecutorService executor;
     boolean isStop = false;
+    boolean isActive = true;
     MetricsWriter metricsWriter;
     int writePeriod = 10;
     String propertiesFilename = "config.properties";
 
     /**
+     * ocean manager constructor
+     *
+     * @param isActive
+     */
+    public OceanManager(boolean isActive) {
+        this.isActive = isActive;
+    }
+
+    /**
+     * empty constructor
+     */
+    public OceanManager() {
+    }
+
+    /**
      * start the ocean system
      */
     public void run() {
-        visualizer = new OceanVisualizer();
-        visualizer.startScreen();
+        try {
+            visualizer = new OceanVisualizer();
+            visualizer.startScreen();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
         mainMenu();
     }
 
     /**
      * start user menu
      */
-    private void mainMenu() {
+    public void mainMenu() {
         executor = Executors.newFixedThreadPool(2);
         configMenu();
-        while (true) {
+        while (isActive) {
             KeyStroke keyStroke;
             try {
                 keyStroke = visualizer.getScreen().readInput();
@@ -75,17 +96,17 @@ public class OceanManager {
     /**
      * configuration menu
      */
-    private void configMenu() {
+    public void configMenu() {
         visualizer.clear();
         TextGraphics textGraphics = visualizer.getTextGraphics();
         try {
-            while (true) {
+            while (isActive) {
                 textGraphics.setForegroundColor(TextColor.ANSI.WHITE);
                 textGraphics.putString(new TerminalPosition(0, 1), "Выберите конфигурацию: ");
                 textGraphics.putString(new TerminalPosition(0, 2), "1. Из файла config.xml");
                 textGraphics.putString(new TerminalPosition(0, 3), "2. Пример по умолчанию");
                 textGraphics.putString(new TerminalPosition(0, 4), "3. Настройка парсеров");
-                textGraphics.putString(new TerminalPosition(0, 5), "Esq. Выход");
+                textGraphics.putString(new TerminalPosition(0, 5), "Esc. Выход");
                 visualizer.refresh();
                 KeyStroke keyStroke = visualizer.getScreen().readInput();
                 while (keyStroke == null) {
@@ -129,7 +150,7 @@ public class OceanManager {
      * @param message message to user
      * @param isError
      */
-    private void parserSettingsMenu(String message, boolean isError) {
+    public void parserSettingsMenu(String message, boolean isError) {
         visualizer.clear();
         TextGraphics textGraphics = visualizer.getTextGraphics();
         if (message != null && !message.isEmpty()) {
@@ -142,13 +163,13 @@ public class OceanManager {
             }
         }
         try {
-            while (true) {
+            while (isActive) {
                 textGraphics.setForegroundColor(TextColor.ANSI.WHITE);
                 textGraphics.putString(new TerminalPosition(0, 1), "Настройка парсеров: ");
                 textGraphics.putString(new TerminalPosition(0, 2), "1. Парсер ввода");
                 textGraphics.putString(new TerminalPosition(0, 3), "2. Парсер вывода");
                 textGraphics.putString(new TerminalPosition(0, 4), "3. Периодичность сохранения в файл");
-                textGraphics.putString(new TerminalPosition(0, 5), "Esq. Назад");
+                textGraphics.putString(new TerminalPosition(0, 5), "Esc. Назад");
                 visualizer.refresh();
                 KeyStroke keyStroke = visualizer.getScreen().readInput();
                 while (keyStroke == null) {
@@ -189,19 +210,19 @@ public class OceanManager {
      *
      * @param isInput true if parse is input
      */
-    private void concreteParserSettingsMenu(boolean isInput) {
+    public void concreteParserSettingsMenu(boolean isInput) {
         visualizer.clear();
         TextGraphics textGraphics = visualizer.getTextGraphics();
         String key = isInput ? "inputparser" : "outputparser";
         try {
-            while (true) {
+            while (isActive) {
                 textGraphics.setForegroundColor(TextColor.ANSI.WHITE);
                 textGraphics.putString(new TerminalPosition(0, 1), "Типы парсеров: ");
                 textGraphics.putString(new TerminalPosition(0, 2), "1. DOM");
                 textGraphics.putString(new TerminalPosition(0, 3), "2. SAX");
                 textGraphics.putString(new TerminalPosition(0, 4), "3. StAX");
                 textGraphics.putString(new TerminalPosition(0, 5), "4. JAXB");
-                textGraphics.putString(new TerminalPosition(0, 6), "Esq. Назад");
+                textGraphics.putString(new TerminalPosition(0, 6), "Esc. Назад");
                 visualizer.refresh();
                 KeyStroke keyStroke = visualizer.getScreen().readInput();
                 while (keyStroke == null) {
@@ -247,12 +268,12 @@ public class OceanManager {
     /**
      * input positive integer (writePeriod)
      */
-    private void inputWritePeriod() {
+    public void inputWritePeriod() {
         visualizer.clear();
         TextGraphics textGraphics = visualizer.getTextGraphics();
         StringBuilder sb = new StringBuilder();
         try {
-            while (true) {
+            while (isActive) {
                 textGraphics.setForegroundColor(TextColor.ANSI.WHITE);
                 textGraphics.putString(new TerminalPosition(0, 1), String.format("Текушая периодичность: %s", writePeriod));
                 textGraphics.putString(new TerminalPosition(0, 2), "Введите положительное число: " + sb.toString());
@@ -296,8 +317,12 @@ public class OceanManager {
     /**
      * exit of the system
      */
-    private void exit() {
-        visualizer.stopScreen();
+    public void exit() {
+        try {
+            visualizer.stopScreen();
+        } catch (IOException ex) {
+            Logger.getLogger(OceanManager.class.getName()).log(Level.SEVERE, null, ex);
+        }
         System.exit(0);
     }
 
@@ -371,12 +396,24 @@ public class OceanManager {
         executor.submit(() -> {
             isStop = false;
             while (!isStop) {
-                visualizer.visualize();
+                try {
+                    visualizer.visualize();
+                } catch (IOException | InterruptedException ex) {
+                    ex.printStackTrace();
+                }
                 ocean.oneStep();
                 if (ocean.getStep() % writePeriod == 0 && ocean.getStep() != 0) {
                     metricsWriter.writeMetric();
                 }
             }
         });
+    }
+
+    public void setVisualizer(OceanVisualizer visualizer) {
+        this.visualizer = visualizer;
+    }
+
+    public ExecutorService getExecutor() {
+        return executor;
     }
 }

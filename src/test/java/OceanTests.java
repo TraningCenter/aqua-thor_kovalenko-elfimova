@@ -88,13 +88,13 @@ public class OceanTests {
     }
 
     @Test
-    public void oneStepTest(){
+    public void oneStepTest() {
         ocean.oneStep();
         Assert.assertEquals(1, ocean.getSharks().get(0).getAge());
         Assert.assertEquals(1, ocean.getSmallFishes().get(0).getAge());
         Assert.assertEquals(1, ocean.getStep());
     }
-    
+
     @Test
     public void getFlowByIndexTest() {
         Flow flow = Flow.fromIndex(0);
