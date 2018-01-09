@@ -65,7 +65,7 @@ public class Shark extends Fish {
             return;
         }
         searchTarget();
-        if (age % (lifetime / 2 + 1) == 0 && age != 0) {
+        if (ocean.getSmallFishes().size() > 0 && age % (lifetime / 2 + 1) == 0 && age != 0) {
             giveBirth();
         } else {
             move();
@@ -161,7 +161,6 @@ public class Shark extends Fish {
     public int getHungerCounter() {
         return hungerCounter;
     }
-
 
     @Override
     public int hashCode() {
